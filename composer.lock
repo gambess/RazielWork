@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "15bd71a976a493536532715955e32962",
+    "hash": "d9fe398dbcb9f53c599e7040d88f95a9",
     "packages": [
         {
             "name": "andres-montanez/magallanes",
@@ -1175,6 +1175,54 @@
             "time": "2013-08-21 18:09:35"
         },
         {
+            "name": "seven/symfony-rpc-bundle",
+            "version": "dev-master",
+            "target-dir": "Seven/RpcBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/skolodyazhnyy/symfony-rpc-bundle.git",
+                "reference": "ea2fb7a60cff6709d5b885c83434f75ebf89927f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/skolodyazhnyy/symfony-rpc-bundle/zipball/ea2fb7a60cff6709d5b885c83434f75ebf89927f",
+                "reference": "ea2fb7a60cff6709d5b885c83434f75ebf89927f",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "2.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Seven\\RpcBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Kolodyazhnyy",
+                    "email": "sergey.kolodyazhnyy@gmail.com"
+                }
+            ],
+            "description": "This Symfony bundle provide easy way to create XMLRPC server",
+            "keywords": [
+                "bundle",
+                "rpc",
+                "server",
+                "symfony",
+                "xml-rpc",
+                "xmlrpc"
+            ],
+            "time": "2014-03-10 11:54:58"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.2.0",
             "source": {
@@ -2141,9 +2189,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "seven/symfony-rpc-bundle": 20
+    },
     "platform": {
         "php": ">=5.3.3"
     },

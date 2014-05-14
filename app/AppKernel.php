@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Pi2\Fractalia\SGSDSoapServerBundle\Pi2FracSGSDSoapServerBundle(),
             new Pi2\Fractalia\SGSDWebMonitorBundle\Pi2FracSGSDWebMonitorBundle(),
+            new FractaliaSoftware\SmsBundle\FractaliaSoftwareSmsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {            
