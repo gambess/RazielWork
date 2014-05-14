@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <!--
+       <parameters>
+           <parameter key="pi2_frac_sgsd_soap_server.example.class">Pi2\Fractalia\SGSDSoapServerBundle\Example</parameter>
+       </parameters>
+    -->
+    <services>
+        <service id="soap_api" class="Pi2\Fractalia\SGSDSoapServerBundle\Soap\SGSDAPI">
+            <argument type="service" id="doctrine.orm.default_entity_manager" /> 
+            <argument type="service" id="hydrator"></argument> 
+            <argument type="service" id="incidencia_manager"></argument>    
+        </service>
+        
+        <service id="hydrator" class="DoctrineModule\Stdlib\Hydrator\DoctrineObject">
+            <argument type="service" id="doctrine.orm.default_entity_manager"></argument>
+        </service>
+        
+        <service id="incidencia_manager" class="Pi2\Fractalia\SGSDSoapServerBundle\IncidenciaManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />                    
+        </service>
+    </services>
+   
+</container>

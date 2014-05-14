@@ -1,0 +1,8 @@
+pi2_frac_sgsd_web_monitor:
+    resource: "@Pi2FracSGSDWebMonitorBundle/Resources/config/routing.xml"
+    prefix:   /monitor
+
+pi2_frac_sgsd_soap_server:
+    resource: "@Pi2FracSGSDSoapServerBundle/Resources/config/routing.xml"
+    prefix:   /
+

@@ -1,0 +1,84 @@
+{% extends 'Pi2FracSGSDWebMonitorBundle::layout.html.twig' %}
+
+{% block javascripts %}
+
+<script type="text/javascript">
+    var int = self.setInterval("refresh()",{{recarga}});
+    function refresh()
+    {
+        location.reload(true);
+    }
+</script>
+
+{% endblock %}
+
+{% block contenido %}
+{#<div class="tiempo_acceso">#}
+
+{#<div class="clock"><img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/reloj.png')}}"/></div>#}
+<h2> Servicio {{servicio}} </h2>
+
+   {%if errorConexionDB%}
+    <div id="alerta_conexion">
+        <img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/alert_c.png')}}"/>
+        <p>{{mensajeErrorDB}}</p>
+    </div>
+   {%else%}
+        
+    <div class="descr_servicio"> 
+        <p> Categorías: {{numCategorias}}</p>
+        <p> Alertas: {{numAlertas}}</p>
+        <p> Tickets: {{numTickets}}</p>
+    </div>
+
+<div class="tiempo_acceso">
+        <p><img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/reloj.jpg')}}"/>Sin recibir notificación: {{tiempoUltimoTicket.minutos}}' {{tiempoUltimoTicket.segundos}}" </p>
+</div>
+
+   {% for categoria,incidencias in incidenciasCat  %}
+    <div>
+        <h3> {{ (categoria) }}</h3>
+        <h4 class="ticket"> Tickets {{incidencias.datos|length}}</h4>
+        <h4> <img class="alert" src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/alert_ico.png')}}"/> Alertas {{incidencias.alertasCat}}</h4>
+    </div>
+
+    <table>
+        <tr>
+            {% for campo in incidencias.menu %}
+                <th> {{campo}} </th>   
+            {% endfor %}
+        </tr>
+
+        {% for incidencia in incidencias.datos %}
+
+            {% if (incidencia.alarma is defined and incidencia.alarma == 'SI' and incidencia.prioridad|upper in incidencias.prioridad) %}
+                <tr class="alarm_priority">
+            {% elseif (incidencia.alarma is defined and incidencia.alarma == 'SI' and incidencia.prioridad|upper not in incidencias.prioridad) %}
+                <tr class="alarm">
+            {% elseif (incidencia.clienteCritico is defined and incidencia.clienteCritico == 'SI' and incidencia.prioridad|upper in incidencias.prioridad) %}
+                <tr class="critical_priority">   
+            {% elseif (incidencia.clienteCritico is defined and incidencia.clienteCritico == 'SI' and incidencia.prioridad|upper not in incidencias.prioridad) %}
+                <tr class="critical">
+            {% elseif incidencia.prioridad|upper in incidencias.prioridad %}
+                <tr class="priority">
+            {% else %}
+                <tr>
+            {% endif %}
+                                               
+            {% for name,ticket in incidencia %}    
+                  {% if ticket.timestamp is defined %}
+                    <td>{{ ticket|date('d-m-Y H:i:s') }}</td>
+                  {% elseif name == 'titulo' %}
+                    <td>{{ ticket|slice(0,100)|raw }}</td>
+                  {% elseif name != 'alarma' and name != 'clienteCritico' %}
+                    <td>{{ ticket }}</td>
+                  {% endif %}
+            {% endfor %}    
+            </tr>
+          {% endfor %}  
+
+    </table>       
+<br>
+      {% endfor %}   
+{%endif%}
+{% endblock %}

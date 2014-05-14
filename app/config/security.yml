@@ -1,0 +1,20 @@
+security:
+    firewalls:
+        secured_area:
+            pattern:    ^/
+            anonymous: ~
+            http_basic:
+                realm: "Area Restringida"
+
+    access_control:
+        - { path: ^/monitor, roles: ROLE_ADMIN }
+        - { path: ^/monitor$, roles: ROLE_ADMIN }
+    
+    providers:
+        in_memory:
+            memory:
+                users:
+                    sgsduser: { password: sgsdpass, roles: [ 'ROLE_ADMIN' ] }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

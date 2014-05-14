@@ -1,0 +1,40 @@
+#integracion
+deployment:
+  strategy: targz
+  user: root
+  from: ./
+  to: /var/www/sgsd
+  excludes:
+     - app/cache/*
+     - app/logs/*
+     - bin
+     - .idea
+     - nbproject
+     - Vagrantfile*
+     - .vagrant
+     - ansible
+     - mage
+     - .mage
+     - UPGRADE*
+     - vagrant*
+     - LICENSE
+     - ip
+releases:
+  enabled: true
+  max: 5
+  symlink: current
+  directory: releases
+hosts:
+   - 94.23.82.207
+tasks:
+  pre-deploy:
+  on-deploy:
+     - symfony2/assets-install
+  post-release:
+     - Permissions
+     - CopyConfig
+     - ClearCache
+#     - symfony2/cache-clear: {env: prod}
+#     - symfony2/cache-warmup: {env: prod}
+  post-deploy:
+
