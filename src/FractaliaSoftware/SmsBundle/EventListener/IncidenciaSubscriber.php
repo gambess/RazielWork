@@ -9,6 +9,7 @@
 
 namespace FractaliaSoftware\SmsBundle\EventListener;
 
+use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
@@ -19,24 +20,30 @@ class IncidenciaSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'postPersist',
-//            'postUpdate',
+            Events::postPersist,
+            Events::postUpdate,
         );
     }
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $this->index($args);
+        $this->imprimeLog($args);
+    }
+    
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $this->imprimeLog($args);
     }
 
-    public function index(LifecycleEventArgs $args)
+    public function imprimeLog(LifecycleEventArgs $args)
     {
+        $obj = $args->getObject();
         $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
+        $objManager = $args->getObjectManager();
 
         // tal vez sólo quieres actuar en alguna entidad "Incidencia"
         if ($entity instanceof Incidencia) {
-            echo ':::::: EVENT IN SUBSCRIBER :::::';
+            return array ( $obj, $objManager );
         }
     }
 }

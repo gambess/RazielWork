@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Collection;
  *
  * @ORM\Table()
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Pi2\Fractalia\Entity\SGSD\IncidenciaRepository")
  */
 class Incidencia {

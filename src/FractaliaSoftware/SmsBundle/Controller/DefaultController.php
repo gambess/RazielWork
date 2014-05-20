@@ -11,6 +11,7 @@ use FractaliaSoftware\SmsBundle\EventListener\IncidenciaSubscriber;
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/test/{name}")
      * @Template()
@@ -18,12 +19,26 @@ class DefaultController extends Controller
     public function indexAction($name)
     {
         $listener = $this->get('incidencia.listener');
-        
+        $subscriber = new IncidenciaSubscriber;
+
+//        $listener = new IncidenciaListener;
+        $em = $this->getDoctrine()->getManager();
         $eventManager = new EventManager;
-        
-        $eventManager->addEventListener(Events::postPersist, $listener);
-        
-        $eventManager->addEventSubscriber(new IncidenciaSubscriber);
-        return array('name' => $eventManager->getListeners());
+
+        $eventManager->addEventListener(array(Events::postPersist, Events::postUpdate), $listener);
+        $eventManager->addEventSubscriber($subscriber);
+//        $eventManager->addEventListener(array(Events::postPersist, Events::postUpdate), $listener);
+//        $eventManager->addEventSubscriber($subscriber);
+//        $eventManager->dispatchEvent($eventName);
+//        return array('name' => );
     }
+    /**
+     * @Route("/log/{name}")
+     * @Template()
+     */
+    public function logAction()
+    {
+        
+    }
+
 }

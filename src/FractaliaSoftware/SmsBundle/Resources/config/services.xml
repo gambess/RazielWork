@@ -3,7 +3,9 @@
     xmlns:doctrine="http://symfony.com/schema/dic/doctrine">
     <services>
         <service id="incidencia.listener" class="FractaliaSoftware\SmsBundle\EventListener\IncidenciaListener">
-            <tag name="doctrine.event_listener" event="onFlush"/>
+                <!--<tag name="doctrine.event_listener" event="postPersist, postUpdate"/>-->
+                <tag name="doctrine.event_listener" event="postUpdate"/>
+                <tag name="doctrine.event_listener" event="postPersist"/>
         </service>
     </services>
 </container>
