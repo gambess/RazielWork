@@ -58,6 +58,8 @@ doctrine:
         # path:     "%database_path%"
 
     orm:
+        resolve_target_entities:
+            entity_listener_resolver: pi2_fractalia_listener_resolver
         auto_generate_proxy_classes: "%kernel.debug%"
 #        auto_mapping: true
         query_cache_driver:    apc

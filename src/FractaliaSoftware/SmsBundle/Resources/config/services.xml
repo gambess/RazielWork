@@ -1,11 +1,57 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
     xmlns:doctrine="http://symfony.com/schema/dic/doctrine">
+    <parameters>
+        <!-- Manager -->
+        <parameter key="pi2_fractalia_manager.class">Pi2\Fractalia\SGSDSoapServerBundle\IncidenciaManager</parameter>
+        <!-- Repository -->
+        <parameter key="pi2_fractalia.incidencia_repository.class">Pi2\Fractalia\Entity\SGSD\IncidenciaRepository</parameter>
+        <!-- Listener -->
+        <parameter key="pi2_fractalia_listener_incidencia.class">Pi2\Fractalia\Listener\IncidenciaListener</parameter>
+        <!-- ListenerResolver -->
+        <parameter key="pi2_fractalia_listener_resolver.class">Pi2\Fractalia\ListenerResolver\ListenerResolver</parameter>
+    </parameters>
+    
     <services>
-        <service id="incidencia.listener" class="FractaliaSoftware\SmsBundle\EventListener\IncidenciaListener">
-                <!--<tag name="doctrine.event_listener" event="postPersist, postUpdate"/>-->
+        <!-- Manager -->
+        <service id="pi2_fractalia_manager"
+                 class="%pi2_fractalia_manager.class%">
+        </service>
+        <!-- Repository -->
+        <service id="pi2_fractalia.incidencia_repository"
+                 class="%pi2_fractalia.incidencia_repository.class%"
+                 factory-service="doctrine.orm.default_entity_manager"
+                 factory-method="getRepository">
+            <argument>Pi2\Fractalia\Entity\SGSD\Incidencia</argument>
+        </service>
+
+        <!-- Listener -->
+        <service id="pi2_fractalia_listener_incidencia"
+                 class="%pi2_fractalia_listener_incidencia.class%">
+            <argument type="service" id="service_container"/>
+            <tag name="doctrine.entity_listener" event="postPersist"/>
+            <tag name="doctrine.orm.entity_listener" event="postUpdate"/>
+        </service>
+
+
+        <!-- Listener Resolver -->
+        <service id="pi2_fractalia_listener_resolver"
+                 class="%pi2_fractalia_listener_resolver.class%">
+            <argument type="service" id="service_container"/>
+        </service>
+        
+        
+<!--        <service id="my.listener" class="Pi2\Fractalia\Entity\SGSD\EntityListeners\IncidenciaListener">
+            <argument type="service" id="service_container" />
+            <tag name="doctrine.orm.entity_listener" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" event="postPersist"/>
+        </service>-->
+        <!--        <service id="incidencia.listener" class="FractaliaSoftware\SmsBundle\EventListener\IncidenciaListener">
+                <tag name="doctrine.event_listener" event="postPersist, postUpdate"/>
                 <tag name="doctrine.event_listener" event="postUpdate"/>
                 <tag name="doctrine.event_listener" event="postPersist"/>
-        </service>
+        </service>-->
     </services>
 </container>
