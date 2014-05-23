@@ -15,24 +15,19 @@
 namespace Pi2\Fractalia\Listener;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
 
 class IncidenciaListener
 {
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
-    private $container;
-    /** Array de momento para pruebas del servicio SOC */
-    private $services_soc = array('SEGEST MON', 'SEGEST SOC', 'SEG MERCEDES', 'SOPORTE SEGURIDAD', 'SOC SEGURIDAD');
-    private $grupos_envio = array('ESCALADO' => '[24h]', 'SOPORTE' => '[23:00-07:00]');
+    private $logger;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+//    private $formatter;
+//    private $another_service;
+
+    public function __construct($logger)
     {
-        $this->container = $container;
+        $this->logger = $logger;
     }
 
     /**
@@ -42,63 +37,109 @@ class IncidenciaListener
      * @param LifecycleEventArgs $event
      * @ORM\PostPersist
      */
-    public function postPersist(Incidencia $incidencia, LifecycleEventArgs $event)
-    {
-//        if ("CRITICA" == $incidencia->getPrioridad())
-//        {
-//            if ($this->filterIncidenciaByServiceSOC($incidencia) instanceof Incidencia)
-//            {
-                /* try catch for logger */
-//                $this->sendSMS($this->prepareSms($incidencia));
-//                return $incidencia->getPrioridad();
-                $now = new \DateTime;
-                $incidencia->setFechaResolucion($now);
-//            }
-//        }
-    }
+//    public function postPersist(Incidencia $incidencia, LifecycleEventArgs $event)
+//    {
+//        $this->sendMail($incidencia);
+//    }
 
     /**
      * Trigger para capturar las actualizaciones
      *
      * @param Incidencia $incidencia
      * @param LifecycleEventArgs $event
-     * @ORM\PostUpdate 
+     * @ORM\PostPersist
      */
-    public function postUpdate(Incidencia $incidencia, LifecycleEventArgs $event)
-    {
-//        if ("CRITICA" == $incidencia->getPrioridad())
-//        {
-//            if ($this->filterIncidenciaByServiceSOC($incidencia))
-//            {
-                /* try catch for logger */
-//                $this->sendSMS($this->prepareSms($incidencia));
-//                return $incidencia->getPrioridad();
-                $now = new \DateTime;
-                $incidencia->setFechaResolucion($now);
-//            }
-//        }
-    }
+//    public function postUpdate(Incidencia $incidencia, LifecycleEventArgs $event)
+//    {
+//        $this->sendMail($incidencia);
+//    }
 
-    public function filterIncidenciaByServiceSOC(Incidencia $incidencia)
+    /**
+     * Trigger para capturar las inserciones y actualizaciones
+     *
+     * @param Incidencia $incidencia
+     * @param LifecycleEventArgs $event
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
-        if ($incidencia instanceof Incidencia)
+        $inci = $event->getObject();
+        if (null === $inci->getFechaInsercion())
         {
-
-            if (in_array($incidencia->getGrupoOrigen(), $this->services_soc) or in_array($incidencia->getGrupoDestino(), $this->services_soc))
-            {
-                return true;
-            }
+            $inci->setFechaInsercion(new \DateTime(date('Y-m-d H:m:s')));
+        }
+        if ($this->filterIncidenciaByService($inci))
+        {
+            $this->logger->notice('Insertado un ticket: ', array('fecha' => $inci->getFechaInsercion(), 'prioridad' => $inci->getPrioridad()));
+            $this->logger->notice('Visualizando SMS Preparado: ', array('SMS' => $this->prepareSMS($inci)));
         }
     }
 
-    public function prepareSms(Incidencia $incidencia)
+    protected function filterIncidenciaByService(Incidencia $i)
     {
-        return true;
+
+        $soc_service = array('SEGEST MON', 'SEGEST SOC', 'SEG MERCEDES', 'SOPORTE SEGURIDAD', 'SOC SEGURIDAD');
+
+        if (in_array($i->getGrupoDestino(), $soc_service) or in_array($i->getGrupoOrigen(), $soc_service))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public function sendSMS($text)
+    protected function prepareSMS(Incidencia $i)
     {
-        return true;
+        $t = array(
+            '1' => 'incidencia',
+            '2' => 'peticion',
+            '3' => 'queja',
+            '4' => 'consulta'
+            );
+        $cliente ='';
+        $TSOL = '';
+        $format = 'd-m-Y H:m:s';
+        $tipo = strtolower($t[$i->getTipoCaso()]) . "/" . strtolower($i->getPrioridad());
+
+        return "RESUELTO ID: {$i->getNumeroCaso()} CLIENTE: ferrovial TIPO: {$tipo} TECNICO: " . strtolower($i->getTecnicoAsignadoFinal()) . " TSOL: tssh FECHA: " . $i->getFechaApertura()->format($format) . " MODO RECEPCION: correo RESOLUCION: {$this->formatResoluciones($i)} ";
     }
 
+    protected function formatResoluciones(Incidencia $i)
+    {
+        $texto = 'xxxx';
+        $concat = '';
+        if (null != $i->getResoluciones())
+        {
+            foreach ($i->getResoluciones() as $resolucion)
+            {
+                $concat .= $resolucion->getTexto();
+            }
+        }
+        if('' != $concat){
+            $texto = $concat;
+        }
+        return $texto;
+    }
+
+//    public function createMail($texto)
+//    {
+//        $message = \Swift_Message::newInstance()
+//            ->setSubject('Sending TICKET STATES')
+//            ->setFrom('raziel.valle@fractaliasoftware.com')
+//            ->setTo('raziel.valle@fractaliasoftware.com')
+//            ->setBody( 'start-message: ' . $texto . ' ' . 'end-message' );
+//
+//        return $message;
+//    }
+//    public function sendMail(Incidencia $incidencia)
+//    {
+//        $format = 'Y-m-d H:i:s';
+//        $insert = $incidencia->getFechaInsercion();
+//        $texto = 'Estado del Ticket: ' .$incidencia->getEstado() . '<br /> Fecha (Completa) de Inserción: ' . $insert->format($format);
+//        $this->mail_service->send($this->createMail((string)$texto));
+//        
+//    }
 }

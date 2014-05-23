@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
  *
  * @ORM\Table()
  * @ORM\Entity
- * @ORM\EntityListeners({"Pi2\Fractalia\Listener\IncidenciaListener"})
+ * @ORM\EntityListeners({ "Pi2\Fractalia\Listener\IncidenciaListener" })
  * @ORM\Entity(repositoryClass="Pi2\Fractalia\Entity\SGSD\IncidenciaRepository")
  */
 class Incidencia {

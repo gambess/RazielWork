@@ -20,8 +20,7 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",        
         "doctrine/doctrine-module": "0.8.0",
-        "andres-montanez/magallanes": "1.0.*",
-	"seven/symfony-rpc-bundle": "dev-master"
+        "andres-montanez/magallanes": "1.0.*"
     },
     "scripts": {
         "post-install-cmd": [
