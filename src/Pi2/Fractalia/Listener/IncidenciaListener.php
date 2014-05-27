@@ -69,21 +69,26 @@ class IncidenciaListener
         {
             $inci->setFechaInsercion(new \DateTime(date('Y-m-d H:m:s')));
         }
-        if ($this->filterIncidenciaByService($inci))
+        if ($this->filterIncidenciaByServiceAndState($inci))
         {
-            $this->logger->notice('Insertado un ticket: ', array('fecha' => $inci->getFechaInsercion(), 'prioridad' => $inci->getPrioridad()));
-            $this->logger->notice('Visualizando SMS Preparado: ', array('SMS' => $this->prepareSMS($inci)));
+            $this->logger->info('Listener Tickect actualizado a', array('Estado'=> $inci->getEstado(),'Previzualización SMS:' => $this->prepareSMS($inci)));
         }
     }
 
-    protected function filterIncidenciaByService(Incidencia $i)
+    protected function filterIncidenciaByServiceAndState(Incidencia $i, $estado = 'RESUELTO')
     {
-
-        $soc_service = array('SEGEST MON', 'SEGEST SOC', 'SEG MERCEDES', 'SOPORTE SEGURIDAD', 'SOC SEGURIDAD');
-
-        if (in_array($i->getGrupoDestino(), $soc_service) or in_array($i->getGrupoOrigen(), $soc_service))
+        if (strtolower($i->getEstado()) == strtolower($estado))
         {
-            return true;
+            $soc_service = array('SEGEST MON', 'SEGEST SOC', 'SEG MERCEDES', 'SOPORTE SEGURIDAD', 'SOC SEGURIDAD');
+
+            if (in_array($i->getGrupoDestino(), $soc_service) or in_array($i->getGrupoOrigen(), $soc_service))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -98,13 +103,13 @@ class IncidenciaListener
             '2' => 'peticion',
             '3' => 'queja',
             '4' => 'consulta'
-            );
-        $cliente ='';
+        );
+        $cliente = '';
         $TSOL = '';
         $format = 'd-m-Y H:m:s';
         $tipo = strtolower($t[$i->getTipoCaso()]) . "/" . strtolower($i->getPrioridad());
 
-        return "RESUELTO ID: {$i->getNumeroCaso()} CLIENTE: ferrovial TIPO: {$tipo} TECNICO: " . strtolower($i->getTecnicoAsignadoFinal()) . " TSOL: tssh FECHA: " . $i->getFechaApertura()->format($format) . " MODO RECEPCION: correo RESOLUCION: {$this->formatResoluciones($i)} ";
+        return "RESUELTO ID: {$i->getNumeroCaso()} CLIENTE: {$this->setClienteMensaje($i)} TIPO: {$tipo} TECNICO: " . strtolower($i->getTecnicoAsignadoFinal()) . " TSOL: tssh FECHA: " . $i->getFechaApertura()->format($format) . " MODO RECEPCION: correo RESOLUCION: {$this->formatResoluciones($i)} ";
     }
 
     protected function formatResoluciones(Incidencia $i)
@@ -118,10 +123,23 @@ class IncidenciaListener
                 $concat .= $resolucion->getTexto();
             }
         }
-        if('' != $concat){
+        if ('' != $concat)
+        {
             $texto = $concat;
         }
         return $texto;
+    }
+    
+    protected function setClienteMensaje(Incidencia $i)
+    {
+        $pattern = "^\[(.*?)\]^";
+        $cliente = "VOCENTO";
+        $matches = array();
+        if(preg_match_all($pattern, $i->getTitulo(), $matches, PREG_SET_ORDER) >= 3){
+            return strtolower($matches[2][1]);
+        }else{
+            return strtolower($cliente);
+        }
     }
 
 //    public function createMail($texto)
