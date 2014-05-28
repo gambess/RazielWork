@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: web_monitor.yml }
-
+    - { resource: sms_manager.yml }
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }

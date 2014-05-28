@@ -20,9 +20,60 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('pi2_frac_sgsd_soap_server');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('envio_sms')
+                        ->children()
+                            ->arrayNode('api')
+                                ->children()
+                                    ->scalarNode('url')->end()
+                                    ->scalarNode('apiuser')->end()
+                                    ->scalarNode('apipass')->end()
+                                    ->scalarNode('remitente')->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('servicio')
+                                    ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('grupo_destino')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('destinatario')->end()
+                                        ->scalarNode('dias')->end()
+                                        ->scalarNode('desde')->end()
+                                        ->scalarNode('hasta')->end()
+                                    ->end()
+                                ->end()    
+                            ->end()
+                            ->arrayNode('numero_destino')
+                                ->prototype('array')
+                                    ->children()
+                                        ->scalarNode('destinatario')->end()
+                                        ->scalarNode('dias')->end()
+                                        ->scalarNode('desde')->end()
+                                        ->scalarNode('hasta')->end()
+                                    ->end()
+                                ->end()    
+                            ->end()
+                            ->arrayNode('prioridad')
+                                    ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('estado')
+                                    ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('nombres_cortos')
+                                    ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('traduccion_tipo_caso')
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('tsol_guardia')
+                                    ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

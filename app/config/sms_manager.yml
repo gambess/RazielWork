@@ -1,0 +1,44 @@
+pi2_frac_sgsd_soap_server:
+    envio_sms:
+        api:
+            url: 'https://www.mensajerianegocios.movistar.es/SrvConexion'
+            apiuser: 'B902CCDB-RAUL.MADR'
+            apipass: 'Nivel1'
+            remitente: '217812'
+            
+        servicio:
+            - SEGEST MON
+            - SEGEST SOC
+            - SEG MERCEDES
+            - SOPORTE SEGURIDAD
+            - SOC SEGURIDAD
+            
+        grupo_destino:
+            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
+            
+        numero_destino:
+#            - { destinatario: 602814043, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 } 
+#
+        prioridad:
+            - CRITICA
+            
+        estado:
+            - RESUELTO
+            
+#        #agregar y remplazar con nombres de clientes
+        nombres_cortos: 
+            - CLIENTE_1
+            - CLIENTE_2
+            - CLIENTE_3
+            - CLIENTE_4
+        
+        traduccion_tipo_caso: 
+            1: incidencia
+            2: peticion
+            3: queja
+            4: consulta 
+
+        #reemplazar por TSOL de guardia
+        tsol_guardia:
+            nombre: tsol_de_guardia 
