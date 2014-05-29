@@ -32,6 +32,7 @@
         <!-- Listener -->
         <service id="incidencia.listener" class="%incidencia.listener.class%">
             <argument type="service" id="logger"/>
+            <argument type="service" id="service_container"/>
             <tag name="monolog.logger" channel="listener"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>

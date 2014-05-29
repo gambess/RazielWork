@@ -17,78 +17,80 @@ namespace Pi2\Fractalia\Listener;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
+use Pi2\Fractalia\XmlRpcClient\XmlRpcClient;
 
 class IncidenciaListener
 {
     private $logger;
+    private $container;
 
 //    private $formatter;
 //    private $another_service;
 
-    public function __construct($logger)
+    public function __construct($logger, $container)
     {
         $this->logger = $logger;
+        $this->container = $container;
     }
-
-    /**
-     * Trigger para capturar las inserciones
-     *
-     * @param Incidencia $incidencia
-     * @param LifecycleEventArgs $event
-     * @ORM\PostPersist
-     */
-//    public function postPersist(Incidencia $incidencia, LifecycleEventArgs $event)
-//    {
-//        $this->sendMail($incidencia);
-//    }
-
-    /**
-     * Trigger para capturar las actualizaciones
-     *
-     * @param Incidencia $incidencia
-     * @param LifecycleEventArgs $event
-     * @ORM\PostPersist
-     */
-//    public function postUpdate(Incidencia $incidencia, LifecycleEventArgs $event)
-//    {
-//        $this->sendMail($incidencia);
-//    }
 
     /**
      * Trigger para capturar las inserciones y actualizaciones
      *
-     * @param Incidencia $incidencia
      * @param LifecycleEventArgs $event
      * @ORM\PostPersist
      * @ORM\PostUpdate
      */
     public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
+        //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
-        if (null === $inci->getFechaInsercion())
+        //recurperar prioridades en fichero configuracion
+        $prioridades = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.prioridad');
+        if (in_array($inci->getPrioridad(), $prioridades))
         {
-            $inci->setFechaInsercion(new \DateTime(date('Y-m-d H:m:s')));
-        }
-        if ($this->filterIncidenciaByServiceAndState($inci))
-        {
-            $this->logger->info('Listener Tickect actualizado a', array('Estado'=> $inci->getEstado(),'Previzualización SMS:' => $this->prepareSMS($inci)));
+            $estados = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.estado');
+            if (in_array($inci->getEstado(), $estados))
+            {
+                $now = (new \DateTime('NOW'));
+                if ($this->filterIncidenciaByService($inci))
+                {
+                    $datosApi = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
+                    $destinatarios = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.grupo_destino');
+//                    try
+//                    {
+                        if(sizeof($destinatarios) > 0){
+                            foreach ($destinatarios as $d){
+                                $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
+                                if(in_array($this->getDiaEsp(),$arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta'])){
+                                    
+                                    $client = new XmlRpcClient($datosApi['url']);
+                                    
+                                    $parameters = array(
+                                        $datosApi['apiuser'],
+                                        $datosApi['apipass'],
+                                        $d['destinatario'],
+                                        $this->prepareSMS($inci),
+                                        $datosApi['remitente']
+                                );
+                                $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
+                                $this->logger->info('Listener Tickect actualizado a', array('Estado' => $inci->getEstado(), 'Codigo de envio:' => $resp));
+                                exit;
+                                }
+   
+                            }
+                        }
+                }
+            }
         }
     }
 
-    protected function filterIncidenciaByServiceAndState(Incidencia $i, $estado = 'RESUELTO')
+    protected function filterIncidenciaByService(Incidencia $i)
     {
-        if (strtolower($i->getEstado()) == strtolower($estado))
-        {
-            $soc_service = array('SEGEST MON', 'SEGEST SOC', 'SEG MERCEDES', 'SOPORTE SEGURIDAD', 'SOC SEGURIDAD');
+        $soc_service = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.servicio');
 
-            if (in_array($i->getGrupoDestino(), $soc_service) or in_array($i->getGrupoOrigen(), $soc_service))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+        if (in_array($i->getGrupoDestino(), $soc_service) or in_array($i->getGrupoOrigen(), $soc_service))
+        {
+            return true;
         }
         else
         {
@@ -98,23 +100,25 @@ class IncidenciaListener
 
     protected function prepareSMS(Incidencia $i)
     {
-        $t = array(
-            '1' => 'incidencia',
-            '2' => 'peticion',
-            '3' => 'queja',
-            '4' => 'consulta'
-        );
-        $cliente = '';
-        $TSOL = '';
-        $format = 'd-m-Y H:m:s';
+        $t = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso');
         $tipo = strtolower($t[$i->getTipoCaso()]) . "/" . strtolower($i->getPrioridad());
+        $tsol = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia');
+        $format = 'd/m/y H:m:s';
 
-        return "RESUELTO ID: {$i->getNumeroCaso()} CLIENTE: {$this->setClienteMensaje($i)} TIPO: {$tipo} TECNICO: " . strtolower($i->getTecnicoAsignadoFinal()) . " TSOL: tssh FECHA: " . $i->getFechaApertura()->format($format) . " MODO RECEPCION: correo RESOLUCION: {$this->formatResoluciones($i)} ";
+        return
+            "RESUELTO ID: {$i->getNumeroCaso()} "
+            . "CLIENTE: {$this->setClienteMensaje($i)} "
+            . "TIPO: {$tipo} "
+            . "TECNICO: " . strtolower($i->getTecnicoAsignadoFinal()) . " "
+            . "TSOL: {$tsol['nombre']} "
+            . "FECHA: " . $i->getFechaApertura()->format($format) . " "
+            . "MODO RECEPCION: correo "
+            . "RESOLUCION: {$this->formatResoluciones($i)} ";
     }
 
     protected function formatResoluciones(Incidencia $i)
     {
-        $texto = 'xxxx';
+        $texto = 'No se encontraron resoluciones';
         $concat = '';
         if (null != $i->getResoluciones())
         {
@@ -129,35 +133,55 @@ class IncidenciaListener
         }
         return $texto;
     }
-    
+
     protected function setClienteMensaje(Incidencia $i)
     {
         $pattern = "^\[(.*?)\]^";
-        $cliente = "VOCENTO";
+        $clientes = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos');
         $matches = array();
-        if(preg_match_all($pattern, $i->getTitulo(), $matches, PREG_SET_ORDER) >= 3){
+        if (preg_match_all($pattern, $i->getTitulo(), $matches, PREG_SET_ORDER) >= 3)
+        {
             return strtolower($matches[2][1]);
-        }else{
-            return strtolower($cliente);
+        }
+        else
+        {
+            foreach ($clientes as $cliente)
+            {
+                if (strpos(strtolower($i->getTitulo()), strtolower($cliente)) > 0)
+                {
+                    return strtolower($cliente);
+                }
+            }
         }
     }
 
-//    public function createMail($texto)
-//    {
-//        $message = \Swift_Message::newInstance()
-//            ->setSubject('Sending TICKET STATES')
-//            ->setFrom('raziel.valle@fractaliasoftware.com')
-//            ->setTo('raziel.valle@fractaliasoftware.com')
-//            ->setBody( 'start-message: ' . $texto . ' ' . 'end-message' );
-//
-//        return $message;
-//    }
-//    public function sendMail(Incidencia $incidencia)
-//    {
-//        $format = 'Y-m-d H:i:s';
-//        $insert = $incidencia->getFechaInsercion();
-//        $texto = 'Estado del Ticket: ' .$incidencia->getEstado() . '<br /> Fecha (Completa) de Inserción: ' . $insert->format($format);
-//        $this->mail_service->send($this->createMail((string)$texto));
-//        
-//    }
+    //Se obtiene el dia de hoy en idioma español
+    private function getDiaEsp()
+    {
+        $now = (new \DateTime('NOW'));
+
+        switch (strtolower($now->format('D')))
+        {
+            case 'mon': $dia = 'lunes';
+                break;
+            case 'tue': $dia = 'martes';
+                break;
+            case 'wed': $dia = 'miercoles';
+                break;
+            case 'thu': $dia = 'jueves';
+                break;
+            case 'fri': $dia = 'viernes';
+                break;
+            case 'sat': $dia = 'sabado';
+                break;
+            case 'sun': $dia = 'domingo';
+                break;
+            default:
+                $dia = null;
+                break;
+        }
+
+        return ($dia);
+    }
+
 }
