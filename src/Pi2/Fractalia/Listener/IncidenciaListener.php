@@ -56,29 +56,43 @@ class IncidenciaListener
                 {
                     $datosApi = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
                     $destinatarios = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.grupo_destino');
-//                    try
-//                    {
-                        if(sizeof($destinatarios) > 0){
-                            foreach ($destinatarios as $d){
-                                $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
-                                if(in_array($this->getDiaEsp(),$arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta'])){
-                                    
-                                    $client = new XmlRpcClient($datosApi['url']);
-                                    
-                                    $parameters = array(
-                                        $datosApi['apiuser'],
-                                        $datosApi['apipass'],
-                                        $d['destinatario'],
-                                        $this->prepareSMS($inci),
-                                        $datosApi['remitente']
+
+                    if (sizeof($destinatarios) > 0)
+                    {
+                        foreach ($destinatarios as $d)
+                        {
+
+                            $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
+
+
+                            $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
+                            if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))
+                            {
+
+                                //Instanciamos Cliente API MOVISTAR
+                                $client = new XmlRpcClient($datosApi['url']);
+                                $parameters = array(
+                                    $datosApi['apiuser'],
+                                    $datosApi['apipass'],
+                                    $d['destinatario'],
+                                    $this->prepareSMS($inci),
+                                    $datosApi['remitente']
                                 );
-                                $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
-                                $this->logger->info('Listener Tickect actualizado a', array('Estado' => $inci->getEstado(), 'Codigo de envio:' => $resp));
-                                exit;
+                                $this->logger->info('datos del mensaje compuesto', array('Grupo Destino' => $d['destinatario'], 'Cuerpo del SMS' => $this->prepareSMS($inci), 'Remitente' => $datosApi['remitente']));
+
+                                try
+                                {
+                                    $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
+                                    $this->logger->info('Código de Resultado del Envio', array('Codigo de envio:' => $resp));
+                                    return true;
                                 }
-   
+                                catch (Exception $e)
+                                {
+                                    $this->logger->info('Se encontro un error', array('Codigo de envio:' => $e->getTraceAsString()));
+                                }
                             }
                         }
+                    }
                 }
             }
         }
@@ -118,7 +132,7 @@ class IncidenciaListener
 
     protected function formatResoluciones(Incidencia $i)
     {
-        $texto = 'No se encontraron resoluciones';
+        $texto = 'No hay datos';
         $concat = '';
         if (null != $i->getResoluciones())
         {

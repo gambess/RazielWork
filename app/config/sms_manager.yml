@@ -2,8 +2,8 @@ pi2_frac_sgsd_soap_server:
     envio_sms:
         api:
             url: 'https://www.mensajerianegocios.movistar.es/SrvConexion'
-            apiuser: 'B902CCDB-RAUL.MADR'
-            apipass: 'Nivel1'
+            apiuser: 'SMS_SDESK'
+            apipass: 'tc3kGc'
             remitente: '217812'
             
         servicio:
@@ -14,8 +14,9 @@ pi2_frac_sgsd_soap_server:
             - SOC SEGURIDAD
             
         grupo_destino:
-            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
-            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
+            - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
             
         numero_destino:
 #            - { destinatario: 602814043, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 } 
@@ -28,10 +29,20 @@ pi2_frac_sgsd_soap_server:
             
 #        #agregar y remplazar con nombres de clientes
         nombres_cortos: 
-            - CLIENTE_1
-            - CLIENTE_2
-            - CLIENTE_3
-            - CLIENTE_4
+            - VOCENTO
+#            - FERROVIAL    
+#            - DGOG
+#            - SAICA
+#            - HOTELBEDS
+#            - NH
+#            - PRISA
+#            - DGPE
+#            - CEPSA
+#            - ICEX
+#            - GOBEX
+#            - NUTREXPA
+#            - COLOMER
+#            - ATENTO
         
         traduccion_tipo_caso: 
             1: incidencia
@@ -41,4 +52,4 @@ pi2_frac_sgsd_soap_server:
 
         #reemplazar por TSOL de guardia
         tsol_guardia:
-            nombre: tsol_de_guardia 
+            nombre: RV 
