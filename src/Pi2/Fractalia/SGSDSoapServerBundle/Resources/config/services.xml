@@ -32,11 +32,26 @@
         <!-- Listener -->
         <service id="incidencia.listener" class="%incidencia.listener.class%">
             <argument type="service" id="logger"/>
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="fractalia_sms.message"/>
+            <argument type="service" id="fractalia_sms.sms"/>
             <tag name="monolog.logger" channel="listener"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
-        <!--<tag name="doctrine.entity_listener" event="postFlush"/>-->
+            <call method="setPrioridades">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.prioridad%</argument>
+            </call>
+            <call method="setEstados">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.estado%</argument>
+            </call>
+            <call method="setSgsdServices">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.servicio%</argument>
+            </call>
+            <call method="setApi">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.api%</argument>
+            </call>
+            <call method="setDestinatarios">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.grupo_destino%</argument>
+            </call>
         </service>
         <!-- Listener Resolver -->
         <service id="incidencia.entity_listener_resolver" class="%incidencia.entity_listener_resolver.class%">
