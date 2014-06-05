@@ -14,7 +14,6 @@ pi2_frac_sgsd_soap_server:
             - SOC SEGURIDAD
             
         grupo_destino:
-#            - { destinatario: BEGO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
             - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
 #            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
 #            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }

@@ -17,16 +17,9 @@ monolog:
             type:         fingers_crossed
             action_level: notice
             handler:      nested
-            channels: ["!listener"]
         nested:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         console:
             type:  console
-            channels: ["!listener"]
-        listener:
-            type:   stream
-            path:   "%kernel.logs_dir%/listener.log"
-            level:  info
-            channels: [listener]

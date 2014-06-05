@@ -84,6 +84,7 @@ class IncidenciaListener
                                 {
                                     $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
                                     $this->logger->info('Código de Resultado del Envio', array('Codigo de envio:' => $resp));
+                                    return true;
                                 }
                                 catch (Exception $e)
                                 {

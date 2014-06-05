@@ -1,3 +1,8 @@
+fractalia_sms:
+    resource: "@FractaliaSmsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 pi2_frac_sgsd_web_monitor:
     resource: "@Pi2FracSGSDWebMonitorBundle/Resources/config/routing.xml"
     prefix:   /monitor

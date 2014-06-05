@@ -65,6 +65,7 @@ doctrine:
         resolve_target_entities:
             entity_listener_resolver: incidencia.entity_listener_resolver
         mappings:
+            FractaliaSmsBundle: ~
             SGSD:
                 mapping: true
                 type: annotation

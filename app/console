@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Pi2\Fractalia\Commands;
 // if you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
 //umask(0000);
@@ -24,4 +25,6 @@ if ($debug) {
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
+$application->add(new Commands\BuildSummarySMSCommand());
+$application->add(new Commands\SendPendingSMSCommand());
 $application->run($input);

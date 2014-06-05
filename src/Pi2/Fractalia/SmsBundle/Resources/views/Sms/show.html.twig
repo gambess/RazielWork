@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Sms</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Mensajeid</th>
+                <td>{{ entity.mensajeId }}</td>
+            </tr>
+            <tr>
+                <th>Destinatario</th>
+                <td>{{ entity.destinatario }}</td>
+            </tr>
+            <tr>
+                <th>Remitente</th>
+                <td>{{ entity.remitente }}</td>
+            </tr>
+            <tr>
+                <th>Fechaenvio</th>
+                <td>{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Estadoenvio</th>
+                <td>{{ entity.estadoEnvio }}</td>
+            </tr>
+            <tr>
+                <th>Logenvio</th>
+                <td>{{ entity.logEnvio }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('sms') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
