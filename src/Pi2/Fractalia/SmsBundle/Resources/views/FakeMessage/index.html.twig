@@ -1,0 +1,58 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Lista de Mensajes</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>DESTINATARIO</th>
+                <th>INCIDENCIA ID</th>
+                <th>CLIENTE</th>
+                <th>TIPO</th>
+                <th>TECNICO</th>
+                <th>TSOL</th>
+                <th>FECHA</th>
+                <th>MODO RECEPCIÓN</th>
+                <th>RESOLUCION</th>
+                <th>FECHA</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+{#                <td><a href="{{ path('mensajes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>#}
+                <td>{{ entity.destinatario }}</td>
+                <td>{{ entity.ticketId }}</td>
+                <td>{{ entity.cliente }}</td>
+                <td>{{ entity.tipo }}</td>
+                <td>{{ entity.tecnico }}</td>
+                <td>{{ entity.tsol }}</td>
+                <td>{% if entity.fecha %}{{ entity.fecha|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>{{ entity.modo }}</td>
+                <td>{{ entity.resolucion }}</td>
+                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('mensajes_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                    <li>
+                        <a href="#">Enviar SMS</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        {#<ul>
+        <li>
+            <a href="{{ path('mensajes_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>#}
+    {% endblock %}

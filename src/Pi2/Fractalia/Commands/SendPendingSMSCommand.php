@@ -8,10 +8,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use Pi2\Fractalia\SmsBundle\Sms\Sms;
+use Pi2\Fractalia\XmlRpcClient\XmlRpcClient;
 
 const SMS_OK = "pi2.fractalia.sms.send.ok";
 const SMS_KO = "pi2.fractalia.sms.send.error";
 
+define('LOCK_DIR', '/tmp/sms_sender_lock');
+define('LOCK_SUFFIX', '.lock');
 
 
 /**
@@ -57,6 +61,19 @@ class SendPendingSMSCommand extends Command
            self::$_logger = $GLOBALS['kernel']->getContainer()->get('logger');
        }
        return self::$_logger;
+   }
+   
+   private static function GetDoctrine()
+   {
+       $doctrine = $GLOBALS['kernel']->getContainer()->get('doctrine');
+       return $doctrine->getManager();
+   }
+   
+   
+   private static function GetParameters()
+   {
+       $params = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
+       return $params;
    }
    
    /**
@@ -151,11 +168,11 @@ class SendPendingSMSCommand extends Command
             {
                 self::GetLogger()->info("Executing pending sms's");
                 $output->writeln("Executing pending sms's");
-                While( ($message =  $this->GetFirstSMS()) != null)
+                While( ($message =  $this->GetFirstSMS($output)) != null)
                 {
                     self::GetLogger()->info("Sending SMS");
                     $output->writeln("Sending SMS");
-                    if(( $error =  $this->SendSMS($message)) == TRUE)
+                    if(( $error =  $this->SendSMS($message, $output)) == TRUE)
                     {
                         $count++;
                         self::GetLogger()->info("SMS Sent, calling event");
@@ -193,9 +210,46 @@ class SendPendingSMSCommand extends Command
      * Gets the first posted SMS and removes it from the queue
      * @return the firs sms or null if not found
      */
-    protected function GetFirstSMS()
+    protected function GetFirstSMS(OutputInterface $output)
     {
-        sleep(1);
+       
+        $em = self::GetDoctrine();
+        //$rep =  $em->getRepository('FractaliaSmsBundle:Sms');
+        
+       // $query = $em->createQuery('SELECT * FROM Sms s ORDER BY s.fechaEnvio ASC');
+        
+            
+//$articles = $query->getResult(); // array of CmsArticle objects
+        
+        $entities = $em->getRepository('FractaliaSmsBundle:Sms')->findBy(array(), array('fechaEnvio' => 'ASC'));
+        $query = $em->getRepository('FractaliaSmsBundle:Sms')->createQueryBuilder('s')
+                ->where("s.estadoEnvio = 'POR_ENVIAR'")
+                ->orderBy('s.fechaEnvio', 'ASC')
+                ->getQuery();
+        $entities = $query->getResult();
+        if( count($entities)>0)
+        {
+            $sms = $entities[0];
+            $output->writeln("ID:".$sms->getMensajeId());
+            $mensaje = $em->getRepository('FractaliaSmsBundle:Mensaje')->find($sms->getMensajeId());
+            
+            if( $mensaje != null )
+            {
+                
+                //cambiar estado del envio:
+                $sms->setEstadoEnvio("ENVIANDO");
+                $em->flush();
+                
+                $returnValue =  [$sms->getRemitente(), $sms->getDestinatario(),$mensaje->getTexto()];
+                $output->writeln("HAY MENSAJE:\n".print_r($returnValue));
+                return $returnValue;
+            }
+        }
+        
+        
+        //$output->writeln("get: ".  print_r($entities)."\ncount: ".count($entities));
+        
+        
         return null;
     }
     
@@ -204,9 +258,39 @@ class SendPendingSMSCommand extends Command
      * @param type $smsData
      * @return TRUE if sent, otherwise error code
      */
-    protected function SendSMS($smsData)
+    protected function SendSMS($smsData, $output)
     {
-        
-        return FALSE;
+        if(count($smsData)>2)
+        {
+            $sms = new Sms(self::GetLogger());
+            //Instantiate MOVISTAR client
+            $params = self::GetParameters();
+            $client = new XmlRpcClient($params['url']);
+            $parameters = $sms->preparaSmsAGrupo($smsData[1],$smsData[2]);
+            self::GetLogger()->debug("sending sms:".print_r($smsData));
+            $output->writeln("<info>sending sms:".print_r($smsData)."</info>");
+            
+            try
+            {
+                $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
+                self::GetLogger()->info("sms send result:".$resp);
+                $output->writeln("<info>sms send result:".$resp."</info>");
+                
+                if ($resp != 0)
+                {   
+                    self::GetLogger()->debug("sending sms ERROR:".print_r($resp));
+                    $output->writeln("<error>sending sms ERROR:".print_r($resp)."</error>");
+                    return $resp;
+                }
+                return TRUE;
+            }
+            catch (Exception $e)
+            {
+                self::GetLogger()->debug("sending sms ERROR:".print_r($e));
+                $output->writeln("<error>sending sms ERROR:".print_r($e)."</error>");
+                return $e;
+            }
+        }
+        return "invalid arguments, sendSMS requires an array of three elements";
     }
 }

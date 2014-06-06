@@ -21,6 +21,11 @@ class Sms
     public function __construct($logger)
     {
         $this->logger = $logger;
+        
+        if( count($this->datosApi)<1)
+        {
+            $this->datosApi = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
+        }
     }
 
     public function preparaSmsAGrupo($destinario, $mensajeTexto)

@@ -10,6 +10,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildSummarySMSCommand extends Command
 {
+    
+    private static $_logger = null;
+   
+
+    /**
+     * function to centralize log instantiation
+     * @return the logger
+     */
+    private static function GetLogger()
+    {
+        if( self::$_logger== NULL)
+        {
+            self::$_logger = $GLOBALS['kernel']->getContainer()->get('logger');
+        }
+        return self::$_logger;
+    }
+    
+    
+    
     protected function configure()
     {
         $this
@@ -28,7 +47,7 @@ class BuildSummarySMSCommand extends Command
         {
             $output->writeln("ok".$temp);
         }
-        
+        self::GetLogger()->info("Summary SMS build and posted ".date("Y-m-d H:i:s"));
         $output->writeln("Summary SMS build and posted ".date("Y-m-d H:i:s"));
     }
 }
