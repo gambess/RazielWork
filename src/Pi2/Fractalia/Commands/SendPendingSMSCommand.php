@@ -24,13 +24,19 @@ define('LOCK_SUFFIX', '.lock');
 class SMSEvent extends Event
 {
     private $result;
+    private $id;
     public function GetResult()
     {
         return $this->result;
     }
-    function __construct( $result)
+    public function GetId()
+    {
+        return $this->id;
+    }
+    function __construct( $result, $id)
     {
         $this->result = $result;
+        $this->id = $id;
     }
 }
 
@@ -170,21 +176,26 @@ class SendPendingSMSCommand extends Command
                 $output->writeln("Executing pending sms's");
                 While( ($message =  $this->GetFirstSMS($output)) != null)
                 {
-                    self::GetLogger()->info("Sending SMS");
-                    $output->writeln("Sending SMS");
+                    $mId = 0;
+                    if( count($message > 3))
+                    {
+                        $mId = $message[3];
+                    }
+                    self::GetLogger()->info("Sending SMS, id= ".$mId);
+                    $output->writeln("Sending SMS, id= ".$mId);
                     if(( $error =  $this->SendSMS($message, $output)) == TRUE)
                     {
                         $count++;
                         self::GetLogger()->info("SMS Sent, calling event");
                         $output->writeln("<info>SMS Sent, calling event</info>");
-                        $dispatcher->dispatch(SMS_OK, new SMSEvent($error));
+                        $dispatcher->dispatch(SMS_OK, new SMSEvent($error,$mId ));
                     }
                     else
                     {
                         $fail++;
                         self::GetLogger()->warning("SMS Failed, calling event");
                         $output->writeln("<error>SMS Failed, calling event</error>");
-                        $dispatcher->dispatch(SMS_KO, new SMSEvent($error));
+                        $dispatcher->dispatch(SMS_KO, new SMSEvent($error, $mId));
                     }
                 }
                 
@@ -240,7 +251,7 @@ class SendPendingSMSCommand extends Command
                 $sms->setEstadoEnvio("ENVIANDO");
                 $em->flush();
                 
-                $returnValue =  [$sms->getRemitente(), $sms->getDestinatario(),$mensaje->getTexto()];
+                $returnValue =  [$sms->getRemitente(), $sms->getDestinatario(),$mensaje->getTexto(), $sms->getId()];
                 $output->writeln("HAY MENSAJE:\n".print_r($returnValue));
                 return $returnValue;
             }
