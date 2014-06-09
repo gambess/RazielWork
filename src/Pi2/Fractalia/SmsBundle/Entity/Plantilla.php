@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Plantilla
- *
  * @ORM\Table(name="Plantilla")
  * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\PlantillaRepository")
  */
@@ -14,55 +13,38 @@ class Plantilla
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="nombre", type="string", length=50, nullable=false)
      */
     private $nombre;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="numero_elementos", type="integer", nullable=false)
      */
     private $numeroElementos;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="texto", type="text", nullable=false)
      */
     private $texto;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bitacora", type="text", nullable=false)
      */
     private $bitacora;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
     private $fechaActualizacion;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
 
 
     /**

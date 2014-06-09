@@ -1,17 +1,17 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Plantilla list</h1>
+    <h1>Mensaje list</h1>
 
     <table class="records_list">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Numeroelementos</th>
                 <th>Texto</th>
+                <th>Estado</th>
                 <th>Bitacora</th>
                 <th>Fechacreacion</th>
                 <th>Fechaactualizacion</th>
+                <th>Fechainsercionsms</th>
                 <th>Id</th>
                 <th>Actions</th>
             </tr>
@@ -19,20 +19,20 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('plantilla_show', { 'id': entity.id }) }}">{{ entity.nombre }}</a></td>
-                <td>{{ entity.numeroElementos }}</td>
-                <td>{{ entity.texto }}</td>
+                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.texto }}</a></td>
+                <td>{{ entity.estado }}</td>
                 <td>{{ entity.bitacora }}</td>
                 <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaInsercionSms %}{{ entity.fechaInsercionSms|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.id }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('plantilla_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('mensaje_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('plantilla_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('mensaje_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -43,7 +43,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('plantilla_new') }}">
+            <a href="{{ path('mensaje_new') }}">
                 Create a new entry
             </a>
         </li>

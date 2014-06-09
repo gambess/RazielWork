@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pi2\Fractalia\SmsBundle\Entity\Plantilla" table="Plantilla">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="50" nullable="false"/>
+    <field name="numeroElementos" type="integer" column="numero_elementos" nullable="false"/>
+    <field name="texto" type="text" column="texto" nullable="false"/>
+    <field name="bitacora" type="text" column="bitacora" nullable="false"/>
+    <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="false"/>
+    <field name="fechaActualizacion" type="datetime" column="fecha_actualizacion" nullable="false"/>
+  </entity>
+</doctrine-mapping>

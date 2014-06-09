@@ -1,25 +1,33 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Plantilla</h1>
+    <h1>Sms</h1>
 
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
+                <th>Destinatario</th>
+                <td>{{ entity.destinatario }}</td>
             </tr>
             <tr>
-                <th>Numeroelementos</th>
-                <td>{{ entity.numeroElementos }}</td>
+                <th>Remitente</th>
+                <td>{{ entity.remitente }}</td>
             </tr>
             <tr>
-                <th>Texto</th>
-                <td>{{ entity.texto }}</td>
+                <th>Respuesta</th>
+                <td>{{ entity.respuesta }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
             </tr>
             <tr>
                 <th>Bitacora</th>
                 <td>{{ entity.bitacora }}</td>
+            </tr>
+            <tr>
+                <th>Fechaenvio</th>
+                <td>{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Fechacreacion</th>
@@ -38,12 +46,12 @@
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('plantilla') }}">
+        <a href="{{ path('sms') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('plantilla_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

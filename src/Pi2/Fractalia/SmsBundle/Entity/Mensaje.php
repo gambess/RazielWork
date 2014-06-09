@@ -6,66 +6,55 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mensaje
- *
- * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_mensaje_plantilla", columns={"plantilla_id"})})
- * @ORM\Entity
+ * @ORM\Table(name="Mensaje")
+ * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\MensajeRepository")
  */
 class Mensaje
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="texto", type="text", nullable=true)
      */
     private $texto;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="estado", type="string", length=20, nullable=false)
      */
     private $estado;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bitacora", type="text", nullable=false)
      */
     private $bitacora;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
     private $fechaActualizacion;
 
     /**
+     * @var \DateTime
+     */
+    private $fechaInsercionSms;
+
+    /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
+     * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
+     */
+    private $incidencia;
+
+    /**
      * @var \Pi2\Fractalia\SmsBundle\Entity\Plantilla
-     *
-     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Plantilla")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="plantilla_id", referencedColumnName="id")
-     * })
      */
     private $plantilla;
-
 
 
     /**
@@ -184,6 +173,29 @@ class Mensaje
     }
 
     /**
+     * Set fechaInsercionSms
+     *
+     * @param \DateTime $fechaInsercionSms
+     * @return Mensaje
+     */
+    public function setFechaInsercionSms($fechaInsercionSms)
+    {
+        $this->fechaInsercionSms = $fechaInsercionSms;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInsercionSms
+     *
+     * @return \DateTime 
+     */
+    public function getFechaInsercionSms()
+    {
+        return $this->fechaInsercionSms;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -194,12 +206,35 @@ class Mensaje
     }
 
     /**
+     * Set incidencia
+     *
+     * @param \Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia
+     * @return Mensaje
+     */
+    public function setIncidencia(\Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia = null)
+    {
+        $this->incidencia = $incidencia;
+
+        return $this;
+    }
+
+    /**
+     * Get incidencia
+     *
+     * @return \Pi2\Fractalia\Entity\SGSD\Incidencia 
+     */
+    public function getIncidencia()
+    {
+        return $this->incidencia;
+    }
+
+    /**
      * Set plantilla
      *
      * @param \Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla
      * @return Mensaje
      */
-    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity $plantilla = null)
+    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla = null)
     {
         $this->plantilla = $plantilla;
 
@@ -209,11 +244,10 @@ class Mensaje
     /**
      * Get plantilla
      *
-     * @return \Raziel\TestBundle\Entity\Plantilla 
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Plantilla 
      */
     public function getPlantilla()
     {
         return $this->plantilla;
     }
-
 }
