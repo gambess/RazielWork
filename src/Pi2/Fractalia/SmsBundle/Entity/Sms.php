@@ -7,96 +7,87 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Sms
  *
- * @ORM\Table()
+ * @ORM\Table(name="Sms", indexes={@ORM\Index(name="fk_sms_mensaje", columns={"mensaje_id"})})
  * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\SmsRepository")
  */
 class Sms
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="mensajeId", type="integer")
-     */
-    private $mensajeId;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="destinatario", type="string", length=100)
+     * @ORM\Column(name="destinatario", type="string", length=20, nullable=true)
      */
     private $destinatario;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="remitente", type="string", length=100)
+     * @ORM\Column(name="remitente", type="string", length=15, nullable=true)
      */
     private $remitente;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="respuesta", type="string", length=5, nullable=false)
+     */
+    private $respuesta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=20, nullable=false)
+     */
+    private $estado;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bitacora", type="text", nullable=false)
+     */
+    private $bitacora;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaEnvio", type="datetime")
+     * @ORM\Column(name="fecha_envio", type="datetime", nullable=true)
      */
     private $fechaEnvio;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="estadoEnvio", type="string", length=50)
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
-    private $estadoEnvio;
+    private $fechaCreacion;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="logEnvio", type="text")
+     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
-    private $logEnvio;
-
+    private $fechaActualizacion;
 
     /**
-     * Get id
+     * @var integer
      *
-     * @return integer 
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $id;
 
     /**
-     * Set mensajeId
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
      *
-     * @param integer $mensajeId
-     * @return Sms
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mensaje_id", referencedColumnName="id")
+     * })
      */
-    public function setMensajeId($mensajeId)
-    {
-        $this->mensajeId = $mensajeId;
+    private $mensaje;
 
-        return $this;
-    }
 
-    /**
-     * Get mensajeId
-     *
-     * @return integer 
-     */
-    public function getMensajeId()
-    {
-        return $this->mensajeId;
-    }
 
     /**
      * Set destinatario
@@ -145,6 +136,75 @@ class Sms
     }
 
     /**
+     * Set respuesta
+     *
+     * @param string $respuesta
+     * @return Sms
+     */
+    public function setRespuesta($respuesta)
+    {
+        $this->respuesta = $respuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get respuesta
+     *
+     * @return string 
+     */
+    public function getRespuesta()
+    {
+        return $this->respuesta;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param string $estado
+     * @return Sms
+     */
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return string 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+
+    /**
+     * Set bitacora
+     *
+     * @param string $bitacora
+     * @return Sms
+     */
+    public function setBitacora($bitacora)
+    {
+        $this->bitacora = $bitacora;
+
+        return $this;
+    }
+
+    /**
+     * Get bitacora
+     *
+     * @return string 
+     */
+    public function getBitacora()
+    {
+        return $this->bitacora;
+    }
+
+    /**
      * Set fechaEnvio
      *
      * @param \DateTime $fechaEnvio
@@ -168,48 +228,81 @@ class Sms
     }
 
     /**
-     * Set estadoEnvio
+     * Set fechaCreacion
      *
-     * @param string $estadoEnvio
+     * @param \DateTime $fechaCreacion
      * @return Sms
      */
-    public function setEstadoEnvio($estadoEnvio)
+    public function setFechaCreacion($fechaCreacion)
     {
-        $this->estadoEnvio = $estadoEnvio;
+        $this->fechaCreacion = $fechaCreacion;
 
         return $this;
     }
 
     /**
-     * Get estadoEnvio
+     * Get fechaCreacion
      *
-     * @return string 
+     * @return \DateTime 
      */
-    public function getEstadoEnvio()
+    public function getFechaCreacion()
     {
-        return $this->estadoEnvio;
+        return $this->fechaCreacion;
     }
 
     /**
-     * Set logEnvio
+     * Set fechaActualizacion
      *
-     * @param string $logEnvio
+     * @param \DateTime $fechaActualizacion
      * @return Sms
      */
-    public function setLogEnvio($logEnvio)
+    public function setFechaActualizacion($fechaActualizacion)
     {
-        $this->logEnvio = $logEnvio;
+        $this->fechaActualizacion = $fechaActualizacion;
 
         return $this;
     }
 
     /**
-     * Get logEnvio
+     * Get fechaActualizacion
      *
-     * @return string 
+     * @return \DateTime 
      */
-    public function getLogEnvio()
+    public function getFechaActualizacion()
     {
-        return $this->logEnvio;
+        return $this->fechaActualizacion;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set mensaje
+     *
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje
+     * @return Sms
+     */
+    public function setMensaje(\Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje = null)
+    {
+        $this->mensaje = $mensaje;
+
+        return $this;
+    }
+
+    /**
+     * Get mensaje
+     *
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Mensaje 
+     */
+    public function getMensaje()
+    {
+        return $this->mensaje;
     }
 }

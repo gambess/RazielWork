@@ -5,32 +5,33 @@ namespace Pi2\Fractalia\SmsBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pi2\Fractalia\SmsBundle\Form\PlantillaGenericaType;
 
-class MensajeType extends AbstractType
+class PlantillaType extends AbstractType
 {
-        /**
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('incidenciaId')
-            ->add('templateName')
+            ->add('elementos')
             ->add('texto')
-            ->add('fechaConstruccion')
-            ->add('estadoConstruccion')
-            ->add('logFalloConstruccion')
+            ->add('log')
+            ->add('fechaCreacion')
+            ->add('fechaActualizacion')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Mensaje'
+            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Plantilla'
         ));
     }
 
@@ -39,6 +40,7 @@ class MensajeType extends AbstractType
      */
     public function getName()
     {
-        return 'pi2_fractalia_smsbundle_mensaje';
+        return 'pi2_fractalia_smsbundle_plantilla';
     }
+
 }

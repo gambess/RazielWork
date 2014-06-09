@@ -4,7 +4,7 @@ namespace Pi2\Fractalia\SmsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class SmsControllerTest extends WebTestCase
+class PlantillaControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()
@@ -13,13 +13,13 @@ class SmsControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/sms/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /sms/");
+        $crawler = $client->request('GET', '/plantilla/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /plantilla/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'pi2_fractalia_smsbundle_smstype[field_name]'  => 'Test',
+            'pi2_fractalia_smsbundle_plantillatype[field_name]'  => 'Test',
             // ... other fields to fill
         ));
 
@@ -33,7 +33,7 @@ class SmsControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Edit')->form(array(
-            'pi2_fractalia_smsbundle_smstype[field_name]'  => 'Foo',
+            'pi2_fractalia_smsbundle_plantillatype[field_name]'  => 'Foo',
             // ... other fields to fill
         ));
 

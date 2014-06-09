@@ -5,26 +5,33 @@ namespace Pi2\Fractalia\SmsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mensaje
+ * Plantilla
  *
- * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_mensaje_plantilla", columns={"plantilla_id"})})
- * @ORM\Entity
+ * @ORM\Table(name="Plantilla")
+ * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\PlantillaRepository")
  */
-class Mensaje
+class Plantilla
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="texto", type="text", nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=50, nullable=false)
      */
-    private $texto;
+    private $nombre;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numero_elementos", type="integer", nullable=false)
+     */
+    private $numeroElementos;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="estado", type="string", length=20, nullable=false)
+     * @ORM\Column(name="texto", type="text", nullable=false)
      */
-    private $estado;
+    private $texto;
 
     /**
      * @var string
@@ -56,23 +63,59 @@ class Mensaje
      */
     private $id;
 
+
+
     /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Plantilla
+     * Set nombre
      *
-     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Plantilla")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="plantilla_id", referencedColumnName="id")
-     * })
+     * @param string $nombre
+     * @return Plantilla
      */
-    private $plantilla;
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
 
+        return $this;
+    }
 
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set numeroElementos
+     *
+     * @param integer $numeroElementos
+     * @return Plantilla
+     */
+    public function setNumeroElementos($numeroElementos)
+    {
+        $this->numeroElementos = $numeroElementos;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroElementos
+     *
+     * @return integer 
+     */
+    public function getNumeroElementos()
+    {
+        return $this->numeroElementos;
+    }
 
     /**
      * Set texto
      *
      * @param string $texto
-     * @return Mensaje
+     * @return Plantilla
      */
     public function setTexto($texto)
     {
@@ -92,33 +135,10 @@ class Mensaje
     }
 
     /**
-     * Set estado
-     *
-     * @param string $estado
-     * @return Mensaje
-     */
-    public function setEstado($estado)
-    {
-        $this->estado = $estado;
-
-        return $this;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return string 
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-    /**
      * Set bitacora
      *
      * @param string $bitacora
-     * @return Mensaje
+     * @return Plantilla
      */
     public function setBitacora($bitacora)
     {
@@ -141,7 +161,7 @@ class Mensaje
      * Set fechaCreacion
      *
      * @param \DateTime $fechaCreacion
-     * @return Mensaje
+     * @return Plantilla
      */
     public function setFechaCreacion($fechaCreacion)
     {
@@ -164,7 +184,7 @@ class Mensaje
      * Set fechaActualizacion
      *
      * @param \DateTime $fechaActualizacion
-     * @return Mensaje
+     * @return Plantilla
      */
     public function setFechaActualizacion($fechaActualizacion)
     {
@@ -192,28 +212,4 @@ class Mensaje
     {
         return $this->id;
     }
-
-    /**
-     * Set plantilla
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla
-     * @return Mensaje
-     */
-    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity $plantilla = null)
-    {
-        $this->plantilla = $plantilla;
-
-        return $this;
-    }
-
-    /**
-     * Get plantilla
-     *
-     * @return \Raziel\TestBundle\Entity\Plantilla 
-     */
-    public function getPlantilla()
-    {
-        return $this->plantilla;
-    }
-
 }
