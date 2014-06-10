@@ -19,6 +19,9 @@
             <call method="setClienteMensaje">
                 <argument>%pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos%</argument>
             </call>
+            <call method="setPlantillas">
+                <argument>%pi2_frac_sgsd_soap_server.plantillas%</argument>
+            </call>
         </service>
         <service id="fractalia_sms.sms" class="%fractalia_sms.sms.class%">
             <argument type="service" id="logger" />

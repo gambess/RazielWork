@@ -56,11 +56,16 @@ pi2_frac_sgsd_soap_server:
     
     plantillas:
         RESUELTO:
-            id: {etiqueta: 'RESUELTO ID: ', tabla: Incidencia, campo: NumeroCaso}
-            cliente: {etiqueta: 'CLIENTE: ', tabla: Config, campo: traduccion_tipo_caso}
-            tipo: {etiqueta: 'TIPO: ', tabla: Config, campo: nombres_cortos}
-            tecnico: {etiqueta: 'TECNICO: ', tabla: Incidencia, campo: TecnicoAsignadoFinal}
-            tsol: {etiqueta: 'TSOL: ', tabla: Config, campo: tsol_guardia}
-            fecha: {etiqueta: 'FECHA: ', tabla: Incidencia, campo: FechaApertura}
-            modo: {etiqueta: 'MODO RECEPCION: ', tabla: Incidencia, campo: SistemaOrigen}
-            detalle: {etiqueta: 'RESOLUCIONES: ', tabla: Incidencia, campo: Resoluciones}
+            id: 'RESUELTO ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESOLUCIONES: '
+            
+    resumenes:
+        RESUMEN:
+            id: 'PENDIENTES '
+            data: 'data'

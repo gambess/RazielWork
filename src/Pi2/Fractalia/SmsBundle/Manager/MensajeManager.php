@@ -20,12 +20,12 @@ use Pi2\Fractalia\Entity\SGSD\Incidencia;
 class MensajeManager
 {
     private $incidenciaClon;
-    private $elementos;
+    private $elementos = array();
+    private $plantillas = array();
 
-    public function __construct(Incidencia $i, $elementosArray)
+    public function __construct($logger)
     {
-        $this->incidenciaClon = $i;
-        $this->elementos = $elementosArray;
+        $this->logger = $logger;
     }
     
     public function copyIncidencia(Incidencia $incidencia)
@@ -33,7 +33,7 @@ class MensajeManager
         $this->incidenciaClon = $incidencia;
     }
     
-    public function loadTemplate($elementos)
+    public function setElementosTemplate()
     {
         $this->elementos = $elementos;
     }
@@ -111,6 +111,28 @@ class MensajeManager
 
         return $temp;
         
+    }
+    
+    public function setPlantillaFromPlantillas($nombrePlantilla)
+    {
+        $temp = array();
+        if(array_key_exists($nombrePlantilla, $this->plantillas) or (  in_array($nombrePlantilla, $this->plantillas))){
+            
+        }
+    }
+    
+    public function setPlantillas($plantillas){
+        $this->elementos = $plantillas;
+    }
+    
+    public function getPlantilla($templateName){
+        return $this->plantillas[$templateNames];
+        
+    }
+    
+    public function buildIncidenciaArrayforPlantilla($templateName){
+        
+        return $tmp;
     }
 
     public function bindIncidenciaToPlantillaArray()

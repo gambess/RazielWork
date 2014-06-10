@@ -22,6 +22,7 @@ class Message
     private $tsol;
     private $clientes;
     private $text;
+    private $plantillas = array();
 //    private $buildState;
 
     public function __construct($logger)
@@ -90,6 +91,15 @@ class Message
     {
         $this->clientes = $arrayClientes;
     }
+    
+    public function setPlantillas($plantillas){
+        $this->plantillas = $plantillas;
+    }
+    
+    public function getPlantilla($templateName){
+        return $this->plantillas[$templateName];
+        
+    }
 
     protected function getClienteMensaje()
     {
@@ -149,4 +159,16 @@ class Message
       }
       }
      */
+    public function buildIncidenciaArrayforPlantilla($templateName){
+        $etiqueta = $tabla = $campo = "";
+        $tmp = array();
+        $arrayTemp = $this->getPlantilla($templateName);
+        foreach($arrayTemp as $name => $arraytmp){
+           while(list($clave, $valor) = each($arraytmp)){
+               array($tmp[$name] => array($clave => $valor)); 
+           } ;
+            
+        }
+        return $tmp;
+    }
 }

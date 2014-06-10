@@ -29,9 +29,12 @@ class PlantillaController extends Controller
      */
     public function indexAction()
     {
-//        echo "<pre>";
-//        print_r($this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas'));
-//        echo "</pre>";
+        $array = $this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas');
+        echo "<pre>";
+        $tmp = array_shift($array);
+        print_r($tmp);
+        print_r($array);
+        echo "</pre>";die;
 
         $em = $this->getDoctrine()->getManager();
 
