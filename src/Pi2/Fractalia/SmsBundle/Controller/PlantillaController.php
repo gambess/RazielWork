@@ -35,6 +35,7 @@ class PlantillaController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Plantilla entity.
      *
@@ -48,7 +49,8 @@ class PlantillaController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -58,17 +60,17 @@ class PlantillaController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
     /**
-    * Creates a form to create a Plantilla entity.
-    *
-    * @param Plantilla $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Plantilla entity.
+     *
+     * @param Plantilla $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Plantilla $entity)
     {
         $form = $this->createForm(new PlantillaType(), $entity, array(
@@ -91,11 +93,11 @@ class PlantillaController extends Controller
     public function newAction()
     {
         $entity = new Plantilla();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -112,14 +114,15 @@ class PlantillaController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -137,7 +140,8 @@ class PlantillaController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
 
@@ -145,30 +149,32 @@ class PlantillaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Plantilla entity.
-    *
-    * @param Plantilla $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Plantilla entity.
+     *
+     * @param Plantilla $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Plantilla $entity)
     {
-        $form = $this->createForm(new PlantillaType(), $entity, array(
-            'action' => $this->generateUrl('plantilla_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+//        $form = $this->createForm(new PlantillaType(), $entity, array(
+//            'action' => $this->generateUrl('plantilla_update', array('id' => $entity->getId())),
+//            'method' => 'PUT',
+//        ));
+        $form = $this->createUpdateForm();
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
+
     /**
      * Edits an existing Plantilla entity.
      *
@@ -182,7 +188,8 @@ class PlantillaController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Plantilla entity.');
         }
 
@@ -190,18 +197,20 @@ class PlantillaController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($editForm->isValid())
+        {
             $em->flush();
 
             return $this->redirect($this->generateUrl('plantilla_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Plantilla entity.
      *
@@ -213,11 +222,13 @@ class PlantillaController extends Controller
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
 
-            if (!$entity) {
+            if (!$entity)
+            {
                 throw $this->createNotFoundException('Unable to find Plantilla entity.');
             }
 
@@ -238,10 +249,35 @@ class PlantillaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('plantilla_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                ->setAction($this->generateUrl('plantilla_delete', array('id' => $id)))
+                ->setMethod('DELETE')
+                ->add('submit', 'submit', array('label' => 'Delete'))
+                ->getForm()
         ;
     }
+
+    /**
+     * Creates a form to update a Plantilla entity by Id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createUpdateForm()
+    {
+        $defaultData = array('plantilla' => 'Type your message here');
+        $form = $this->createFormBuilder($defaultData)
+            ->add('casoId', 'text', array('label'=> 'ID: ') )
+            ->add('cliente', 'text', array('label'=> 'CLIENTE: '))
+            ->add('tipo', 'text', array('label'=> 'TIPO: '))
+            ->add('tecnico', 'text', array('label'=> 'TECNICO: '))
+            ->add('tsol', 'text', array('label'=> 'TSOL: '))
+            ->add('fechaIncidencia', 'text', array('label'=> 'FECHA: '))
+            ->add('modo', 'text', array('label'=> 'MODO RECEPCION: '))
+            ->add('detalle', 'text', array('label'=> 'DETALLE: '))
+        ->getForm();
+        
+        return $form;
+    }
+
 }
