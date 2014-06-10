@@ -12,7 +12,7 @@
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
 
-namespace Pi2\Fractalia\SmsBundle\Mensaje;
+namespace Pi2\Fractalia\SmsBundle\Manager;
 
 use Pi2\Fractalia\SmsBundle\Entity\Mensaje;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;

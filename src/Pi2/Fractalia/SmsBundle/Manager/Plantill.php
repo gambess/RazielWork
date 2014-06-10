@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Pi2\Fractalia\SmsBundle\Plantilla;
+namespace Pi2\Fractalia\SmsBundle\Manager;
 
 /**
  * Description of Plantilla

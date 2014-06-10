@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace Pi2\Fractalia\SmsBundle\Sms;
+namespace Pi2\Fractalia\SmsBundle\Manager;
 
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
 

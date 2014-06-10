@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pi2\Fractalia\SmsBundle\Entity\Plantilla;
 use Pi2\Fractalia\SmsBundle\Form\PlantillaType;
-use Pi2\Fractalia\SmsBundle\Plantilla\Plantill;
-use Pi2\Fractalia\SmsBundle\Mensaje\Mensaje;
+use Pi2\Fractalia\SmsBundle\Manager\Plantill;
+use Pi2\Fractalia\SmsBundle\Manager\MensajeManager;
 
 /**
  * Plantilla controller.
@@ -29,6 +29,10 @@ class PlantillaController extends Controller
      */
     public function indexAction()
     {
+//        echo "<pre>";
+//        print_r($this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas'));
+//        echo "</pre>";
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FractaliaSmsBundle:Plantilla')->findAll();
@@ -274,7 +278,7 @@ class PlantillaController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $incidencia = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')->find($id);
-        $msj = new Mensaje($incidencia, $plantilla);
+        $msj = new MensajeManager($incidencia, $plantilla);
         echo "<pre>";
         print_r($msj->fillArrayWithIncidencia());
         echo "</pre>";

@@ -12,7 +12,7 @@
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
 
-namespace Pi2\Fractalia\SmsBundle\Plantilla;
+namespace Pi2\Fractalia\SmsBundle\Manager;
 
 class PlantillaManager
 {

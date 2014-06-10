@@ -3,8 +3,8 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="fractalia_sms.message.class">Pi2\Fractalia\SmsBundle\Sms\Message</parameter>
-        <parameter key="fractalia_sms.sms.class">Pi2\Fractalia\SmsBundle\Sms\Sms</parameter>
+        <parameter key="fractalia_sms.message.class">Pi2\Fractalia\SmsBundle\Manager\Message</parameter>
+        <parameter key="fractalia_sms.sms.class">Pi2\Fractalia\SmsBundle\Manager\Sms</parameter>
     </parameters>
     <services>
         <service id="fractalia_sms.message" class="%fractalia_sms.message.class%">
