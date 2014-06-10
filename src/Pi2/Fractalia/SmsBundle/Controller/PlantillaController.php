@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pi2\Fractalia\SmsBundle\Entity\Plantilla;
 use Pi2\Fractalia\SmsBundle\Form\PlantillaType;
+use Pi2\Fractalia\SmsBundle\Plantilla\Plantill;
+use Pi2\Fractalia\SmsBundle\Mensaje\Mensaje;
 
 /**
  * Plantilla controller.
@@ -265,18 +267,33 @@ class PlantillaController extends Controller
      */
     private function createUpdateForm()
     {
+        $plantillaObj = new Plantill();
+        $plantilla = $plantillaObj->getPlantillaResuelto();
+        $id = 63;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $incidencia = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')->find($id);
+        $msj = new Mensaje($incidencia, $plantilla);
+        echo "<pre>";
+        print_r($msj->fillArrayWithIncidencia());
+        echo "</pre>";
+
+        die;
+
+
         $defaultData = array('plantilla' => 'Type your message here');
         $form = $this->createFormBuilder($defaultData)
-            ->add('casoId', 'text', array('label'=> 'ID: ') )
-            ->add('cliente', 'text', array('label'=> 'CLIENTE: '))
-            ->add('tipo', 'text', array('label'=> 'TIPO: '))
-            ->add('tecnico', 'text', array('label'=> 'TECNICO: '))
-            ->add('tsol', 'text', array('label'=> 'TSOL: '))
-            ->add('fechaIncidencia', 'text', array('label'=> 'FECHA: '))
-            ->add('modo', 'text', array('label'=> 'MODO RECEPCION: '))
-            ->add('detalle', 'text', array('label'=> 'DETALLE: '))
-        ->getForm();
-        
+            ->add('id', 'text', array('label' => 'ID: '))
+            ->add('cliente', 'text', array('label' => 'CLIENTE: '))
+            ->add('tipo', 'text', array('label' => 'TIPO: '))
+            ->add('tecnico', 'text', array('label' => 'TECNICO: '))
+            ->add('tsol', 'text', array('label' => 'TSOL: '))
+            ->add('fecha', 'datetime', array('label' => 'FECHA: '))
+            ->add('modo', 'text', array('label' => 'MODO RECEPCION: '))
+            ->add('detalle', 'text', array('label' => 'DETALLE: '))
+            ->getForm();
+
         return $form;
     }
 

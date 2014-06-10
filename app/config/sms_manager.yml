@@ -52,4 +52,15 @@ pi2_frac_sgsd_soap_server:
 
         #reemplazar por TSOL de guardia
         tsol_guardia:
-            nombre: RV 
+            nombre: RV
+    
+    plantillas:
+        RESOLUCION:
+            id: {'RESUELTO ID: ', Incidencia, NumeroCaso}
+            cliente: {'CLIENTE: ', Config, traduccion_tipo_caso}
+            tipo: {'TIPO: ', Config, nombres_cortos}
+            tecnico: {'TECNICO: ', Incidencia, TecnicoAsignadoFinal}
+            tsol: {'TSOL: ', config, tsol_guardia}
+            fecha: {'FECHA: ', Incidencia, FechaApertura}
+            modo: {'MODO RECEPCION: ', Incidencia, SistemaOrigen}
+            detalle: {'RESOLUCIONES: ', Incidencia, Resoluciones}
