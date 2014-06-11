@@ -1,20 +1,16 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Sms list</h1>
+    <h1>Listado de Sms que fallaron</h1>
 
     <table class="records_list">
         <thead>
             <tr>
                 <th>Destinatario</th>
                 <th>Remitente</th>
-                <th>Respuesta</th>
+                <th>Texto</th>
                 <th>Estado</th>
                 <th>Bitacora</th>
-                <th>Fechaenvio</th>
-                <th>Fechacreacion</th>
-                <th>Fechaactualizacion</th>
-                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -26,10 +22,10 @@
                 <td>{{ entity.respuesta }}</td>
                 <td>{{ entity.estado }}</td>
                 <td>{{ entity.bitacora }}</td>
-                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
+                {#<td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>{{ entity.id }}</td>#}
                 <td>
                 <ul>
                     <li>

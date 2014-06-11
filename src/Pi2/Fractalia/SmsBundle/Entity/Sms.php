@@ -3,12 +3,15 @@
 namespace Pi2\Fractalia\SmsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Pi2\Fractalia\SmsBundle\Entity\Mensaje;
 
 /**
  * Sms
  *
  * @ORM\Table(name="Sms", indexes={@ORM\Index(name="IDX_88E47C974C54F362", columns={"mensaje_id"})})
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\SmsRepository")
  */
 class Sms
 {
@@ -80,7 +83,7 @@ class Sms
     /**
      * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
      *
-     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje")
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje", inversedBy="mensaje", cascade={"persist", "remove" })
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="mensaje_id", referencedColumnName="id")
      * })

@@ -30,12 +30,12 @@ class PlantillaType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Plantilla'
-        ));
-    }
+//    public function setDefaultOptions(OptionsResolverInterface $resolver)
+//    {
+//        $resolver->setDefaults(array(
+//            'data_class' => 'Pi2\Fractalia\SmsBundle\Util\PlantillaGenerica'
+//        ));
+//    }
 
     /**
      * @return string

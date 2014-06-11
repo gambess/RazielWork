@@ -15,13 +15,13 @@ class MensajeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('templatename')
-            ->add('texto')
-            ->add('estadoConstruccion')
-            ->add('bitacora')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
-            ->add('fechaInsercionSms')
+//            ->add('templatename')
+            ->add('texto', new PlantillaType())
+//            ->add('estadoConstruccion')
+//            ->add('bitacora')
+//            ->add('fechaCreacion')
+//            ->add('fechaActualizacion')
+//            ->add('fechaInsercionSms')
 //            ->add('incidencia')
         ;
     }

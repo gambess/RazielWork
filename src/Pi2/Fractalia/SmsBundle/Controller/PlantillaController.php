@@ -11,6 +11,7 @@ use Pi2\Fractalia\SmsBundle\Entity\Plantilla;
 use Pi2\Fractalia\SmsBundle\Form\PlantillaType;
 use Pi2\Fractalia\SmsBundle\Manager\Plantill;
 use Pi2\Fractalia\SmsBundle\Manager\MensajeManager;
+use Pi2\Fractalia\SmsBundle\Util\PlantillaGenerica;
 
 /**
  * Plantilla controller.
@@ -30,11 +31,10 @@ class PlantillaController extends Controller
     public function indexAction()
     {
         $array = $this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas');
+        $obj = new PlantillaGenerica($array['RESUELTO']);
         echo "<pre>";
-        $tmp = array_shift($array);
-        print_r($tmp);
-        print_r($array);
-        echo "</pre>";die;
+        print_r($obj);
+        echo"</pre>";die;
 
         $em = $this->getDoctrine()->getManager();
 

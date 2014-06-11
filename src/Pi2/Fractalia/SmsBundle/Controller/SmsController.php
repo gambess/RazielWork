@@ -45,11 +45,14 @@ class SmsController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Sms();
+        
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $msj = $form->getData()->getMensaje();
+            $msj->setTexto(json_encode($msj->getTexto()));
+            $em->persist($msj);
             $em->persist($entity);
             $em->flush();
 

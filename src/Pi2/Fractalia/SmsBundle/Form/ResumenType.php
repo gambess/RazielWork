@@ -34,7 +34,6 @@ class ResumenType extends AbstractType
      */
     public function getName()
     {
-        return ''
-        . 'plantilla_resumen';
+        return 'plantilla_resumen';
     }
 }
