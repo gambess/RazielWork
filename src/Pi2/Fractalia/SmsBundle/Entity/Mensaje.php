@@ -6,105 +6,54 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mensaje
- *
- * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="IDX_54DE249D521E1017", columns={"Incidencia_id"})})
- * @ORM\Entity
- * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\MensajeRepository")
  */
 class Mensaje
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="templateName", type="string", length=20, nullable=false)
-     */
-    private $templatename;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="texto", type="text", nullable=false)
      */
     private $texto;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="estado_construccion", type="string", length=20, nullable=false)
      */
-    private $estadoConstruccion;
+    private $estado;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="bitacora", type="text", nullable=false)
      */
-    private $bitacora;
+    private $log;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
     private $fechaActualizacion;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_insercion_sms", type="datetime", nullable=true)
      */
-    private $fechaInsercionSms;
+    private $fechaAdjuntadoSms;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Plantilla
+     */
+    private $plantilla;
+
+    /**
      * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
-     *
-     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Incidencia_id", referencedColumnName="id")
-     * })
      */
     private $incidencia;
 
-
-
-    /**
-     * Set templatename
-     *
-     * @param string $templatename
-     * @return Mensaje
-     */
-    public function setTemplatename($templatename)
-    {
-        $this->templatename = $templatename;
-
-        return $this;
-    }
-
-    /**
-     * Get templatename
-     *
-     * @return string 
-     */
-    public function getTemplatename()
-    {
-        return $this->templatename;
-    }
 
     /**
      * Set texto
@@ -130,49 +79,49 @@ class Mensaje
     }
 
     /**
-     * Set estadoConstruccion
+     * Set estado
      *
-     * @param string $estadoConstruccion
+     * @param string $estado
      * @return Mensaje
      */
-    public function setEstadoConstruccion($estadoConstruccion)
+    public function setEstado($estado)
     {
-        $this->estadoConstruccion = $estadoConstruccion;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get estadoConstruccion
+     * Get estado
      *
      * @return string 
      */
-    public function getEstadoConstruccion()
+    public function getEstado()
     {
-        return $this->estadoConstruccion;
+        return $this->estado;
     }
 
     /**
-     * Set bitacora
+     * Set log
      *
-     * @param string $bitacora
+     * @param string $log
      * @return Mensaje
      */
-    public function setBitacora($bitacora)
+    public function setLog($log)
     {
-        $this->bitacora = $bitacora;
+        $this->log = $log;
 
         return $this;
     }
 
     /**
-     * Get bitacora
+     * Get log
      *
      * @return string 
      */
-    public function getBitacora()
+    public function getLog()
     {
-        return $this->bitacora;
+        return $this->log;
     }
 
     /**
@@ -222,26 +171,26 @@ class Mensaje
     }
 
     /**
-     * Set fechaInsercionSms
+     * Set fechaAdjuntadoSms
      *
-     * @param \DateTime $fechaInsercionSms
+     * @param \DateTime $fechaAdjuntadoSms
      * @return Mensaje
      */
-    public function setFechaInsercionSms($fechaInsercionSms)
+    public function setFechaAdjuntadoSms($fechaAdjuntadoSms)
     {
-        $this->fechaInsercionSms = $fechaInsercionSms;
+        $this->fechaAdjuntadoSms = $fechaAdjuntadoSms;
 
         return $this;
     }
 
     /**
-     * Get fechaInsercionSms
+     * Get fechaAdjuntadoSms
      *
      * @return \DateTime 
      */
-    public function getFechaInsercionSms()
+    public function getFechaAdjuntadoSms()
     {
-        return $this->fechaInsercionSms;
+        return $this->fechaAdjuntadoSms;
     }
 
     /**
@@ -252,6 +201,29 @@ class Mensaje
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set plantilla
+     *
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla
+     * @return Mensaje
+     */
+    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla = null)
+    {
+        $this->plantilla = $plantilla;
+
+        return $this;
+    }
+
+    /**
+     * Get plantilla
+     *
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Plantilla 
+     */
+    public function getPlantilla()
+    {
+        return $this->plantilla;
     }
 
     /**
@@ -276,5 +248,4 @@ class Mensaje
     {
         return $this->incidencia;
     }
-  
 }

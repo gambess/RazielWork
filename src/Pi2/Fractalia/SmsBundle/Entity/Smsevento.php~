@@ -1,0 +1,98 @@
+<?php
+
+namespace Pi2\Fractalia\SmsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Smsevento
+ *
+ * @ORM\Table(name="SmsEvento", indexes={@ORM\Index(name="fk_SmsEvento_MensajeEvento1", columns={"mensaje_id"})})
+ * @ORM\Entity
+ */
+class Smsevento
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mensaje_texto", type="text", nullable=false)
+     */
+    private $mensajeTexto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="destinatario", type="string", length=30, nullable=false)
+     */
+    private $destinatario;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remitente", type="string", length=10, nullable=false)
+     */
+    private $remitente;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=20, nullable=false)
+     */
+    private $estado;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="respuesta_envio", type="integer", nullable=false)
+     */
+    private $respuestaEnvio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="log", type="text", nullable=false)
+     */
+    private $log;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
+     */
+    private $fechaCreacion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fecha_actualizacion", type="string", length=45, nullable=false)
+     */
+    private $fechaActualizacion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_envio", type="datetime", nullable=false)
+     */
+    private $fechaEnvio;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mensaje_id", referencedColumnName="id")
+     * })
+     */
+    private $mensaje;
+
+
+}

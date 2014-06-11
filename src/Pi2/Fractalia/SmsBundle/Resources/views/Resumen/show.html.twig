@@ -1,13 +1,13 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Plantilla</h1>
+    <h1>Resumen</h1>
 
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Nombreevento</th>
-                <td>{{ entity.nombreEvento }}</td>
+                <th>Texto</th>
+                <td>{{ entity.texto }}</td>
             </tr>
             <tr>
                 <th>Id</th>
@@ -18,12 +18,12 @@
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('plantilla') }}">
+        <a href="{{ path('resumen') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('plantilla_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('resumen_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

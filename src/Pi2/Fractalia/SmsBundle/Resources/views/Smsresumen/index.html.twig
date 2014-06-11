@@ -1,12 +1,11 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Plantilla list</h1>
+    <h1>Smsresumen list</h1>
 
     <table class="records_list">
         <thead>
             <tr>
-                <th>Nombreevento</th>
                 <th>Id</th>
                 <th>Actions</th>
             </tr>
@@ -14,15 +13,14 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('plantilla_show', { 'id': entity.id }) }}">{{ entity.nombreEvento }}</a></td>
-                <td>{{ entity.id }}</td>
+                <td><a href="{{ path('smsresumen_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('plantilla_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('smsresumen_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('plantilla_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('smsresumen_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -33,7 +31,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('plantilla_new') }}">
+            <a href="{{ path('smsresumen_new') }}">
                 Create a new entry
             </a>
         </li>

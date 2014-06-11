@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pi2\Fractalia\SmsBundle\Entity\Plantilla;
-use Pi2\Fractalia\SmsBundle\Form\PlantillaType;
+use Pi2\Fractalia\SmsBundle\Entity\Smsevento;
+use Pi2\Fractalia\SmsBundle\Form\SmseventoType;
 
 /**
- * Plantilla controller.
+ * Smsevento controller.
  *
- * @Route("/plantilla")
+ * @Route("/smsevento")
  */
-class PlantillaController extends Controller
+class SmseventoController extends Controller
 {
 
     /**
-     * Lists all Plantilla entities.
+     * Lists all Smsevento entities.
      *
-     * @Route("/", name="plantilla")
+     * @Route("/", name="smsevento")
      * @Method("GET")
      * @Template()
      */
@@ -29,22 +29,22 @@ class PlantillaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('FractaliaSmsBundle:Plantilla')->findAll();
+        $entities = $em->getRepository('FractaliaSmsBundle:Smsevento')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Plantilla entity.
+     * Creates a new Smsevento entity.
      *
-     * @Route("/", name="plantilla_create")
+     * @Route("/", name="smsevento_create")
      * @Method("POST")
-     * @Template("FractaliaSmsBundle:Plantilla:new.html.twig")
+     * @Template("FractaliaSmsBundle:Smsevento:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Plantilla();
+        $entity = new Smsevento();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -53,7 +53,7 @@ class PlantillaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('plantilla_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('smsevento_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,16 +63,16 @@ class PlantillaController extends Controller
     }
 
     /**
-    * Creates a form to create a Plantilla entity.
+    * Creates a form to create a Smsevento entity.
     *
-    * @param Plantilla $entity The entity
+    * @param Smsevento $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Plantilla $entity)
+    private function createCreateForm(Smsevento $entity)
     {
-        $form = $this->createForm(new PlantillaType(), $entity, array(
-            'action' => $this->generateUrl('plantilla_create'),
+        $form = $this->createForm(new SmseventoType(), $entity, array(
+            'action' => $this->generateUrl('smsevento_create'),
             'method' => 'POST',
         ));
 
@@ -82,15 +82,15 @@ class PlantillaController extends Controller
     }
 
     /**
-     * Displays a form to create a new Plantilla entity.
+     * Displays a form to create a new Smsevento entity.
      *
-     * @Route("/new", name="plantilla_new")
+     * @Route("/new", name="smsevento_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Plantilla();
+        $entity = new Smsevento();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +100,9 @@ class PlantillaController extends Controller
     }
 
     /**
-     * Finds and displays a Plantilla entity.
+     * Finds and displays a Smsevento entity.
      *
-     * @Route("/{id}", name="plantilla_show")
+     * @Route("/{id}", name="smsevento_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +110,10 @@ class PlantillaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
+        $entity = $em->getRepository('FractaliaSmsBundle:Smsevento')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Plantilla entity.');
+            throw $this->createNotFoundException('Unable to find Smsevento entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +125,9 @@ class PlantillaController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Plantilla entity.
+     * Displays a form to edit an existing Smsevento entity.
      *
-     * @Route("/{id}/edit", name="plantilla_edit")
+     * @Route("/{id}/edit", name="smsevento_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +135,10 @@ class PlantillaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
+        $entity = $em->getRepository('FractaliaSmsBundle:Smsevento')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Plantilla entity.');
+            throw $this->createNotFoundException('Unable to find Smsevento entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,16 +152,16 @@ class PlantillaController extends Controller
     }
 
     /**
-    * Creates a form to edit a Plantilla entity.
+    * Creates a form to edit a Smsevento entity.
     *
-    * @param Plantilla $entity The entity
+    * @param Smsevento $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Plantilla $entity)
+    private function createEditForm(Smsevento $entity)
     {
-        $form = $this->createForm(new PlantillaType(), $entity, array(
-            'action' => $this->generateUrl('plantilla_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new SmseventoType(), $entity, array(
+            'action' => $this->generateUrl('smsevento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -170,20 +170,20 @@ class PlantillaController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Plantilla entity.
+     * Edits an existing Smsevento entity.
      *
-     * @Route("/{id}", name="plantilla_update")
+     * @Route("/{id}", name="smsevento_update")
      * @Method("PUT")
-     * @Template("FractaliaSmsBundle:Plantilla:edit.html.twig")
+     * @Template("FractaliaSmsBundle:Smsevento:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
+        $entity = $em->getRepository('FractaliaSmsBundle:Smsevento')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Plantilla entity.');
+            throw $this->createNotFoundException('Unable to find Smsevento entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -193,7 +193,7 @@ class PlantillaController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('plantilla_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('smsevento_edit', array('id' => $id)));
         }
 
         return array(
@@ -203,9 +203,9 @@ class PlantillaController extends Controller
         );
     }
     /**
-     * Deletes a Plantilla entity.
+     * Deletes a Smsevento entity.
      *
-     * @Route("/{id}", name="plantilla_delete")
+     * @Route("/{id}", name="smsevento_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -215,21 +215,21 @@ class PlantillaController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FractaliaSmsBundle:Plantilla')->find($id);
+            $entity = $em->getRepository('FractaliaSmsBundle:Smsevento')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Plantilla entity.');
+                throw $this->createNotFoundException('Unable to find Smsevento entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('plantilla'));
+        return $this->redirect($this->generateUrl('smsevento'));
     }
 
     /**
-     * Creates a form to delete a Plantilla entity by id.
+     * Creates a form to delete a Smsevento entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -238,7 +238,7 @@ class PlantillaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('plantilla_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('smsevento_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

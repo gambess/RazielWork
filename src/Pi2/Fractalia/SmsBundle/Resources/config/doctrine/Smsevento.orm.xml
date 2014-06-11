@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="Pi2\Fractalia\SmsBundle\Entity\Sms" table="Sms">
+  <entity name="Pi2\Fractalia\SmsBundle\Entity\Smsevento" table="SmsEvento">
     <indexes>
-      <index name="IDX_88E47C974C54F362" columns="mensaje_id"/>
+      <index name="fk_SmsEvento_MensajeEvento1" columns="mensaje_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="destinatario" type="string" column="destinatario" length="20" nullable="true"/>
-    <field name="remitente" type="string" column="remitente" length="15" nullable="true"/>
-    <field name="respuesta" type="string" column="respuesta" length="5" nullable="false"/>
+    <field name="mensajeTexto" type="text" column="mensaje_texto" nullable="false"/>
+    <field name="destinatario" type="string" column="destinatario" length="30" nullable="false"/>
+    <field name="remitente" type="string" column="remitente" length="10" nullable="false"/>
     <field name="estado" type="string" column="estado" length="20" nullable="false"/>
-    <field name="bitacora" type="text" column="bitacora" nullable="false"/>
-    <field name="fechaEnvio" type="datetime" column="fecha_envio" nullable="true"/>
+    <field name="respuestaEnvio" type="integer" column="respuesta_envio" nullable="false"/>
+    <field name="log" type="text" column="log" nullable="false"/>
     <field name="fechaCreacion" type="datetime" column="fecha_creacion" nullable="false"/>
-    <field name="fechaActualizacion" type="datetime" column="fecha_actualizacion" nullable="false"/>
+    <field name="fechaActualizacion" type="string" column="fecha_actualizacion" length="45" nullable="false"/>
+    <field name="fechaEnvio" type="datetime" column="fecha_envio" nullable="false"/>
     <many-to-one field="mensaje" target-entity="Mensaje">
       <join-columns>
         <join-column name="mensaje_id" referenced-column-name="id"/>

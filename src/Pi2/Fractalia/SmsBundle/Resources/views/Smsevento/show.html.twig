@@ -1,10 +1,14 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Sms</h1>
+    <h1>Smsevento</h1>
 
     <table class="record_properties">
         <tbody>
+            <tr>
+                <th>Mensajetexto</th>
+                <td>{{ entity.mensajeTexto }}</td>
+            </tr>
             <tr>
                 <th>Destinatario</th>
                 <td>{{ entity.destinatario }}</td>
@@ -14,20 +18,16 @@
                 <td>{{ entity.remitente }}</td>
             </tr>
             <tr>
-                <th>Respuesta</th>
-                <td>{{ entity.respuesta }}</td>
-            </tr>
-            <tr>
                 <th>Estado</th>
                 <td>{{ entity.estado }}</td>
             </tr>
             <tr>
-                <th>Bitacora</th>
-                <td>{{ entity.bitacora }}</td>
+                <th>Respuestaenvio</th>
+                <td>{{ entity.respuestaEnvio }}</td>
             </tr>
             <tr>
-                <th>Fechaenvio</th>
-                <td>{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}</td>
+                <th>Log</th>
+                <td>{{ entity.log }}</td>
             </tr>
             <tr>
                 <th>Fechacreacion</th>
@@ -35,7 +35,11 @@
             </tr>
             <tr>
                 <th>Fechaactualizacion</th>
-                <td>{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}</td>
+                <td>{{ entity.fechaActualizacion }}</td>
+            </tr>
+            <tr>
+                <th>Fechaenvio</th>
+                <td>{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
                 <th>Id</th>
@@ -46,12 +50,12 @@
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('sms') }}">
+        <a href="{{ path('smsevento') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('smsevento_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

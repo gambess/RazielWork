@@ -1,0 +1,42 @@
+<?php
+
+namespace Pi2\Fractalia\SmsBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Resumen
+ *
+ * @ORM\Table(name="Resumen", indexes={@ORM\Index(name="fk_MensajeResumen_Incidencia1", columns={"incidencia_id"})})
+ * @ORM\Entity
+ */
+class Resumen
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="texto", type="text", nullable=false)
+     */
+    private $texto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Incidencia
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Incidencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="incidencia_id", referencedColumnName="id")
+     * })
+     */
+    private $incidencia;
+
+
+}
