@@ -23,7 +23,7 @@ class SmsType extends AbstractType
             ->add('fechaEnvio')
             ->add('fechaCreacion')
             ->add('fechaActualizacion')
-            ->add('mensaje')
+//            ->add('mensaje')
         ;
     }
     

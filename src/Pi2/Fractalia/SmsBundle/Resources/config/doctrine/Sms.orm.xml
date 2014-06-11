@@ -2,7 +2,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="Pi2\Fractalia\SmsBundle\Entity\Sms" table="Sms">
     <indexes>
-      <index name="fk_sms_has_mensaje" columns="mensaje_id"/>
+      <index name="IDX_88E47C974C54F362" columns="mensaje_id"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>

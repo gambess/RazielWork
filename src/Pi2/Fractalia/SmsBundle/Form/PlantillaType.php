@@ -15,12 +15,15 @@ class PlantillaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('numeroElementos')
-            ->add('texto')
-            ->add('bitacora')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
+            ->add('id')
+            ->add('cliente')
+            ->add('tipo')
+            ->add('tecnico')
+            ->add('tsol')
+            ->add('fecha')
+            ->add('modo')
+            ->add('detalle')
+
         ;
     }
     
@@ -39,6 +42,6 @@ class PlantillaType extends AbstractType
      */
     public function getName()
     {
-        return 'pi2_fractalia_smsbundle_plantilla';
+        return 'plantilla_generica';
     }
 }

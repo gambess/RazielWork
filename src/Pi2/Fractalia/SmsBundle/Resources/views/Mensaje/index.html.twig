@@ -6,8 +6,9 @@
     <table class="records_list">
         <thead>
             <tr>
+                <th>Templatename</th>
                 <th>Texto</th>
-                <th>Estado</th>
+                <th>Estadoconstruccion</th>
                 <th>Bitacora</th>
                 <th>Fechacreacion</th>
                 <th>Fechaactualizacion</th>
@@ -19,8 +20,9 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.texto }}</a></td>
-                <td>{{ entity.estado }}</td>
+                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.templatename }}</a></td>
+                <td>{{ entity.texto }}</td>
+                <td>{{ entity.estadoConstruccion }}</td>
                 <td>{{ entity.bitacora }}</td>
                 <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>

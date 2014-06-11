@@ -6,56 +6,104 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mensaje
- * @ORM\Table(name="Mensaje")
- * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\MensajeRepository")
+ *
+ * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="IDX_54DE249D521E1017", columns={"Incidencia_id"})})
+ * @ORM\Entity
  */
 class Mensaje
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="templateName", type="string", length=20, nullable=false)
+     */
+    private $templatename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="texto", type="text", nullable=false)
      */
     private $texto;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="estado_construccion", type="string", length=20, nullable=false)
      */
-    private $estado;
+    private $estadoConstruccion;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="bitacora", type="text", nullable=false)
      */
     private $bitacora;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
     private $fechaActualizacion;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_insercion_sms", type="datetime", nullable=true)
      */
     private $fechaInsercionSms;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Incidencia_id", referencedColumnName="id")
+     * })
      */
     private $incidencia;
 
-    /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Plantilla
-     */
-    private $plantilla;
 
+
+    /**
+     * Set templatename
+     *
+     * @param string $templatename
+     * @return Mensaje
+     */
+    public function setTemplatename($templatename)
+    {
+        $this->templatename = $templatename;
+
+        return $this;
+    }
+
+    /**
+     * Get templatename
+     *
+     * @return string 
+     */
+    public function getTemplatename()
+    {
+        return $this->templatename;
+    }
 
     /**
      * Set texto
@@ -81,26 +129,26 @@ class Mensaje
     }
 
     /**
-     * Set estado
+     * Set estadoConstruccion
      *
-     * @param string $estado
+     * @param string $estadoConstruccion
      * @return Mensaje
      */
-    public function setEstado($estado)
+    public function setEstadoConstruccion($estadoConstruccion)
     {
-        $this->estado = $estado;
+        $this->estadoConstruccion = $estadoConstruccion;
 
         return $this;
     }
 
     /**
-     * Get estado
+     * Get estadoConstruccion
      *
      * @return string 
      */
-    public function getEstado()
+    public function getEstadoConstruccion()
     {
-        return $this->estado;
+        return $this->estadoConstruccion;
     }
 
     /**
@@ -226,28 +274,5 @@ class Mensaje
     public function getIncidencia()
     {
         return $this->incidencia;
-    }
-
-    /**
-     * Set plantilla
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla
-     * @return Mensaje
-     */
-    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla = null)
-    {
-        $this->plantilla = $plantilla;
-
-        return $this;
-    }
-
-    /**
-     * Get plantilla
-     *
-     * @return \Pi2\Fractalia\SmsBundle\Entity\Plantilla 
-     */
-    public function getPlantilla()
-    {
-        return $this->plantilla;
     }
 }

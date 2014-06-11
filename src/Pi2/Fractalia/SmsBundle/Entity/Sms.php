@@ -6,60 +6,87 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Sms
- * @ORM\Table(name="Sms")
- * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\SmsRepository")
+ *
+ * @ORM\Table(name="Sms", indexes={@ORM\Index(name="IDX_88E47C974C54F362", columns={"mensaje_id"})})
+ * @ORM\Entity
  */
 class Sms
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="destinatario", type="string", length=20, nullable=true)
      */
     private $destinatario;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="remitente", type="string", length=15, nullable=true)
      */
     private $remitente;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="respuesta", type="string", length=5, nullable=false)
      */
     private $respuesta;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=20, nullable=false)
      */
     private $estado;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="bitacora", type="text", nullable=false)
      */
     private $bitacora;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_envio", type="datetime", nullable=true)
      */
     private $fechaEnvio;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=false)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=false)
      */
     private $fechaActualizacion;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mensaje_id", referencedColumnName="id")
+     * })
      */
     private $mensaje;
+
 
 
     /**

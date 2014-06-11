@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PlantillaType extends AbstractType
+class ResumenType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,11 +15,7 @@ class PlantillaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('elementos')
-            ->add('texto')
-            ->add('log')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
+            ->add('data')
         ;
     }
     
@@ -29,7 +25,7 @@ class PlantillaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Plantilla'
+            'data_class' => ''
         ));
     }
 
@@ -38,6 +34,7 @@ class PlantillaType extends AbstractType
      */
     public function getName()
     {
-        return 'pi2_fractalia_smsbundle_plantilla';
+        return ''
+        . 'plantilla_resumen';
     }
 }
