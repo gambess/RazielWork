@@ -15,33 +15,25 @@ class PlantillaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id')
-            ->add('cliente')
-            ->add('tipo')
-            ->add('tecnico')
-            ->add('tsol')
-            ->add('fecha')
-            ->add('modo')
-            ->add('detalle')
-
+            ->add('nombreEvento')
         ;
     }
     
     /**
      * @param OptionsResolverInterface $resolver
      */
-//    public function setDefaultOptions(OptionsResolverInterface $resolver)
-//    {
-//        $resolver->setDefaults(array(
-//            'data_class' => 'Pi2\Fractalia\SmsBundle\Util\PlantillaGenerica'
-//        ));
-//    }
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Plantilla'
+        ));
+    }
 
     /**
      * @return string
      */
     public function getName()
     {
-        return 'plantilla_generica';
+        return 'pi2_fractalia_smsbundle_plantilla';
     }
 }
