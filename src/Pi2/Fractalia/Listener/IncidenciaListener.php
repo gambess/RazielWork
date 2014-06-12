@@ -67,7 +67,6 @@ class IncidenciaListener
                         {
 
                             $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
-                            print_r($this->message->getPlantilla('RESUELTO'));die;
 
                             $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
                             if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))

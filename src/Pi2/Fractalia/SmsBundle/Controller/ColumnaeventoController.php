@@ -9,6 +9,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pi2\Fractalia\SmsBundle\Entity\Columnaevento;
 use Pi2\Fractalia\SmsBundle\Form\ColumnaeventoType;
+use Pi2\Fractalia\SmsBundle\Util\IncidenciaArrayEvento;
+use Pi2\Fractalia\SmsBundle\Entity\Mensaje;
+use Pi2\Fractalia\SmsBundle\Entity\Plantilla;
+use Pi2\Fractalia\SmsBundle\Entity\Smsevento;
+use Pi2\Fractalia\Entity\SGSD\Incidencia;
+use Pi2\Fractalia\SmsBundle\Manager\Sms;
 
 /**
  * Columnaevento controller.
@@ -27,14 +33,93 @@ class ColumnaeventoController extends Controller
      */
     public function indexAction()
     {
+        $this->workflow();
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('FractaliaSmsBundle:Columnaevento')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
+
+    protected function getText($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FractaliaSmsBundle:Columnaevento')->find($id);
+
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Unable to find Columnaevento entity.');
+        }
+
+        return $this->renderView('FractaliaSmsBundle:Columnaevento:show.txt.twig', array(
+                'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+                'entity' => $entity
+                )
+        );
+        
+
+    }
+
+    protected function workflow()
+    {
+
+        $entity = new Columnaevento();
+
+        $plantilla = new Plantilla();
+        $mensaje = new Mensaje();
+
+        $tsolArrayConf = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia');
+        $nombresCortosConf = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos');
+        $traducciones = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso');
+        $destinatarios = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.grupo_destino');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $incidencia = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')->find(66);
+
+
+        $evento = $incidencia->getEstado(); //Es necesario definir la construccion de los estados
+
+        $array = new IncidenciaArrayEvento($evento, $tsolArrayConf, $nombresCortosConf, $traducciones);
+        $arrayIncidencia = $array->setArrayIncidencia($incidencia);
+
+        $estado = in_array('missing', $arrayIncidencia) ? 'FALLO' : 'CORRECTO';
+
+
+        $plantilla->setNombreEvento($evento);
+        $em->persist($plantilla);
+
+        $mensaje->setIncidencia($incidencia);
+        $mensaje->setPlantilla($plantilla);
+        $em->persist($mensaje);
+
+        $entity->setMensaje($mensaje);
+
+
+        $entity->setNumeroCaso($arrayIncidencia['id']);
+        $entity->setCliente($arrayIncidencia['cliente']);
+        $entity->setTipo($arrayIncidencia['tipo']);
+        $entity->setTecnico($arrayIncidencia['tecnico']);
+        $entity->setTsol($arrayIncidencia['tsol']);
+        $entity->setFecha($arrayIncidencia['fecha']);
+        $entity->setModo($arrayIncidencia['modo']);
+        $entity->setDetalle($arrayIncidencia['detalle']);
+        $em->persist($entity);
+        $em->flush();
+
+        $mensaje->setTexto($this->getText($entity->getId()));
+        $mensaje->setEstado($estado);
+        $em->persist($mensaje);
+        $em->flush();
+        
+        $sms = $this->get('fractalia_sms.sms');
+        foreach($destinatarios as $d){
+                    $sms->saveSmsGrupo($d['destinatario'], $mensaje->getId());
+        }
+    }
+
     /**
      * Creates a new Columnaevento entity.
      *
@@ -48,7 +133,8 @@ class ColumnaeventoController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -58,22 +144,23 @@ class ColumnaeventoController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
     /**
-    * Creates a form to create a Columnaevento entity.
-    *
-    * @param Columnaevento $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Columnaevento entity.
+     *
+     * @param Columnaevento $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Columnaevento $entity)
     {
         $form = $this->createForm(new ColumnaeventoType(), $entity, array(
             'action' => $this->generateUrl('columnaevento_create'),
             'method' => 'POST',
+            'label_attr' => $this->getLabelsFromConfigByEvento('RESUELTO')
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -91,11 +178,11 @@ class ColumnaeventoController extends Controller
     public function newAction()
     {
         $entity = new Columnaevento();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -104,7 +191,7 @@ class ColumnaeventoController extends Controller
      *
      * @Route("/{id}", name="columnaevento_show")
      * @Method("GET")
-     * @Template()
+     * @Template("FractaliaSmsBundle:Columnaevento:show.txt.twig")
      */
     public function showAction($id)
     {
@@ -112,14 +199,16 @@ class ColumnaeventoController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Columnaevento')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Columnaevento entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -137,7 +226,8 @@ class ColumnaeventoController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Columnaevento')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Columnaevento entity.');
         }
 
@@ -145,30 +235,32 @@ class ColumnaeventoController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Columnaevento entity.
-    *
-    * @param Columnaevento $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Columnaevento entity.
+     *
+     * @param Columnaevento $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Columnaevento $entity)
     {
         $form = $this->createForm(new ColumnaeventoType(), $entity, array(
             'action' => $this->generateUrl('columnaevento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'label_attr' => $this->getLabelsFromConfigByEvento('RESUELTO')
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
+
     /**
      * Edits an existing Columnaevento entity.
      *
@@ -182,7 +274,8 @@ class ColumnaeventoController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Columnaevento')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Columnaevento entity.');
         }
 
@@ -190,18 +283,21 @@ class ColumnaeventoController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($editForm->isValid())
+        {
             $em->flush();
 
             return $this->redirect($this->generateUrl('columnaevento_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Columnaevento entity.
      *
@@ -213,11 +309,13 @@ class ColumnaeventoController extends Controller
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FractaliaSmsBundle:Columnaevento')->find($id);
 
-            if (!$entity) {
+            if (!$entity)
+            {
                 throw $this->createNotFoundException('Unable to find Columnaevento entity.');
             }
 
@@ -238,10 +336,16 @@ class ColumnaeventoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('columnaevento_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                ->setAction($this->generateUrl('columnaevento_delete', array('id' => $id)))
+                ->setMethod('DELETE')
+                ->add('submit', 'submit', array('label' => 'Delete'))
+                ->getForm()
         ;
     }
+
+    protected function getLabelsFromConfigByEvento($name)
+    {
+        return $this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas')[$name];
+    }
+
 }

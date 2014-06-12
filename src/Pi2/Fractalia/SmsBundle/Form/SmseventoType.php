@@ -15,16 +15,17 @@ class SmseventoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mensajeTexto')
             ->add('destinatario')
             ->add('remitente')
-            ->add('estado')
-            ->add('respuestaEnvio')
+//            ->add('mensajeTexto', new ColumnaeventoType($options['label_attr']) )
+            ->add('mensajeTexto')
+//            ->add('estado')
+//            ->add('respuestaEnvio')
             ->add('log')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
-            ->add('fechaEnvio')
-            ->add('mensaje')
+//            ->add('fechaCreacion')
+//            ->add('fechaActualizacion')
+//            ->add('fechaEnvio')
+//            ->add('mensaje')
         ;
     }
     

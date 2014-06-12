@@ -1,37 +1,36 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Smsevento list</h1>
+    <h1>Listado de SMS's con ERROR</h1>
 
     <table class="records_list">
         <thead>
             <tr>
-                <th>Mensajetexto</th>
                 <th>Destinatario</th>
                 <th>Remitente</th>
+                <th>Mensaje</th>
                 <th>Estado</th>
-                <th>Respuestaenvio</th>
-                <th>Log</th>
-                <th>Fechacreacion</th>
+{#                <th>Respuesta Envio</th>#}
+ {#               <th>Fechacreacion</th>
                 <th>Fechaactualizacion</th>
-                <th>Fechaenvio</th>
-                <th>Id</th>
+                <th>Fechaenvio</th>#}
+                <th>Log</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('smsevento_show', { 'id': entity.id }) }}">{{ entity.mensajeTexto }}</a></td>
                 <td>{{ entity.destinatario }}</td>
                 <td>{{ entity.remitente }}</td>
+                <td>{{ entity.mensajeTexto }}</td>
                 <td>{{ entity.estado }}</td>
-                <td>{{ entity.respuestaEnvio }}</td>
+{#                <td>{{ entity.respuestaEnvio }}</td>#}
                 <td>{{ entity.log }}</td>
-                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+{#                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.fechaActualizacion }}</td>
-                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
+                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+{#                <td><a href="{{ path('smsevento_show', { 'id': entity.id }) }}">{{ entity.mensajeTexto }}</a></td>#}
                 <td>
                 <ul>
                     <li>

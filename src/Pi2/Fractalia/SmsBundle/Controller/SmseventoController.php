@@ -140,8 +140,10 @@ class SmseventoController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Smsevento entity.');
         }
+        
 
         $editForm = $this->createEditForm($entity);
+        echo "aqui";die;
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -163,6 +165,7 @@ class SmseventoController extends Controller
         $form = $this->createForm(new SmseventoType(), $entity, array(
             'action' => $this->generateUrl('smsevento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'label_attr' => $this->getLabelsFromConfigByEvento('RESUELTO')
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -243,5 +246,10 @@ class SmseventoController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    protected function getLabelsFromConfigByEvento($name)
+    {
+        return $this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas')[$name];
     }
 }

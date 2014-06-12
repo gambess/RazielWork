@@ -6,41 +6,41 @@
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Numerocaso</th>
+                <th>{{label.id}}</th>
                 <td>{{ entity.numeroCaso }}</td>
             </tr>
             <tr>
-                <th>Cliente</th>
+                <th>{{label.cliente}}</th>
                 <td>{{ entity.cliente }}</td>
             </tr>
             <tr>
-                <th>Tipo</th>
+                <th>{{label.tipo}}</th>
                 <td>{{ entity.tipo }}</td>
             </tr>
             <tr>
-                <th>Tecnico</th>
+                <th>{{label.tecnico}}</th>
                 <td>{{ entity.tecnico }}</td>
             </tr>
             <tr>
-                <th>Tsol</th>
+                <th>{{label.tsol}}</th>
                 <td>{{ entity.tsol }}</td>
             </tr>
             <tr>
-                <th>Fecha</th>
-                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+                <th>{{label.fecha}}</th>
+                <td>{{ entity.fecha|date('d/m/y H:i:s') }}</td>
             </tr>
             <tr>
-                <th>Modo</th>
+                <th>{{label.modo}}</th>
                 <td>{{ entity.modo }}</td>
             </tr>
             <tr>
-                <th>Detalle</th>
+                <th>{{label.detalle}}</th>
                 <td>{{ entity.detalle }}</td>
             </tr>
-            <tr>
+            {#<tr>
                 <th>Id</th>
                 <td>{{ entity.id }}</td>
-            </tr>
+            </tr>#}
         </tbody>
     </table>
 
