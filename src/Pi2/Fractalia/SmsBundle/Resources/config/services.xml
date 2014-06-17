@@ -3,8 +3,10 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
+        <parameter key="fractalia_sms.mensaje_manager.class">Pi2\Fractalia\SmsBundle\Manager\MensajeManager</parameter>
         <parameter key="fractalia_sms.message.class">Pi2\Fractalia\SmsBundle\Manager\Message</parameter>
-        <parameter key="fractalia_sms.sms.class">Pi2\Fractalia\SmsBundle\Manager\Sms</parameter>
+        <parameter key="fractalia_sms.sms.class">Pi2\Fractalia\SmsBundle\Manager\SmsLast</parameter>
+        <!--<parameter key="fractalia_sms.controller.evento.class">Pi2\Fractalia\SmsBundle\Controller\ColumnaeventoController</parameter>-->
     </parameters>
     <services>
         <service id="fractalia_sms.message" class="%fractalia_sms.message.class%">
@@ -28,6 +30,17 @@
             <tag name="monolog.logger" channel="listener"/>
             <call method="setDatosApi">
                 <argument>%pi2_frac_sgsd_soap_server.envio_sms.api%</argument>
+            </call>
+        </service>
+        <service id="fractalia_sms.mensaje_manager" class="%fractalia_sms.mensaje_manager.class%">
+            <call method="setTsolArrayConf">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia%</argument>
+            </call>
+            <call method="setNombresCortosConf">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos%</argument>
+            </call>
+            <call method="setTraducciones">
+                <argument>%pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso%</argument>
             </call>
         </service>
         

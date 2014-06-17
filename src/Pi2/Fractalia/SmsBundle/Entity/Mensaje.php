@@ -6,54 +6,154 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mensaje
+ *
+ * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_Mensaje_ColumnaEvento1_idx", columns={"columna_evento_id"}), @ORM\Index(name="fk_Mensaje_ColumnaResumen1_idx", columns={"ColumnaResumen_id"})})
+ * @ORM\Entity
  */
 class Mensaje
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="nombre_plantilla", type="string", length=20, nullable=true)
+     */
+    private $nombrePlantilla;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_mensaje", type="string", length=20, nullable=true)
+     */
+    private $tipoMensaje;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="texto", type="text", nullable=true)
      */
     private $texto;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=20, nullable=true)
      */
     private $estado;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="log", type="text", nullable=true)
      */
     private $log;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_creacion", type="datetime", nullable=true)
      */
     private $fechaCreacion;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_actualizacion", type="datetime", nullable=true)
      */
     private $fechaActualizacion;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_adjuntado_sms", type="datetime", nullable=true)
      */
     private $fechaAdjuntadoSms;
 
     /**
-     * @var integer
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Columnaevento
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Columnaevento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="columna_evento_id", referencedColumnName="id")
+     * })
      */
-    private $id;
+    private $columnaEvento;
 
     /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Plantilla
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Columnaresumen")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ColumnaResumen_id", referencedColumnName="id")
+     * })
      */
-    private $plantilla;
+    private $columnaresumen;
+
+
 
     /**
-     * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
+     * Get id
+     *
+     * @return integer 
      */
-    private $incidencia;
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * Set nombrePlantilla
+     *
+     * @param string $nombrePlantilla
+     * @return Mensaje
+     */
+    public function setNombrePlantilla($nombrePlantilla)
+    {
+        $this->nombrePlantilla = $nombrePlantilla;
+
+        return $this;
+    }
+
+    /**
+     * Get nombrePlantilla
+     *
+     * @return string 
+     */
+    public function getNombrePlantilla()
+    {
+        return $this->nombrePlantilla;
+    }
+
+    /**
+     * Set tipoMensaje
+     *
+     * @param string $tipoMensaje
+     * @return Mensaje
+     */
+    public function setTipoMensaje($tipoMensaje)
+    {
+        $this->tipoMensaje = $tipoMensaje;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoMensaje
+     *
+     * @return string 
+     */
+    public function getTipoMensaje()
+    {
+        return $this->tipoMensaje;
+    }
 
     /**
      * Set texto
@@ -194,58 +294,48 @@ class Mensaje
     }
 
     /**
-     * Get id
+     * Set columnaEvento
      *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set plantilla
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaevento $columnaEvento
      * @return Mensaje
      */
-    public function setPlantilla(\Pi2\Fractalia\SmsBundle\Entity\Plantilla $plantilla = null)
+    public function setColumnaEvento(\Pi2\Fractalia\SmsBundle\Entity\Columnaevento $columnaEvento = null)
     {
-        $this->plantilla = $plantilla;
+        $this->columnaEvento = $columnaEvento;
 
         return $this;
     }
 
     /**
-     * Get plantilla
+     * Get columnaEvento
      *
-     * @return \Pi2\Fractalia\SmsBundle\Entity\Plantilla 
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Columnaevento 
      */
-    public function getPlantilla()
+    public function getColumnaEvento()
     {
-        return $this->plantilla;
+        return $this->columnaEvento;
     }
 
     /**
-     * Set incidencia
+     * Set columnaresumen
      *
-     * @param \Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaresumen
      * @return Mensaje
      */
-    public function setIncidencia(\Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia = null)
+    public function setColumnaresumen(\Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaresumen = null)
     {
-        $this->incidencia = $incidencia;
+        $this->columnaresumen = $columnaresumen;
 
         return $this;
     }
 
     /**
-     * Get incidencia
+     * Get columnaresumen
      *
-     * @return \Pi2\Fractalia\Entity\SGSD\Incidencia 
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen 
      */
-    public function getIncidencia()
+    public function getColumnaresumen()
     {
-        return $this->incidencia;
+        return $this->columnaresumen;
     }
 }

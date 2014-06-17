@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
 use Pi2\Fractalia\XmlRpcClient\XmlRpcClient;
+use Pi2\Fractalia\SmsBundle\Manager\SmsManager;
 
 class IncidenciaListener
 {
@@ -30,15 +31,17 @@ class IncidenciaListener
     private $destinatarios = array();
     private $msj;
     private $sms;
+    private $msj_manager;
 
 //    private $formatter;
 //    private $another_service;
 
-    public function __construct($logger, $message, $sms)
+    public function __construct($logger, $message, $sms, $mensaje_manager)
     {
         $this->logger = $logger;
         $this->message = $message;
         $this->sms = $sms;
+        $this->msj_manager = $mensaje_manager;
     }
 
     /**
@@ -52,6 +55,7 @@ class IncidenciaListener
     {
         //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
+        $em = $event->getEntityManager();
         //recurperar prioridades en fichero configuracion
         if ($this->filterByPrioridades($inci))
         {
@@ -63,25 +67,20 @@ class IncidenciaListener
                 {
                     if (sizeof($this->destinatarios) > 0)
                     {
+                        $id_mensaje = $this->msj_manager->createMensaje($inci, $em);
+                        print_r($id_mensaje);
                         foreach ($this->destinatarios as $d)
                         {
-
                             $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
 
                             $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
                             if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))
                             {
-                                $this->message->copyIncidencia($inci);
-                                $this->msj = $this->message->getTextMessage();
-                                //Instanciamos Cliente API MOVISTAR
-                                $client = new XmlRpcClient($this->datosApi['url']);
-                                $parameters = $this->sms->preparaSmsAGrupo($d['destinatario'], $this->msj);
-
-                                $this->logger->info('datos del mensaje compuesto', array('Grupo Destino' => $d['destinatario'], 'Cuerpo del SMS' => $this->msj, 'Remitente' => $this->datosApi['remitente']));
-
+                                $sms_manager = new SmsManager();
+                                $sms_manager->createSms($d['destinatario'], $id_mensaje);
+                                $resp = null;
                                 try
                                 {
-                                    $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
                                     $this->logger->info('Código de Resultado del Envio', array('Codigo de envio:' => $resp));
                                     if ($resp != 0)
                                     {

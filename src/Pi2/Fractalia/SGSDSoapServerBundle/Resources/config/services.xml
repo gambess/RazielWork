@@ -34,6 +34,7 @@
             <argument type="service" id="logger"/>
             <argument type="service" id="fractalia_sms.message"/>
             <argument type="service" id="fractalia_sms.sms"/>
+            <argument type="service" id="fractalia_sms.mensaje_manager"/>
             <tag name="monolog.logger" channel="listener"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>

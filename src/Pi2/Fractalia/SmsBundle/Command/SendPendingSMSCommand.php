@@ -1,5 +1,5 @@
 <?php
-namespace Pi2\Fractalia\Commands;
+namespace Pi2\Fractalia\SmsBundle\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,7 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
-use Pi2\Fractalia\SmsBundle\Sms\Sms;
+
+use Pi2\Fractalia\SmsBundle\Manager\SmsManager;
 use Pi2\Fractalia\XmlRpcClient\XmlRpcClient;
 
 const SMS_OK = "pi2.fractalia.sms.send.ok";
@@ -163,6 +164,7 @@ class SendPendingSMSCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        
         //$name = $input->getArgument('name');
         $count = 0;
         $fail = 0;
@@ -176,15 +178,15 @@ class SendPendingSMSCommand extends Command
                 $output->writeln("Executing pending sms's");
                 While( ($message =  $this->GetFirstSMS($output)) != null)
                 {
-                    $mId = 0;
-                    if( count($message > 3))
-                    {
-                        $mId = $message[3];
-                    }
+                    $mId = $message->getId();
+                   
+                    
                     self::GetLogger()->info("Sending SMS, id= ".$mId);
                     $output->writeln("Sending SMS, id= ".$mId);
-                    if(( $error =  $this->SendSMS($message, $output)) == TRUE)
+                    if(( $error =  $this->SendSMS($message, $output)) == 0)
                     {
+                        
+                        
                         $count++;
                         self::GetLogger()->info("SMS Sent, calling event");
                         $output->writeln("<info>SMS Sent, calling event</info>");
@@ -197,6 +199,7 @@ class SendPendingSMSCommand extends Command
                         $output->writeln("<error>SMS Failed, calling event</error>");
                         $dispatcher->dispatch(SMS_KO, new SMSEvent($error, $mId));
                     }
+                    $this->UpdateSentStaus($message, $error );
                 }
                 
             }
@@ -204,9 +207,10 @@ class SendPendingSMSCommand extends Command
             {
                 $output->writeln("<error>".$exception."</error>");
             }
+            self::Unlock();
             self::GetLogger()->info($count." SMSs sent,".$fail." failed. unlocking");
             $output->writeln("<info>".$count." SMSs sent,".$fail." failed.  unlocking</info>");
-            self::Unlock();
+            
         }
         else
         {
@@ -215,6 +219,33 @@ class SendPendingSMSCommand extends Command
             self::GetLogger()->info("Cron job already executing, if it doesn't finish kill it");
         }
         
+    }
+    
+    
+    protected function UpdateSentStaus($mensaje, $error )
+    {
+         
+        if( $error == 0)
+        {
+            $now = (new \DateTime('NOW'));
+            $mensaje->setFechaEnvio($now);
+            $mensaje->setEstadoEnvio("ENVIADO");
+            $mensaje->setRespuestaApi(0);
+        }
+        else
+        {
+            $mensaje->setEstadoEnvio("ERROR");
+            if( is_int($error))
+            {
+                $mensaje->setRespuestaApi(print_r($error,true));
+            }
+            else
+            {
+                $mensaje->setLog($error);
+            }
+        }
+        $em = self::GetDoctrine();
+        $em->flush();
     }
     
     /**
@@ -241,8 +272,8 @@ class SendPendingSMSCommand extends Command
         if( count($entities)>0)
         {
             $sms = $entities[0];
-            $output->writeln("ID:".$sms->getMensajeId());
-            $mensaje = $em->getRepository('FractaliaSmsBundle:Mensaje')->find($sms->getMensajeId());
+            //$output->writeln("ID:".$sms->getMensajeId());
+            $mensaje = $sms->getMensaje();//$em->getRepository('FractaliaSmsBundle:Mensaje')->find($sms->getMensajeId());
             
             if( $mensaje != null )
             {
@@ -251,8 +282,8 @@ class SendPendingSMSCommand extends Command
                 $sms->setEstadoEnvio("ENVIANDO");
                 $em->flush();
                 
-                $returnValue =  [$sms->getRemitente(), $sms->getDestinatario(),$mensaje->getTexto(), $sms->getId()];
-                $output->writeln("HAY MENSAJE:\n".print_r($returnValue));
+                $returnValue =  $sms;
+                $output->writeln("HAY MENSAJE:\n".$this->PrintSms($returnValue));
                 return $returnValue;
             }
         }
@@ -271,29 +302,30 @@ class SendPendingSMSCommand extends Command
      */
     protected function SendSMS($smsData, $output)
     {
-        if(count($smsData)>2)
+        if($smsData!=null)
         {
-            $sms = new Sms(self::GetLogger());
+            $sms = new SmsManager(self::GetLogger());
             //Instantiate MOVISTAR client
             $params = self::GetParameters();
             $client = new XmlRpcClient($params['url']);
-            $parameters = $sms->preparaSmsAGrupo($smsData[1],$smsData[2]);
-            self::GetLogger()->debug("sending sms:".print_r($smsData));
-            $output->writeln("<info>sending sms:".print_r($smsData)."</info>");
+            
+            $parameters = $sms->preparaSmsAGrupo($smsData->getDestinatario(),$smsData->getMensaje()->getTexto());
+            self::GetLogger()->debug("sending sms:".$this->PrintSms( $smsData));
+            $output->writeln("<info>sending sms:".$this->PrintSms( $smsData)."</info>");
             
             try
             {
                 $resp = $client->__call("MensajeriaNegocios_enviarAGrupoContacto", $parameters);
-                self::GetLogger()->info("sms send result:".$resp);
-                $output->writeln("<info>sms send result:".$resp."</info>");
+                self::GetLogger()->info("sms send result:", array ('datos' => $resp));
+                $output->writeln("<info>sms send result:".print_r($resp,true)."</info>");
                 
                 if ($resp != 0)
                 {   
-                    self::GetLogger()->debug("sending sms ERROR:".print_r($resp));
-                    $output->writeln("<error>sending sms ERROR:".print_r($resp)."</error>");
+                    self::GetLogger()->debug("sending sms ERROR:" ,array ('datos' => $resp));
+                    $output->writeln("<error>sending sms ERROR:".print_r($resp,true)."</error>");
                     return $resp;
                 }
-                return TRUE;
+                return 0;
             }
             catch (Exception $e)
             {
@@ -303,5 +335,14 @@ class SendPendingSMSCommand extends Command
             }
         }
         return "invalid arguments, sendSMS requires an array of three elements";
+    }
+    protected function PrintSms($s)
+    {
+        return $s->getId()." To:".$s->getDestinatario()." Msg:".$this->GetSmsText($s);
+    }
+    protected function GetSmsText($s)
+    {
+        $m = $s->getMensaje();
+        return $m==null?"":$m->getTexto();
     }
 }

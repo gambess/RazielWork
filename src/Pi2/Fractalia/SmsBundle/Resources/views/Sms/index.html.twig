@@ -1,42 +1,42 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Mensaje list</h1>
+    <h1>Sms list</h1>
 
     <table class="records_list">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Nombreplantilla</th>
-                <th>Tipomensaje</th>
-                <th>Texto</th>
-                <th>Estado</th>
+                <th>Destinatario</th>
+                <th>Remitente</th>
+                <th>Respuestaapi</th>
+                <th>Estadoenvio</th>
                 <th>Log</th>
+                <th>Fechaenvio</th>
                 <th>Fechacreacion</th>
                 <th>Fechaactualizacion</th>
-                <th>Fechaadjuntadosms</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombrePlantilla }}</td>
-                <td>{{ entity.tipoMensaje }}</td>
-                <td>{{ entity.texto }}</td>
-                <td>{{ entity.estado }}</td>
+                <td><a href="{{ path('sms_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.destinatario }}</td>
+                <td>{{ entity.remitente }}</td>
+                <td>{{ entity.respuestaApi }}</td>
+                <td>{{ entity.estadoEnvio }}</td>
                 <td>{{ entity.log }}</td>
+                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaAdjuntadoSms %}{{ entity.fechaAdjuntadoSms|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('mensaje_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('sms_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('mensaje_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -47,7 +47,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('mensaje_new') }}">
+            <a href="{{ path('sms_new') }}">
                 Create a new entry
             </a>
         </li>

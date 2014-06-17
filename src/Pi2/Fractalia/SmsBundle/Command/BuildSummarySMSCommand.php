@@ -1,5 +1,5 @@
 <?php
-namespace Pi2\Fractalia\Commands;
+namespace Pi2\Fractalia\SmsBundle\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

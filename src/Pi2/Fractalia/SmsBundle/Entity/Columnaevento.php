@@ -6,59 +6,97 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Columnaevento
+ *
+ * @ORM\Table(name="ColumnaEvento", indexes={@ORM\Index(name="fk_ColumnaEvento_Incidencia1_idx", columns={"incidencia_id"})})
+ * @ORM\Entity
  */
 class Columnaevento
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="numero_caso", type="string", length=20, nullable=true)
      */
     private $numeroCaso;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="cliente", type="string", length=50, nullable=true)
      */
     private $cliente;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=50, nullable=true)
      */
     private $tipo;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tecnico", type="string", length=100, nullable=true)
      */
     private $tecnico;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tsol", type="string", length=10, nullable=true)
      */
     private $tsol;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="datetime", nullable=true)
      */
     private $fecha;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="modo", type="string", length=10, nullable=true)
      */
     private $modo;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="detalle", type="text", nullable=true)
      */
     private $detalle;
 
     /**
-     * @var integer
+     * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="incidencia_id", referencedColumnName="id")
+     * })
      */
-    private $id;
+    private $incidencia;
+
 
     /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
+     * Get id
+     *
+     * @return integer 
      */
-    private $mensaje;
-
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set numeroCaso
@@ -245,35 +283,25 @@ class Columnaevento
     }
 
     /**
-     * Get id
+     * Set incidencia
      *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set mensaje
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje
+     * @param \Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia
      * @return Columnaevento
      */
-    public function setMensaje(\Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje = null)
+    public function setIncidencia(\Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia = null)
     {
-        $this->mensaje = $mensaje;
+        $this->incidencia = $incidencia;
 
         return $this;
     }
 
     /**
-     * Get mensaje
+     * Get incidencia
      *
-     * @return \Pi2\Fractalia\SmsBundle\Entity\Mensaje 
+     * @return \Pi2\Fractalia\Entity\SGSD\Incidencia 
      */
-    public function getMensaje()
+    public function getIncidencia()
     {
-        return $this->mensaje;
+        return $this->incidencia;
     }
 }

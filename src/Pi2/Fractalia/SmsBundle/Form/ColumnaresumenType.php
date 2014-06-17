@@ -18,7 +18,7 @@ class ColumnaresumenType extends AbstractType
             ->add('numeroCaso')
             ->add('estado')
             ->add('servicio')
-            ->add('resumen')
+//            ->add('incidencia')
         ;
     }
     

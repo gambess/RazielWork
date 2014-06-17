@@ -6,34 +6,63 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Columnaresumen
+ *
+ * @ORM\Table(name="ColumnaResumen", indexes={@ORM\Index(name="fk_ColumnaResumen_Incidencia1_idx", columns={"Incidencia_id"})})
+ * @ORM\Entity
  */
 class Columnaresumen
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var string
+     *
+     * @ORM\Column(name="numero_caso", type="string", length=45, nullable=true)
      */
     private $numeroCaso;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=45, nullable=true)
      */
     private $estado;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="servicio", type="string", length=45, nullable=true)
      */
     private $servicio;
 
     /**
-     * @var integer
+     * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
+     *
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Incidencia_id", referencedColumnName="id")
+     * })
      */
-    private $id;
+    private $incidencia;
+
+
 
     /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Resumen
+     * Get id
+     *
+     * @return integer 
      */
-    private $resumen;
-
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set numeroCaso
@@ -105,35 +134,25 @@ class Columnaresumen
     }
 
     /**
-     * Get id
+     * Set incidencia
      *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set resumen
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Resumen $resumen
+     * @param \Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia
      * @return Columnaresumen
      */
-    public function setResumen(\Pi2\Fractalia\SmsBundle\Entity\Resumen $resumen = null)
+    public function setIncidencia(\Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia = null)
     {
-        $this->resumen = $resumen;
+        $this->incidencia = $incidencia;
 
         return $this;
     }
 
     /**
-     * Get resumen
+     * Get incidencia
      *
-     * @return \Pi2\Fractalia\SmsBundle\Entity\Resumen 
+     * @return \Pi2\Fractalia\Entity\SGSD\Incidencia 
      */
-    public function getResumen()
+    public function getIncidencia()
     {
-        return $this->resumen;
+        return $this->incidencia;
     }
 }

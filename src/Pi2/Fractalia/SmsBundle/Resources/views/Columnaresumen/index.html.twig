@@ -6,20 +6,20 @@
     <table class="records_list">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Numerocaso</th>
                 <th>Estado</th>
                 <th>Servicio</th>
-                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('columnaresumen_show', { 'id': entity.id }) }}">{{ entity.numeroCaso }}</a></td>
+                <td><a href="{{ path('columnaresumen_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.numeroCaso }}</td>
                 <td>{{ entity.estado }}</td>
                 <td>{{ entity.servicio }}</td>
-                <td>{{ entity.id }}</td>
                 <td>
                 <ul>
                     <li>

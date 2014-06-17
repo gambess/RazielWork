@@ -15,142 +15,124 @@
 namespace Pi2\Fractalia\SmsBundle\Manager;
 
 use Pi2\Fractalia\SmsBundle\Entity\Mensaje;
+use Pi2\Fractalia\SmsBundle\Entity\Columnaevento;
+use Pi2\Fractalia\SmsBundle\Entity\Columnaresumen;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
+use Pi2\Fractalia\SmsBundle\Util\IncidenciaArrayEvento;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class MensajeManager
 {
-    private $incidenciaClon;
-    private $elementos = array();
-    private $plantillas = array();
+    /*
+     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia')
+     */
+    private $tsolArrayConf;
+    /*
+     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos')
+     */
+    private $nombresCortosConf;
+    /*
+     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso')
+     */
+    private $traducciones;
 
-    public function __construct($logger)
-    {
-        $this->logger = $logger;
-    }
-    
-    public function copyIncidencia(Incidencia $incidencia)
-    {
-        $this->incidenciaClon = $incidencia;
-    }
-    
-    public function setElementosTemplate()
-    {
-        $this->elementos = $elementos;
-    }
-    
-    public function createMensaje($param)
-    {
-        
-    }
-    
-    public function readMensaje($id)
-    {
-        
-    }
-    
-    public function updateMensaje($param)
-    {
-        
-    }
-    public function deleteMensaje($param)
-    {
-        
-    }
+    /*
+     * Crear el Mensaje A partir de los datos enviados
+     * @param Incidencia|ArrayCollection $data
+     * @return id id del Mensaje
+     */
 
-    public function setIncidenciaToPlantilla()
+    public function createMensaje($data, $em)
     {
-        return $this->buildArraytoMatchPlantilla();
-    }
-
-    public function countElementosPlantilla()
-    {
-        return count($this->elementos);
-    }
-
-    protected function buildArraytoMatchPlantilla()
-    {
-        $temp = array();
-        $temp = array_flip($this->elementos);
-        return array_fill_keys($temp, 0);
-    }
-    
-    public function fillArrayWithIncidencia(){
-        $incidenciaArray = $this->setIncidenciaToPlantilla();
-        $temp = array();
-        
-        foreach ($incidenciaArray as $index => $value)
+        if ($data instanceof Incidencia)
         {
-            switch ($index){
-                case "id":
-                    $temp[$index] = method_exists($this->incidenciaClon, 'getNumeroCaso') ? $this->incidenciaClon->getNumeroCaso(): $value;
-                    break;
-                case "cliente":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getTitulo')) ? $this->incidenciaClon->getTitulo(): $value;
-                    break;
-                case "tipo":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getPrioridad') )? $this->incidenciaClon->getPrioridad(): $value;
-                    break;
-                case "tecnico":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getTecnicoAsignadoFinal')) ? $this->incidenciaClon->getTecnicoAsignadoFinal(): $value;
-                    break;
-                case "tsol":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getTecnicoAsignadoInicial')) ? $this->incidenciaClon->getTecnicoAsignadoInicial(): $value;
-                    break;
-                case "fecha":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getFechaApertura')) ? $this->incidenciaClon->getFechaApertura(): $value;
-                    break;
-                case "modo":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getTitulo')) ? $this->incidenciaClon->getTitulo(): $value;
-                    break;
-                case "detalle":
-                    $temp[$index] = (method_exists(get_class($this->incidenciaClon), 'getResoluciones')) ? : $value;
-                    break;
-            }
-        }
-                print_r($temp);die;
+            $mensaje = new Mensaje();
+            $columna = new Columnaevento();
 
-        return $temp;
-        
-    }
-    
-    public function setPlantillaFromPlantillas($nombrePlantilla)
-    {
-        $temp = array();
-        if(array_key_exists($nombrePlantilla, $this->plantillas) or (  in_array($nombrePlantilla, $this->plantillas))){
+
+//            $em = $this->getDoctrine()->getManager();
+//            $data = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')->find(66);
+            $evento = $data->getEstado(); //Es necesario definir la construccion de los estados
+            $array = new IncidenciaArrayEvento($evento, $this->tsolArrayConf, $this->nombresCortosConf, $this->traducciones);
+            /*
+             * Array con los datos copiados de la incidencia Evento
+             */
+            $arrayIncidencia = $array->setArrayIncidencia($data);
+            $estado = in_array('missing', $arrayIncidencia) ? 'FAIL' : 'CORRECT';
+
+            $columna->setIncidencia($data);
+            $columna->setNumeroCaso($arrayIncidencia['id']);
+            $columna->setCliente($arrayIncidencia['cliente']);
+            $columna->setTipo($arrayIncidencia['tipo']);
+            $columna->setTecnico($arrayIncidencia['tecnico']);
+            $columna->setTsol($arrayIncidencia['tsol']);
+            $columna->setFecha($arrayIncidencia['fecha']);
+            $columna->setModo($arrayIncidencia['modo']);
+            $columna->setDetalle($arrayIncidencia['detalle']);
+            $em->persist($columna);
+            $em->flush();
+
+            $now = (new \DateTime('NOW'));
+            $mensaje->setFechaCreacion($now);
+            $mensaje->setFechaActualizacion($now);
+            $mensaje->setNombrePlantilla($evento);
+            $mensaje->setTipoMensaje('EVENTO');
+            $mensaje->setColumnaresumen(null);
+            $mensaje->setEstado($estado);
+            $em->persist($mensaje);
+            $em->flush();
+
+
+
+            $mensaje->setTexto($this->getText($columna));
+            $mensaje->setColumnaEvento($columna);
+            $em->persist($mensaje);
+            $em->flush();
+            
+            return $mensaje->getId();
+        }
+        if ($data instanceof ArrayCollection)
+        {
             
         }
     }
-    
-    public function setPlantillas($plantillas){
-        $this->elementos = $plantillas;
-    }
-    
-    public function getPlantilla($templateName){
-        return $this->plantillas[$templateNames];
-        
-    }
-    
-    public function buildIncidenciaArrayforPlantilla($templateName){
-        
-        return $tmp;
+
+
+    public function setTsolArrayConf($tsolArrayConf)
+    {
+        $this->tsolArrayConf = $tsolArrayConf;
     }
 
-    public function bindIncidenciaToPlantillaArray()
+    public function setNombresCortosConf($nombresCortosConf)
     {
-        foreach ($this->elementos as $key => $val)
-        {
-            switch ($key){
-                case 'id':
-                    
-                case 'cliente':
-                case 'tipo':
-                case 'tecnico':
-                case 'tsol':
-                case 'fecha':
-                case 'modo':
-                case 'detalle':
-            }
+        $this->nombresCortosConf = $nombresCortosConf;
+    }
+
+    public function setTraducciones($traducciones)
+    {
+        $this->traducciones = $traducciones;
+    }
+
+    public function setDestinatarios($destinatarios)
+    {
+        $this->destinatarios = $destinatarios;
+    }
+
+    protected function getText($entity)
+    {
+        if($entity instanceof Columnaevento){
+        $engine = $GLOBALS['kernel']->getContainer()->get('templating');
+        $content = $engine->render('FractaliaSmsBundle:Columnaevento:text.txt.twig', array(
+            'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+            'entity' => $entity
+        ));
         }
+        return $content;
+    }
+    
+    protected function getLabelsFromConfigByEvento($name)
+    {
+        return $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.plantillas')[$name];
     }
 
 }

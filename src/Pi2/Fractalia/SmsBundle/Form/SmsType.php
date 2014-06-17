@@ -17,13 +17,13 @@ class SmsType extends AbstractType
         $builder
             ->add('destinatario')
             ->add('remitente')
-            ->add('mensaje', new MensajeType())
-//            ->add('respuesta')
-//            ->add('estado')
-//            ->add('bitacora')
-//            ->add('fechaEnvio')
-//            ->add('fechaCreacion')
-//            ->add('fechaActualizacion')
+            ->add('respuestaApi')
+            ->add('estadoEnvio')
+            ->add('log')
+            ->add('fechaEnvio')
+            ->add('fechaCreacion')
+            ->add('fechaActualizacion')
+//            ->add('mensaje')
         ;
     }
     
