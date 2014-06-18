@@ -13,7 +13,7 @@ use Pi2\Fractalia\SmsBundle\Form\ColumnaresumenType;
 /**
  * Columnaresumen controller.
  *
- * @Route("/columnaresumen")
+ * @Route("/resumen")
  */
 class ColumnaresumenController extends Controller
 {
@@ -21,7 +21,7 @@ class ColumnaresumenController extends Controller
     /**
      * Lists all Columnaresumen entities.
      *
-     * @Route("/", name="columnaresumen")
+     * @Route("/", name="resumen")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class ColumnaresumenController extends Controller
     /**
      * Creates a new Columnaresumen entity.
      *
-     * @Route("/", name="columnaresumen_create")
+     * @Route("/", name="resumen_create")
      * @Method("POST")
      * @Template("FractaliaSmsBundle:Columnaresumen:new.html.twig")
      */
@@ -53,7 +53,7 @@ class ColumnaresumenController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('columnaresumen_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('resumen_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class ColumnaresumenController extends Controller
     private function createCreateForm(Columnaresumen $entity)
     {
         $form = $this->createForm(new ColumnaresumenType(), $entity, array(
-            'action' => $this->generateUrl('columnaresumen_create'),
+            'action' => $this->generateUrl('resumen_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class ColumnaresumenController extends Controller
     /**
      * Displays a form to create a new Columnaresumen entity.
      *
-     * @Route("/new", name="columnaresumen_new")
+     * @Route("/new", name="resumen_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class ColumnaresumenController extends Controller
     /**
      * Finds and displays a Columnaresumen entity.
      *
-     * @Route("/{id}", name="columnaresumen_show")
+     * @Route("/{id}", name="resumen_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class ColumnaresumenController extends Controller
     /**
      * Displays a form to edit an existing Columnaresumen entity.
      *
-     * @Route("/{id}/edit", name="columnaresumen_edit")
+     * @Route("/{id}/edit", name="resumen_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class ColumnaresumenController extends Controller
     private function createEditForm(Columnaresumen $entity)
     {
         $form = $this->createForm(new ColumnaresumenType(), $entity, array(
-            'action' => $this->generateUrl('columnaresumen_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('resumen_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class ColumnaresumenController extends Controller
     /**
      * Edits an existing Columnaresumen entity.
      *
-     * @Route("/{id}", name="columnaresumen_update")
+     * @Route("/{id}", name="resumen_update")
      * @Method("PUT")
      * @Template("FractaliaSmsBundle:Columnaresumen:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class ColumnaresumenController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('columnaresumen_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('resumen_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class ColumnaresumenController extends Controller
     /**
      * Deletes a Columnaresumen entity.
      *
-     * @Route("/{id}", name="columnaresumen_delete")
+     * @Route("/{id}", name="resumen_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class ColumnaresumenController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('columnaresumen'));
+        return $this->redirect($this->generateUrl('resumen'));
     }
 
     /**
@@ -238,7 +238,7 @@ class ColumnaresumenController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('columnaresumen_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('resumen_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

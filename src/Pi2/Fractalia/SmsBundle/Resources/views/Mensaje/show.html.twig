@@ -6,10 +6,6 @@
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
                 <th>Nombreplantilla</th>
                 <td>{{ entity.nombrePlantilla }}</td>
             </tr>
@@ -40,6 +36,10 @@
             <tr>
                 <th>Fechaadjuntadosms</th>
                 <td>{{ entity.fechaAdjuntadoSms|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
             </tr>
         </tbody>
     </table>

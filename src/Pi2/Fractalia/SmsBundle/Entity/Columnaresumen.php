@@ -7,20 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Columnaresumen
  *
- * @ORM\Table(name="ColumnaResumen", indexes={@ORM\Index(name="fk_ColumnaResumen_Incidencia1_idx", columns={"Incidencia_id"})})
+ * @ORM\Table(name="ColumnaResumen", indexes={@ORM\Index(name="fk_ColumnaResumen_Incidencia1_idx", columns={"Incidencia_id"}), @ORM\Index(name="fk_ColumnaResumen_Mensaje1_idx", columns={"mensaje_id"})})
  * @ORM\Entity
  */
 class Columnaresumen
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
@@ -43,6 +34,15 @@ class Columnaresumen
     private $servicio;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
      *
      * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
@@ -52,17 +52,17 @@ class Columnaresumen
      */
     private $incidencia;
 
-
-
     /**
-     * Get id
+     * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
      *
-     * @return integer 
+     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje", inversedBy="columnaResumen")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mensaje_id", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $mensaje;
+
+
 
     /**
      * Set numeroCaso
@@ -134,6 +134,16 @@ class Columnaresumen
     }
 
     /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Set incidencia
      *
      * @param \Pi2\Fractalia\Entity\SGSD\Incidencia $incidencia
@@ -154,5 +164,28 @@ class Columnaresumen
     public function getIncidencia()
     {
         return $this->incidencia;
+    }
+
+    /**
+     * Set mensaje
+     *
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje
+     * @return Columnaresumen
+     */
+    public function setMensaje(\Pi2\Fractalia\SmsBundle\Entity\Mensaje $mensaje = null)
+    {
+        $this->mensaje = $mensaje;
+
+        return $this;
+    }
+
+    /**
+     * Get mensaje
+     *
+     * @return \Pi2\Fractalia\SmsBundle\Entity\Mensaje 
+     */
+    public function getMensaje()
+    {
+        return $this->mensaje;
     }
 }

@@ -13,15 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Columnaevento
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="numero_caso", type="string", length=20, nullable=true)
@@ -78,6 +69,15 @@ class Columnaevento
     private $detalle;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var \Pi2\Fractalia\Entity\SGSD\Incidencia
      *
      * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\Entity\SGSD\Incidencia")
@@ -88,15 +88,6 @@ class Columnaevento
     private $incidencia;
 
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set numeroCaso
@@ -280,6 +271,16 @@ class Columnaevento
     public function getDetalle()
     {
         return $this->detalle;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

@@ -6,7 +6,6 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Numerocaso</th>
                 <th>Cliente</th>
                 <th>Tipo</th>
@@ -15,14 +14,14 @@
                 <th>Fecha</th>
                 <th>Modo</th>
                 <th>Detalle</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('columnaevento_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.numeroCaso }}</td>
+                <td><a href="{{ path('evento_show', { 'id': entity.id }) }}">{{ entity.numeroCaso }}</a></td>
                 <td>{{ entity.cliente }}</td>
                 <td>{{ entity.tipo }}</td>
                 <td>{{ entity.tecnico }}</td>
@@ -30,13 +29,14 @@
                 <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ entity.modo }}</td>
                 <td>{{ entity.detalle }}</td>
+                <td>{{ entity.id }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('columnaevento_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('evento_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('columnaevento_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('evento_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -47,7 +47,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('columnaevento_new') }}">
+            <a href="{{ path('evento_new') }}">
                 Create a new entry
             </a>
         </li>

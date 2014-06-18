@@ -25,6 +25,5 @@ if ($debug) {
 
 $kernel = new AppKernel($env, $debug);
 $application = new Application($kernel);
-$application->add(new Commands\BuildSummarySMSCommand());
-$application->add(new Commands\SendPendingSMSCommand());
+
 $application->run($input);

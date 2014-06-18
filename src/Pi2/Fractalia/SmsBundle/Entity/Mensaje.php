@@ -7,20 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Mensaje
  *
- * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_Mensaje_ColumnaEvento1_idx", columns={"columna_evento_id"}), @ORM\Index(name="fk_Mensaje_ColumnaResumen1_idx", columns={"ColumnaResumen_id"})})
+ * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_Mensaje_ColumnaEvento1_idx", columns={"columna_evento_id"})})
  * @ORM\Entity
  */
 class Mensaje
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
@@ -78,6 +69,22 @@ class Mensaje
     private $fechaAdjuntadoSms;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Columnaresumen", mappedBy="mensaje")
+     */
+    private $columnaResumen;
+
+    /**
      * @var \Pi2\Fractalia\SmsBundle\Entity\Columnaevento
      *
      * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Columnaevento")
@@ -88,26 +95,13 @@ class Mensaje
     private $columnaEvento;
 
     /**
-     * @var \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen
-     *
-     * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Columnaresumen")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ColumnaResumen_id", referencedColumnName="id")
-     * })
+     * Constructor
      */
-    private $columnaresumen;
-
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        $this->columnaResumen = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
 
     /**
      * Set nombrePlantilla
@@ -294,6 +288,49 @@ class Mensaje
     }
 
     /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add columnaResumen
+     *
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaResumen
+     * @return Mensaje
+     */
+    public function addColumnaResuman(\Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaResumen)
+    {
+        $this->columnaResumen[] = $columnaResumen;
+
+        return $this;
+    }
+
+    /**
+     * Remove columnaResumen
+     *
+     * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaResumen
+     */
+    public function removeColumnaResuman(\Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaResumen)
+    {
+        $this->columnaResumen->removeElement($columnaResumen);
+    }
+
+    /**
+     * Get columnaResumen
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getColumnaResumen()
+    {
+        return $this->columnaResumen;
+    }
+
+    /**
      * Set columnaEvento
      *
      * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaevento $columnaEvento
@@ -314,28 +351,5 @@ class Mensaje
     public function getColumnaEvento()
     {
         return $this->columnaEvento;
-    }
-
-    /**
-     * Set columnaresumen
-     *
-     * @param \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaresumen
-     * @return Mensaje
-     */
-    public function setColumnaresumen(\Pi2\Fractalia\SmsBundle\Entity\Columnaresumen $columnaresumen = null)
-    {
-        $this->columnaresumen = $columnaresumen;
-
-        return $this;
-    }
-
-    /**
-     * Get columnaresumen
-     *
-     * @return \Pi2\Fractalia\SmsBundle\Entity\Columnaresumen 
-     */
-    public function getColumnaresumen()
-    {
-        return $this->columnaresumen;
     }
 }

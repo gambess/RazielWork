@@ -19,6 +19,7 @@ class ColumnaresumenType extends AbstractType
             ->add('estado')
             ->add('servicio')
 //            ->add('incidencia')
+//            ->add('mensaje')
         ;
     }
     

@@ -6,7 +6,6 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombreplantilla</th>
                 <th>Tipomensaje</th>
                 <th>Texto</th>
@@ -15,14 +14,14 @@
                 <th>Fechacreacion</th>
                 <th>Fechaactualizacion</th>
                 <th>Fechaadjuntadosms</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombrePlantilla }}</td>
+                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{ entity.nombrePlantilla }}</a></td>
                 <td>{{ entity.tipoMensaje }}</td>
                 <td>{{ entity.texto }}</td>
                 <td>{{ entity.estado }}</td>
@@ -30,6 +29,7 @@
                 <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if entity.fechaAdjuntadoSms %}{{ entity.fechaAdjuntadoSms|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.id }}</td>
                 <td>
                 <ul>
                     <li>

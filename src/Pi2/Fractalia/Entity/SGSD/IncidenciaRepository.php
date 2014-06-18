@@ -12,88 +12,131 @@ use Doctrine\ORM\EntityRepository;
  */
 class IncidenciaRepository extends EntityRepository
 {
-   //Se obtienen todos los tickets de todas las categorias de un servicio y parametros dados
-   public function getTickets($buzones, $campos, $condicion)
-   {
+
+    //Se obtienen todos los tickets de todas las categorias de un servicio y parametros dados
+    public function getTickets($buzones, $campos, $condicion)
+    {
         $query = $this->getEntityManager()->createQuery(
-                "SELECT ".$campos." FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
-                 WHERE i.grupoDestino in (:buzones) AND (".$condicion." 
+                "SELECT " . $campos . " FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
+                 WHERE i.grupoDestino in (:buzones) AND (" . $condicion . " 
                  ORDER BY i.fechaActualizacion asc")
-                 ->setParameters(array('buzones' => $buzones));
-                  
-        try {
+            ->setParameters(array('buzones' => $buzones));
+
+        try
+        {
             return $query->getResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
             return null;
-        } catch (\Doctrine\Orm\ORMException $e) {
+        }
+        catch (\Doctrine\Orm\ORMException $e)
+        {
             return $e;
-        }    
-    } 
-    
-   //Se obtiene la fecha de introducción del ticket en la BBDD con las condiciones de alarma parametrizadas
-   public function getFechaInsercionTicketConBuzon($numeroCaso, $buzones)
-   {
+        }
+    }
+
+    //Se obtiene la fecha de introducción del ticket en la BBDD con las condiciones de alarma parametrizadas
+    public function getFechaInsercionTicketConBuzon($numeroCaso, $buzones)
+    {
         $query = $this->getEntityManager()->createQuery(
                 "SELECT i.fechaInsercion FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
                  WHERE i.numeroCaso = :numeroCaso AND i.grupoDestino not in (:buzones)")
-                 ->setParameters(array('numeroCaso' => $numeroCaso,
-                                       'buzones' => $buzones))
-                 ->setMaxResults(1);
+            ->setParameters(array('numeroCaso' => $numeroCaso,
+                'buzones' => $buzones))
+            ->setMaxResults(1);
 
-        try {
+        try
+        {
             return $query->getSingleResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
-            return null;
         }
-    } 
-   
-    //
-   public function getFechaInsercionTicketSinBuzon($numeroCaso)
-   {
-        $query = $this->getEntityManager()->createQuery(
-                "SELECT i.fechaInsercion FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
-                 WHERE i.numeroCaso = :numeroCaso")
-                 ->setParameters(array('numeroCaso' => $numeroCaso))
-                 ->setMaxResults(1);
-
-        try {
-            return $query->getSingleResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
             return null;
         }
     }
-    
-    
-   //Se obtiene el ultimo ticket insertado en la BBDD
-   public function getTiempoUltimoTicket($buzones)
-   {
-       //WHERE i.servicioAfectado=:servicio AND i.fechaInsercion IN 
+
+    //
+    public function getFechaInsercionTicketSinBuzon($numeroCaso)
+    {
+        $query = $this->getEntityManager()->createQuery(
+                "SELECT i.fechaInsercion FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
+                 WHERE i.numeroCaso = :numeroCaso")
+            ->setParameters(array('numeroCaso' => $numeroCaso))
+            ->setMaxResults(1);
+
+        try
+        {
+            return $query->getSingleResult();
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
+            return null;
+        }
+    }
+
+    //Se obtiene el ultimo ticket insertado en la BBDD
+    public function getTiempoUltimoTicket($buzones)
+    {
+        //WHERE i.servicioAfectado=:servicio AND i.fechaInsercion IN 
         $query = $this->getEntityManager()->createQuery(
                 "SELECT i.fechaInsercion FROM Pi2\Fractalia\Entity\SGSD\Incidencia i         
                  WHERE i.grupoDestino in (:buzones) AND i.fechaInsercion IN 
                     (SELECT MAX(i2.fechaInsercion) FROM Pi2\Fractalia\Entity\SGSD\Incidencia i2
                      WHERE i2.grupoDestino in (:buzones))")
-                 ->setParameter('buzones', $buzones)
-                 ->setMaxResults(1);
-      
-        try {
+            ->setParameter('buzones', $buzones)
+            ->setMaxResults(1);
+
+        try
+        {
             return $query->getSingleResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
             return null;
         }
     }
-    
-      //Se comprueba si el ticket pertenece a un cliente crítico 
-   public function getExisteClienteCritico($numeroCaso, $sql)
-   {
+
+    //Se comprueba si el ticket pertenece a un cliente crítico 
+    public function getExisteClienteCritico($numeroCaso, $sql)
+    {
         $query = $this->getEntityManager()->createQuery(
                 "SELECT i.cliente FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
-                 WHERE (i.numeroCaso = :numeroCaso) AND (".$sql.")")
-                 ->setParameter('numeroCaso', $numeroCaso);
-        try {
+                 WHERE (i.numeroCaso = :numeroCaso) AND (" . $sql . ")")
+            ->setParameter('numeroCaso', $numeroCaso);
+        try
+        {
             return $query->getSingleScalarResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
             return null;
         }
     }
+
+    /*
+     * Retorna un array con los datos para generar el mensaje
+     */
+
+    public function getResumen($estados, $servicio = null)
+    {
+//        $estados = array('Open', 'Work In Progress', 'Suspended');
+        $missing = "missing";
+        $query = $this->getEntityManager()->createQuery(
+                "SELECT COALESCE( i.numeroCaso , (:missing) ) AS numeroCaso, COALESCE( lower(i.estado) , (:missing) ) AS estado, COALESCE( lower(i.grupoDestino) , (:missing) ) AS destino FROM Pi2\Fractalia\Entity\SGSD\Incidencia i
+                 WHERE (i.estado in (:estados) AND (i.grupoOrigen in (:servicio) OR i.grupoDestino in (:servicio)))")
+            ->setParameters(array('estados' => $estados,
+            'servicio' => $servicio, 'missing' => $missing)
+        );
+
+        try
+        {
+            return $query->getResult();
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
+            return null;
+        }
+    }
+
 }

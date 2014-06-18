@@ -68,7 +68,7 @@ class IncidenciaListener
                     if (sizeof($this->destinatarios) > 0)
                     {
                         $id_mensaje = $this->msj_manager->createMensaje($inci, $em);
-                        print_r($id_mensaje);
+
                         foreach ($this->destinatarios as $d)
                         {
                             $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));

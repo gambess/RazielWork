@@ -6,10 +6,6 @@
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
                 <th>Numerocaso</th>
                 <td>{{ entity.numeroCaso }}</td>
             </tr>
@@ -41,17 +37,21 @@
                 <th>Detalle</th>
                 <td>{{ entity.detalle }}</td>
             </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
         </tbody>
     </table>
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('columnaevento') }}">
+        <a href="{{ path('evento') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('columnaevento_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('evento_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

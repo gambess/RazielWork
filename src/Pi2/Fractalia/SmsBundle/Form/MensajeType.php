@@ -24,7 +24,6 @@ class MensajeType extends AbstractType
             ->add('fechaActualizacion')
             ->add('fechaAdjuntadoSms')
 //            ->add('columnaEvento')
-//            ->add('columnaresumen')
         ;
     }
     

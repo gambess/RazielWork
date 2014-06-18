@@ -42,6 +42,11 @@ class BuildSummarySMSCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         //$name = $input->getArgument('name');
+        //Step 1
+        //create message 
+        //Step 2
+        //Save Sms to database with POR_ENVIAR status
+        //end.
         
         if( ( $temp = 5) == 5)
         {

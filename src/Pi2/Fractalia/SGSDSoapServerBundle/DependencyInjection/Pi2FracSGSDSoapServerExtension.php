@@ -33,6 +33,7 @@ class Pi2FracSGSDSoapServerExtension extends Extension
         $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso', $config['envio_sms']['traduccion_tipo_caso']);
         $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia', $config['envio_sms']['tsol_guardia']);
         $container->setParameter('pi2_frac_sgsd_soap_server.plantillas', $config['plantillas']);
+        $container->setParameter('pi2_frac_sgsd_soap_server.resumenes.resumen', $config['resumenes']['RESUMEN']);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');

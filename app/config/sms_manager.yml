@@ -67,5 +67,8 @@ pi2_frac_sgsd_soap_server:
             
     resumenes:
         RESUMEN:
-            id: 'PENDIENTES '
-            data: 'data'
+            titulo: 'PENDIENTES '
+            estados: 
+                - 'Open'
+                - 'Work in Progress'
+                - 'Suspended'

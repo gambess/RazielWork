@@ -13,15 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Sms
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="destinatario", type="string", length=20, nullable=true)
@@ -78,6 +69,15 @@ class Sms
     private $fechaActualizacion;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
      * @var \Pi2\Fractalia\SmsBundle\Entity\Mensaje
      *
      * @ORM\ManyToOne(targetEntity="Pi2\Fractalia\SmsBundle\Entity\Mensaje")
@@ -88,16 +88,6 @@ class Sms
     private $mensaje;
 
 
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set destinatario
@@ -281,6 +271,16 @@ class Sms
     public function getFechaActualizacion()
     {
         return $this->fechaActualizacion;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
