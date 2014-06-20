@@ -1,1 +1,135 @@
-Datos {{ dump(entities) }}!
+{#{% extends '::base.html.twig' %}#}
+<!doctype html>
+<html lang="en">
+    {% block content_header %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <title>Logs Mensajes</title>
+            <meta name="author" content="Raziel Valle Miranda">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <meta name="HandheldFriendly" content="true">
+            <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+            {% stylesheets 'bundles/fractaliasms/css/*' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset( asset_url) }}"/>
+            {% endstylesheets %}
+            
+            {% javascripts
+            '@FractaliaSmsBundle/Resources/public/js/jquery-1.11.0.min.js'
+            '@FractaliaSmsBundle/Resources/public/js/retina.js'
+            output='js/compiled/javascripts.js'
+         %}
+        <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+        {% endjavascripts %}
+            <!--[if lt IE 9]>
+              <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+              <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+            <![endif]-->
+        
+    {%endblock%}
+        
+{% block body -%}
+        <div id="view">
+            <header>
+                <h1>Logs: Mensajes Enviados - Error en los Mensajes</h1>
+            </header>
+
+            <div id="container">
+                <ul>
+                    {% for entity in entities %}
+                       {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
+                             <a href="{{ path('mensajes_edit', { 'id': entity.id }) }}">
+                        {%elseif entity.estadoenvio == 'ENVIADO' or entity.estadoenvio == 'POR_ENVIAR' %}
+                            <a href="{{ path('mensajes_show', { 'id': entity.id }) }}">
+                        {%endif%}
+                       <li class="clearfix">
+                            {% image '@FractaliaSmsBundle/Resources/public/images/penthouse-with-bar.png' %}
+                                <img src="{{ asset_url }}" alt="thumb" class="thumbnail"/>
+                            {% endimage %}
+                            <h2>
+                                {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                                    ERROR EN EL MENSAJE  (grupo envio: {{ entity.destinatario }})
+                                {%elseif entity.estadoenvio == 'ERROR' %}
+                                    ERROR EN LOS DATOS   (grupo envio: {{ entity.destinatario }})                              
+                                {%elseif entity.estadoenvio == 'ENVIADO' %}
+                                    {{ entity.estadoenvio }} al grupo: {{ entity.destinatario }}
+                                {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                                    MENSAJE POR ENVIAR al grupo: {{ entity.destinatario }}
+                                {%endif%}
+                                 </h2>
+                                <p class="desc">{{entity.mensaje.tipomensaje}} {{entity.mensaje.texto|slice(0, 23)}}...</p>
+                            <span class="price">
+                            {% if entity.fechaEnvio %}
+                                Enviado: {{ entity.fechaEnvio|date('d/m/y H:i:s') }}
+                            {% elseif entity.fechaCreacion %}
+                                Creado: {{ entity.fechaCreacion|date('d/m/y H:i:s') }}
+                            {% endif %}
+                            </span>
+                        </li></a>
+                    
+                {% endfor %}
+                    
+                    <!--
+                    <a href="#"><li class="clearfix">
+                            <img src="images/modern-castle-kitchen.png" alt="thumb" class="thumbnail">
+                            <h2>Full-Room Mansion with Open Kitchen</h2>
+                            <p class="desc">Rental located in Pheonix, AZ. 2 bedrooms 1.5 baths. </p>
+
+                            <span class="price">$2,650/month</span>
+                        </li></a>
+                    -->
+                </ul>
+            </div>
+        </div>
+        
+
+
+
+   {# <table class="records_list">
+        <thead>
+            <tr>
+                <th>Destinatario</th>
+                <th>Remitente</th>
+                <th>Respuestaapi</th>
+                <th>Estadoenvio</th>
+                <th>Log</th>
+                <th>Fechaenvio</th>
+                <th>Fechacreacion</th>
+                <th>Fechaactualizacion</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('sms_show', { 'id': entity.id }) }}">{{ entity.destinatario }}</a></td>
+                <td>{{ entity.remitente }}</td>
+                <td>{{ entity.respuestaApi }}</td>
+                <td>{{ entity.estadoEnvio }}</td>
+                <td>{{ entity.log }}</td>
+                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.id }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('sms_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('sms_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>#}
+    {% endblock %}

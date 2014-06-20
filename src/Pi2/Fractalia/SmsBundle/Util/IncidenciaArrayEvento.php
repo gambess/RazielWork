@@ -12,6 +12,8 @@ use Pi2\Fractalia\Entity\SGSD\Incidencia;
 
 /**
  * Description of PrepareArrayIncidencia
+ * Cada Incidencia de un EVENTO que se captura en el listener
+ * Se copia en este array para su gestion en el SMS
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */

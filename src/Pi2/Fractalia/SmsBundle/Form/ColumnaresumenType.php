@@ -15,11 +15,18 @@ class ColumnaresumenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('numeroCaso')
-            ->add('estado')
-            ->add('servicio')
-//            ->add('incidencia')
-//            ->add('mensaje')
+            ->add('numeroCaso', 'text', array(
+                'label' => 'NÚMEROCASO',
+                'required' => true
+            ))
+            ->add('estado', 'text', array(
+                'label' => 'ESTADO',
+                'required' => true
+            ))
+            ->add('servicio', 'text', array(
+                'label' => 'GRUPODESTINO',
+                'required' => true
+            ))
         ;
     }
     

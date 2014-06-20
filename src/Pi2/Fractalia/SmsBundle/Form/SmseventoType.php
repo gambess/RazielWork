@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SmsType extends AbstractType
+class SmseventoType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,18 +15,10 @@ class SmsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('destinatario', 'text', array(
-                'label' => 'DESTINARIO: ',
-                'required'=> true,
-            ))
-            ->add('remitente', 'text', array(
-                'label' => 'REMITENTE: ',
-                'required'=> true,
-            ))
-            ->add('estadoEnvio', 'text', array(
-                'label' => 'ESTADO: ',
-                'required'=> true,
-            ))
+                ->add('sms', new SmsHeadType(),array(
+            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Sms'
+        ))
+                ->add('mensaje', new MensajeeventoType())
         ;
     }
     
@@ -45,6 +37,6 @@ class SmsType extends AbstractType
      */
     public function getName()
     {
-        return 'sms';
+        return 'pi2_fractalia_smsbundle_sms';
     }
 }

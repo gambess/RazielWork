@@ -20,6 +20,10 @@ class SmsManager
     private $datosApi = array();
 
 
+    /*
+     * Constructor En caso de que no se inyecten los datos de la Api.
+     * Se Obtiene de la configuracion directamente
+     */
     public function __construct()
     {
         if (count($this->datosApi) < 1)
@@ -33,9 +37,16 @@ class SmsManager
         return $this->send->escribe();
     }
 
+    /*
+     * Funcion que crea el SMS.
+     * Se añade un registro para que el cron envie el mensaje creado
+     * @param $destinatario string, nombre del destinatario a enviar
+     * @param $idmensajeTexto int, id del mensaje a adjuntar.  
+     * Debe ser un destinatario valido de la API utilizada. Esto no se valida
+     */
+    
     public function createSms($destinatario, $idmensajeTexto)
     {
-        $format = 'd/m/y H:i:s';
         $em = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
         $now = (new \DateTime('NOW'));
 
@@ -45,29 +56,39 @@ class SmsManager
         $new_sms->setDestinatario($destinatario);
         $new_sms->setRemitente($this->datosApi['remitente']);
         
-
-        if ($mensajeObj->getEstado() == 'CORRECT')
-        {
-            $estado = 'POR_ENVIAR';
-        }
-        else
-        {
-            $estado = 'ERROR_BUILD';
-        }
+        $estado = $this->traduceEstado( $mensajeObj->getEstado() );
 
         $new_sms->setMensaje($mensajeObj);
+        $mensajeObj->setFechaAdjuntadoSms($now);
+        $em->persist($mensajeObj);
+        $em->flush();
+
         $new_sms->setEstadoEnvio($estado);
-
         $new_sms->setFechaCreacion($now);        
-
         $new_sms->setFechaActualizacion($now);
         
         $em->persist($new_sms);
         $em->flush();
         
-        return $this->preparaSmsAGrupo($destinatario, $new_sms->getMensaje()->getTexto());
+//        return $this->preparaSmsAGrupo($destinatario, $new_sms->getMensaje()->getTexto());
     }
     
+    function updateSms($id) {
+        
+    }
+    function readSms($id) {
+        
+    }
+    function deleteSms($id) {
+        
+    }
+    function ListSmss() {
+        
+    }
+    /*
+     * Retorna el Texto Formateado para el envio a traves de la API de Movistar
+     * Este Formato solo sirve para envios a GRUPO
+     */
     public function preparaSmsAGrupo($destinatario, $mensajeTexto)
     {
 
@@ -78,5 +99,14 @@ class SmsManager
             $mensajeTexto,
             $this->datosApi['remitente']
         );
+    }
+    
+    protected function traduceEstado($param) {
+        switch($param){
+            case "CORRECT":
+                return "POR_ENVIAR";
+            case "FAIL":
+                return "ERROR_BUILD";
+        }
     }
 }

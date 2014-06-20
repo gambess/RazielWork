@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SmsType extends AbstractType
+class SmsHeadType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -23,10 +23,6 @@ class SmsType extends AbstractType
                 'label' => 'REMITENTE: ',
                 'required'=> true,
             ))
-            ->add('estadoEnvio', 'text', array(
-                'label' => 'ESTADO: ',
-                'required'=> true,
-            ))
         ;
     }
     
@@ -36,7 +32,7 @@ class SmsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Pi2\Fractalia\SmsBundle\Entity\Sms'
+            'inherit_data' => true
         ));
     }
 

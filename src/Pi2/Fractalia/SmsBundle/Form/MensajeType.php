@@ -15,15 +15,7 @@ class MensajeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombrePlantilla')
-            ->add('tipoMensaje')
-            ->add('texto')
-            ->add('estado')
-            ->add('log')
-            ->add('fechaCreacion')
-            ->add('fechaActualizacion')
-            ->add('fechaAdjuntadoSms')
-//            ->add('columnaEvento')
+            ->add('id')
         ;
     }
     
