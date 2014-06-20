@@ -34,6 +34,7 @@
 
             <div id="container">
                 <ul>
+                    {%set namepic = "" %}
                     {% for entity in entities %}
                        {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
                              <a href="{{ path('mensajes_edit', { 'id': entity.id }) }}">
@@ -41,7 +42,8 @@
                             <a href="{{ path('mensajes_show', { 'id': entity.id }) }}">
                         {%endif%}
                        <li class="clearfix">
-                            {% image '@FractaliaSmsBundle/Resources/public/images/penthouse-with-bar.png' %}
+                            {% set namepic = entity.destinatario | lower %}
+                            {% image '@FractaliaSmsBundle/Resources/public/images/icon-default.png' %}
                                 <img src="{{ asset_url }}" alt="thumb" class="thumbnail"/>
                             {% endimage %}
                             <h2>
