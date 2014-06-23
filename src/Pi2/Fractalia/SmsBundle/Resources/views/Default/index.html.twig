@@ -68,70 +68,7 @@
                         </li></a>
                     
                 {% endfor %}
-                    
-                    <!--
-                    <a href="#"><li class="clearfix">
-                            <img src="images/modern-castle-kitchen.png" alt="thumb" class="thumbnail">
-                            <h2>Full-Room Mansion with Open Kitchen</h2>
-                            <p class="desc">Rental located in Pheonix, AZ. 2 bedrooms 1.5 baths. </p>
-
-                            <span class="price">$2,650/month</span>
-                        </li></a>
-                    -->
                 </ul>
             </div>
         </div>
-        
-
-
-
-   {# <table class="records_list">
-        <thead>
-            <tr>
-                <th>Destinatario</th>
-                <th>Remitente</th>
-                <th>Respuestaapi</th>
-                <th>Estadoenvio</th>
-                <th>Log</th>
-                <th>Fechaenvio</th>
-                <th>Fechacreacion</th>
-                <th>Fechaactualizacion</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('sms_show', { 'id': entity.id }) }}">{{ entity.destinatario }}</a></td>
-                <td>{{ entity.remitente }}</td>
-                <td>{{ entity.respuestaApi }}</td>
-                <td>{{ entity.estadoEnvio }}</td>
-                <td>{{ entity.log }}</td>
-                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('sms_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('sms_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>#}
-    {% endblock %}
+     {% endblock %}

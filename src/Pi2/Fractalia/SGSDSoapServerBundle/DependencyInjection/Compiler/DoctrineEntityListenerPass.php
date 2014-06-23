@@ -30,7 +30,7 @@ class DoctrineEntityListenerPass implements CompilerPassInterface
         foreach ($ems as $name => $em)
         {
             $container->getDefinition(sprintf('doctrine.orm.%s_configuration', $name))
-                ->addMethodCall('setEntityListenerResolver', [new Reference('incidencia.entity_listener_resolver')])
+                ->addMethodCall('setEntityListenerResolver', array(new Reference('incidencia.entity_listener_resolver')))
             ;
         }
         $definition = $container->getDefinition('incidencia.entity_listener_resolver');
@@ -39,7 +39,7 @@ class DoctrineEntityListenerPass implements CompilerPassInterface
         foreach ($services as $service => $attributes)
         {
             $definition->addMethodCall(
-                'addMapping', [$container->getDefinition($service)->getClass(), $service]
+                'addMapping', array($container->getDefinition($service)->getClass(), $service)
             );
         }
     }
