@@ -28,7 +28,15 @@ class MensajeController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+        
+        
+//        $mensaje = $em->getRepository('FractaliaSmsBundle:Mensaje')->find(20);
+        
+        $servicios = $this->container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.servicio');
+        $estados = $this->container->getParameter('pi2_frac_sgsd_soap_server.resumenes.resumen');
+        
+        $resumen = $em->getRepository('Pi2\Fractalia\Entity\SGSD\Incidencia')->getResumen($estados['estados'],$servicios);
+        var_dump($resumen);die;
         $entities = $em->getRepository('FractaliaSmsBundle:Mensaje')->findAll();
 
         return array(

@@ -101,6 +101,7 @@ class MensajeManager
                 $resumen = new Columnaresumen();
                 $repoIncidencias = $em->getRepository('Pi2\Fractalia\Entity\SGSD\Incidencia');
                 $incidencia = $repoIncidencias->findOneByNumeroCaso($col['numeroCaso']);
+                $estados[$index] = $this->setEstado($col);
                 $resumen->setIncidencia($incidencia);
                 $resumen->setNumeroCaso($col['numeroCaso']);
                 $resumen->setEstado($col['estado']);
@@ -114,7 +115,7 @@ class MensajeManager
 
                 $em->persist($mensaje);
                 $em->flush();
-                $estados[$index] = $this->setEstado($col);
+               
             }
             $estado = in_array('FAIL', $estados) ? 'FAIL' : 'CORRECT';
             $mensaje->setEstado($estado);

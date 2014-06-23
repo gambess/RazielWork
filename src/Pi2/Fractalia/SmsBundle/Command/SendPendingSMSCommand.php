@@ -256,15 +256,7 @@ class SendPendingSMSCommand extends Command
     {
        
         $em = self::GetDoctrine();
-        //$rep =  $em->getRepository('FractaliaSmsBundle:Sms');
-        
-       // $query = $em->createQuery('SELECT * FROM Sms s ORDER BY s.fechaEnvio ASC');
-        
-            
-//$articles = $query->getResult(); // array of CmsArticle objects
-        
-        $entities = $em->getRepository('FractaliaSmsBundle:Sms')->findBy(array(), array('fechaEnvio' => 'ASC'));
-        $query = $em->getRepository('FractaliaSmsBundle:Sms')->createQueryBuilder('s')
+         $query = $em->getRepository('FractaliaSmsBundle:Sms')->createQueryBuilder('s')
                 ->where("s.estadoEnvio = 'POR_ENVIAR'")
                 ->orderBy('s.fechaEnvio', 'ASC')
                 ->getQuery();
@@ -287,8 +279,6 @@ class SendPendingSMSCommand extends Command
                 return $returnValue;
             }
         }
-        
-        
         //$output->writeln("get: ".  print_r($entities)."\ncount: ".count($entities));
         
         
