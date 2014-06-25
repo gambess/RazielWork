@@ -23,18 +23,6 @@ class Pi2FracSGSDSoapServerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.api', $config['envio_sms']['api']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.servicio', $config['envio_sms']['servicio']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.grupo_destino', $config['envio_sms']['grupo_destino']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.numero_destino', $config['envio_sms']['numero_destino']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.prioridad', $config['envio_sms']['prioridad']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.estado', $config['envio_sms']['estado']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos', $config['envio_sms']['nombres_cortos']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso', $config['envio_sms']['traduccion_tipo_caso']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia', $config['envio_sms']['tsol_guardia']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.plantillas', $config['plantillas']);
-        $container->setParameter('pi2_frac_sgsd_soap_server.resumenes.resumen', $config['resumenes']['RESUMEN']);
-
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
     }

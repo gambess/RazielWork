@@ -1,33 +1,33 @@
-pi2_frac_sgsd_soap_server:
+fractalia_sms:
     envio_sms:
+#        DATOS DE LA API para envio SMS
         api:
             url: 'https://www.mensajerianegocios.movistar.es/SrvConexion'
             apiuser: 'SMS_SDESK'
             apipass: 'tc3kGc'
             remitente: '217812'
             
-        servicio:
+        grupo_destino:
+            - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: BEGO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#                GRUPOS DE PRODUCCION ¡¡¡CUIDADO!!!
+#            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
+            
+#       NO IMPLEMENTADO FALTA IMPLEMENTAR METODOS DE LA API DE TELEFONICA
+        numero_destino:
+#            - { destinatario: 6XXXXXXXX, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 } 
+        
+#        FILTRO PRINCIPAL    
+        servicios_soc:
             - SEGEST MON
             - SEGEST SOC
             - SEG MERCEDES
             - SOPORTE SEGURIDAD
             - SOC SEGURIDAD
-            
-        grupo_destino:
-            - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
-#            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
-#            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
-            
-        numero_destino:
-#            - { destinatario: 602814043, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 } 
-#
-        prioridad:
-            - CRITICA
-            
-        estado:
-            - RESUELTO
-            
-#        #agregar y remplazar con nombres de clientes
+
+#       Traducciones
+#       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
             - VOCENTO
 #            - FERROVIAL    
@@ -43,19 +43,73 @@ pi2_frac_sgsd_soap_server:
 #            - NUTREXPA
 #            - COLOMER
 #            - ATENTO
-        
+#        Traduccion del tipo de caso
         traduccion_tipo_caso: 
             1: incidencia
             2: peticion
             3: queja
             4: consulta 
 
-        #reemplazar por TSOL de guardia
+        #Para rellenar la información del TSOL de guardia
         tsol_guardia:
             nombre: RV
-    
+            
+#       EVENTOS A MONITORIZAR
+    eventos:
+#       EVENTO RESOLUCION
+        RESOLUCION:
+            prioridades:
+                - CRITICA
+            estados:
+                RESUELTO:
+                    - RESUELTO
+                    - RESOLVED
+            grupos:
+                ORIGEN:
+                    IN:
+                    NOT_IN:
+                DESTINO:
+                    IN:
+                    NOT_IN:
+            filtro_titulo:
+#       EVENTO RESOLUCION
+        MODIFICACION:
+            prioridades:
+                - CRITICA
+            estados:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupos:
+                ORIGEN:
+                    IN:
+                    NOT_IN:
+                        - SOC SEGURIDAD
+                DESTINO: 
+                    IN:
+                    NOT_IN:
+            filtro_titulo:
+#       EVENTO ASIGNACION
+        ASIGNACION:
+            prioridades:
+                - CRITICA
+            estados:
+            grupos:
+                ORIGEN: 
+                    IN:
+                    NOT_IN:
+                DESTINO: 
+                    IN:
+                        - SOPORTE SEGURIDAD
+                        - SEGEST SOC
+                        - SEG MERCEDES
+                        - SEGEST MON
+                    NOT_IN:
+            filtro_titulo:
+                - AS
+
+#    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:
-        RESUELTO:
+        RESOLUCION:
             id: 'RESUELTO ID: '
             cliente: 'CLIENTE: '
             tipo: 'TIPO: '
@@ -63,7 +117,25 @@ pi2_frac_sgsd_soap_server:
             tsol: 'TSOL: '
             fecha: 'FECHA: '
             modo: 'MODO RECEPCION: '
-            detalle: 'RESOLUCIONES: '
+            detalle: 'RESOLUCION: '
+        MODIFICACION:
+            id: 'REPRIORIZACION ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
+        ASIGNACION:
+            id: 'ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
             
     resumenes:
         RESUMEN:

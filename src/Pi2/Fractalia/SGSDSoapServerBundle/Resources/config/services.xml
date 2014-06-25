@@ -9,50 +9,28 @@
         <!-- ListenerResolver -->
         <parameter key="incidencia.entity_listener_resolver.class">Pi2\Fractalia\ListenerResolver\EntityListenerResolver</parameter>
     </parameters>
-    <!--
-       <parameters>
-           <parameter key="pi2_frac_sgsd_soap_server.example.class">Pi2\Fractalia\SGSDSoapServerBundle\Example</parameter>
-       </parameters>
-    -->
     <services>
         <service id="soap_api" class="Pi2\Fractalia\SGSDSoapServerBundle\Soap\SGSDAPI">
             <argument type="service" id="doctrine.orm.default_entity_manager" /> 
             <argument type="service" id="hydrator"></argument> 
             <argument type="service" id="incidencia_manager"></argument>    
         </service>
-        
         <service id="hydrator" class="DoctrineModule\Stdlib\Hydrator\DoctrineObject">
             <argument type="service" id="doctrine.orm.default_entity_manager"></argument>
         </service>
-        
         <service id="incidencia_manager" class="Pi2\Fractalia\SGSDSoapServerBundle\IncidenciaManager">
             <argument type="service" id="doctrine.orm.default_entity_manager" />                    
         </service>
-        <!-- Servicios añadidos para el listener de Incidencias-->
-        <!-- Listener -->
+        
+        <!-- Listener de incidencias-->
         <service id="incidencia.listener" class="%incidencia.listener.class%">
             <argument type="service" id="logger"/>
-            <argument type="service" id="fractalia_sms.message"/>
-            <argument type="service" id="fractalia_sms.sms"/>
+            <argument type="service" id="fractalia_sms.configuracion_manager"/>
+            <argument type="service" id="fractalia_sms.sms_manager"/>
             <argument type="service" id="fractalia_sms.mensaje_manager"/>
             <tag name="monolog.logger" channel="listener"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
-            <call method="setPrioridades">
-                <argument>%pi2_frac_sgsd_soap_server.envio_sms.prioridad%</argument>
-            </call>
-            <call method="setEstados">
-                <argument>%pi2_frac_sgsd_soap_server.envio_sms.estado%</argument>
-            </call>
-            <call method="setSgsdServices">
-                <argument>%pi2_frac_sgsd_soap_server.envio_sms.servicio%</argument>
-            </call>
-            <call method="setApi">
-                <argument>%pi2_frac_sgsd_soap_server.envio_sms.api%</argument>
-            </call>
-            <call method="setDestinatarios">
-                <argument>%pi2_frac_sgsd_soap_server.envio_sms.grupo_destino%</argument>
-            </call>
         </service>
         <!-- Listener Resolver -->
         <service id="incidencia.entity_listener_resolver" class="%incidencia.entity_listener_resolver.class%">

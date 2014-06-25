@@ -12,29 +12,22 @@ use Pi2\Fractalia\SmsBundle\Entity\Sms;
 
 /**
  * Description of SMSManager
+ * Clase que se encarga de gestionar la creacion de sms's a partir de una mensaje
+ * Implementada como servicio
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
 class SmsManager
 {
-    private $datosApi = array();
-
-
     /*
-     * Constructor En caso de que no se inyecten los datos de la Api.
-     * Se Obtiene de la configuracion directamente
+     *  Inyectamos las configuracioness
      */
-    public function __construct()
+    private $configuraciones;
+    
+    
+    public function __construct($confs)
     {
-        if (count($this->datosApi) < 1)
-        {
-            $this->datosApi = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
-        }
-    }
-
-    public function write()
-    {
-        return $this->send->escribe();
+        $this->configuraciones = $confs;
     }
 
     /*
@@ -45,16 +38,22 @@ class SmsManager
      * Debe ser un destinatario valido de la API utilizada. Esto no se valida
      */
     
-    public function createSms($destinatario, $idmensajeTexto)
+    public function createSms($destinatario, $idmensajeTexto, $em=null)
     {
-        $em = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
+        if($em == null){
+                    $em = $GLOBALS['kernel']->getContainer()->get('doctrine')->getManager();
+
+        }
         $now = (new \DateTime('NOW'));
 
         $new_sms = new Sms();
         $mensajeObj = $em->getRepository('FractaliaSmsBundle:Mensaje')->find($idmensajeTexto);
+        //Si no existe el mensaje que?
 
         $new_sms->setDestinatario($destinatario);
-        $new_sms->setRemitente($this->datosApi['remitente']);
+        
+        //Unico dato de configuracion
+        $new_sms->setRemitente($this->configuraciones->getDatosApi()['remitente']);
         
         $estado = $this->traduceEstado( $mensajeObj->getEstado() );
 
@@ -70,7 +69,6 @@ class SmsManager
         $em->persist($new_sms);
         $em->flush();
         
-//        return $this->preparaSmsAGrupo($destinatario, $new_sms->getMensaje()->getTexto());
     }
     
     function updateSms($id) {
@@ -93,11 +91,11 @@ class SmsManager
     {
 
         return array(
-            $this->datosApi['apiuser'],
-            $this->datosApi['apipass'],
+            $this->configuraciones->getDatosApi()['apiuser'],
+            $this->configuraciones->getDatosApi()['apipass'],
             $destinatario,
             $mensajeTexto,
-            $this->datosApi['remitente']
+            $this->configuraciones->getDatosApi()['remitente']
         );
     }
     

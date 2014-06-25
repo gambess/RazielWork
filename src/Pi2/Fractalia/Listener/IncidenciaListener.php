@@ -8,6 +8,8 @@
 
 /**
  * Description of IncidenciaListener
+ * Implementación del Trigger Encapsulado a traves de un listener Doctrine
+ * Servicio que gestiona las persistencias de incidencias.
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
@@ -17,31 +19,21 @@ namespace Pi2\Fractalia\Listener;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pi2\Fractalia\Entity\SGSD\Incidencia;
-use Pi2\Fractalia\XmlRpcClient\XmlRpcClient;
 use Pi2\Fractalia\SmsBundle\Manager\SmsManager;
 
 class IncidenciaListener
 {
     private $logger;
-    private $message;
-    private $estados = array();
-    private $prioridades = array();
-    private $sgsd_services = array();
-    private $datosApi = array();
-    private $destinatarios = array();
-    private $msj;
-    private $sms;
-    private $msj_manager;
+    private $configuraciones;
+    private $mensajeManager;
+    private $smsManager;
 
-//    private $formatter;
-//    private $another_service;
-
-    public function __construct($logger, $message, $sms, $mensaje_manager)
+    public function __construct($logger, $configuracionManager, $smsManager, $mensajeManager)
     {
         $this->logger = $logger;
-        $this->message = $message;
-        $this->sms = $sms;
-        $this->msj_manager = $mensaje_manager;
+        $this->configuraciones = $configuracionManager;
+        $this->smsManager = $smsManager;
+        $this->mensajeManager = $mensajeManager;
     }
 
     /**
@@ -53,43 +45,59 @@ class IncidenciaListener
      */
     public function launchTrigger(Incidencia $incidencia, LifecycleEventArgs $event)
     {
+        $arrayEventos = array();
+        $arrayTmp = array();
+        $arrayFiltros = array();
+        $arrayDias = array();
         //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
         $em = $event->getEntityManager();
-        //recurperar prioridades en fichero configuracion
-        if ($this->filterByPrioridades($inci))
+
+        //Se inicia el monitoreo de la incidencia si en los campos grupo origen o grupo destino
+        //se encuentra algun servicio SOC, obtenido del fichero de configuración
+        if ($this->filtrarByServicesSOC($inci))
         {
-
-            if ($this->filterByEstados($inci))
+            $arrayEventos = $this->configuraciones->getEventos();
+            if (count($arrayEventos) > 0)
             {
-                $now = (new \DateTime('NOW'));
-                if ($this->filterBySgsdService($inci))
+                foreach ($arrayEventos as $plantillaNombre => $arrayFiltros)
                 {
-                    if (sizeof($this->destinatarios) > 0)
+                    if ($this->isInPrioridades($inci, $arrayFiltros['prioridades']))
                     {
-                        $id_mensaje = $this->msj_manager->createMensaje($inci, $em);
+                        $now = (new \DateTime('NOW'));
+                        $eventoNombre = key($arrayFiltros['estados']);
+                        $arrayTmp = array_shift($arrayFiltros['estados']);
 
-                        foreach ($this->destinatarios as $d)
+                        if (in_array($inci->getEstado(), $arrayTmp))
                         {
-                            $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
-
-                            $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
-                            if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))
+                            if (count($this->configuraciones->getDestinos()) > 0)
                             {
-                                $sms_manager = new SmsManager();
-                                $sms_manager->createSms($d['destinatario'], $id_mensaje);
-                                $resp = null;
-                                try
+                                
+                                $id_mensaje = $this->mensajeManager->createMensaje($inci, $em);
+                                foreach ($this->configuraciones->getDestinos() as $d)
                                 {
-                                    $this->logger->info('Código de Resultado del Envio', array('Codigo de envio:' => $resp));
-                                    if ($resp != 0)
+                                    $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
+
+                                    $arrayDias = preg_split('/\s*,\s*/', $d['dias']);
+
+                                    if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))
                                     {
-                                        throw new \Exception('Codigo de Envio Recibio:'.$resp);
+//                                        $sms_manager = new SmsManager();
+                                        $this->smsManager->createSms($d['destinatario'], $id_mensaje);
+                                        $resp = null;
+                                        try
+                                        {
+                                            $this->logger->info('Código de Resultado del Envio', array('Codigo de envio:' => $resp));
+                                            if ($resp != 0)
+                                            {
+                                                throw new \Exception('Codigo de Envio Recibio:' . $resp);
+                                            }
+                                        }
+                                        catch (Exception $e)
+                                        {
+                                            $this->logger->error('ERROR_ENVIO', array('Codigo respuesta' => $e->getMessage()));
+                                        }
                                     }
-                                }
-                                catch (Exception $e)
-                                {
-                                    $this->logger->error('ERROR_ENVIO', array('Codigo respuesta' => $e->getMessage()));
                                 }
                             }
                         }
@@ -99,48 +107,14 @@ class IncidenciaListener
         }
     }
 
-    public function setPrioridades($prioridades)
+    protected function isInPrioridades(Incidencia $incidencia, $arrayPrioridades)
     {
-        $this->prioridades = $prioridades;
+        return in_array($incidencia->getPrioridad(), $arrayPrioridades);
     }
 
-    public function setEstados($estados)
+    protected function filtrarByServicesSOC(Incidencia $incidencia)
     {
-        $this->estados = $estados;
-    }
-
-    public function setSgsdServices($sgsd_services)
-    {
-
-        $this->sgsd_services = $sgsd_services;
-    }
-
-    public function setApi($api)
-    {
-        $this->datosApi = $api;
-    }
-
-    public function setDestinatarios($destinatarios)
-    {
-
-        $this->destinatarios = $destinatarios;
-    }
-
-    protected function filterByPrioridades(Incidencia $incidencia)
-    {
-
-        return in_array($incidencia->getPrioridad(), $this->prioridades);
-    }
-
-    protected function filterByEstados(Incidencia $incidencia)
-    {
-        return in_array($incidencia->getEstado(), $this->estados);
-    }
-
-    protected function filterBySgsdService(Incidencia $incidencia)
-    {
-
-        if (in_array($incidencia->getGrupoDestino(), $this->sgsd_services) or in_array($incidencia->getGrupoOrigen(), $this->sgsd_services))
+        if (in_array($incidencia->getGrupoDestino(), $this->configuraciones->getServiciosSOC()) or in_array($incidencia->getGrupoOrigen(), $this->configuraciones->getServiciosSOC()))
         {
             return true;
         }

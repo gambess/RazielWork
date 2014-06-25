@@ -7,7 +7,9 @@
  */
 
 /**
- * Description of Mensaje
+ * Description of MensajeManager
+ * Clase que se encarga de gestionar la creacion de mensajes a partir de una incidencia
+ * Implementada como servicio
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
@@ -24,17 +26,15 @@ use Doctrine\ORM\PersistentCollection;
 class MensajeManager
 {
     /*
-     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.tsol_guardia')
+     *  Inyectamos las configuracioness
      */
-    private $tsolArrayConf;
-    /*
-     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.nombres_cortos')
-     */
-    private $nombresCortosConf;
-    /*
-     *  container->getParameter('pi2_frac_sgsd_soap_server.envio_sms.traduccion_tipo_caso')
-     */
-    private $traducciones;
+    private $configuraciones;
+    
+    
+    public function __construct($confs)
+    {
+        $this->configuraciones = $confs;
+    }
 
     /*
      * Crear el Mensaje A partir de los datos enviados 
@@ -46,13 +46,14 @@ class MensajeManager
         $now = (new \DateTime('NOW'));
         if ($data instanceof Incidencia)
         {
-
-
             $mensaje = new Mensaje();
             $columna = new Columnaevento();
             $evento = $data->getEstado(); //Al estar en la incidencia obtenemos el estado en hot
-            $array = new IncidenciaArrayEvento($evento, $this->tsolArrayConf, $this->nombresCortosConf, $this->traducciones);
+            
+            //Cambiar esto
+            $array = new IncidenciaArrayEvento($evento, $this->configuraciones->getTsolGuardia(), $this->configuraciones->getNombresCortos(), $this->configuraciones->getTraduccionesTipos());
             //Array con los datos copiados de la incidencia Evento
+            
             $arrayIncidencia = $array->setArrayIncidencia($data);
             $estado = $this->setEstado($arrayIncidencia);
             
@@ -72,7 +73,11 @@ class MensajeManager
             $mensaje->setFechaCreacion($now);
             $mensaje->setFechaActualizacion($now);
             $mensaje->setNombrePlantilla($evento);
+            
+            //cambiar tipo Mensaje
             $mensaje->setTipoMensaje('EVENTO');
+            
+            
             $mensaje->setEstado($estado);  
             $em->persist($mensaje);
               
@@ -90,6 +95,7 @@ class MensajeManager
             $mensaje->setColumnaEvento(null);
             $mensaje->setFechaCreacion($now);
             $mensaje->setFechaActualizacion($now);
+            //CAMBIAR nombre tipo plantilla y tipo mensaje
             $mensaje->setNombrePlantilla('RESUMEN');
             $mensaje->setTipoMensaje('RESUMEN');
             $em->persist($mensaje);
@@ -163,29 +169,7 @@ class MensajeManager
         
     }
     
-    /*
-     * Seteamos las variables con datos de la configuracion
-     */
-
-    public function setTsolArrayConf($tsolArrayConf)
-    {
-        $this->tsolArrayConf = $tsolArrayConf;
-    }
-
-    public function setNombresCortosConf($nombresCortosConf)
-    {
-        $this->nombresCortosConf = $nombresCortosConf;
-    }
-
-    public function setTraducciones($traducciones)
-    {
-        $this->traducciones = $traducciones;
-    }
-
-    public function setDestinatarios($destinatarios)
-    {
-        $this->destinatarios = $destinatarios;
-    }
+   
 
     /*
      * Setea los estados correcto y fallido cuando existe la palabra missing
@@ -226,12 +210,14 @@ class MensajeManager
      */
     protected function getText($entity)
     {
+        //Modificar templating
         $engine = $GLOBALS['kernel']->getContainer()->get('templating');
 
+        //Modificar estados
         if ($entity instanceof Columnaevento)
         {
             $content = $engine->render('FractaliaSmsBundle:Columnaevento:text.txt.twig', array(
-                'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+                'label' => $this->getLabelsFromConfigByEvento('RESOLUCION'),
                 'entity' => $entity
             ));
         }
@@ -243,19 +229,20 @@ class MensajeManager
         }
         return $content;
     }
-
+    
+//Etiquetas de las plantillas
     
     /*
      * Setear las etiquetas de los textos con datos de la configuracion
      */
     protected function getLabelsFromConfigByEvento($name)
     {
-        return $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.plantillas')[$name];
+        return $this->configuraciones->getPlantillas()[$name];
     }
     
     protected function getLabelFromConfigByResumen($name)
     {
-        return $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.resumenes.resumen')[$name];
+        return $this->configuraciones->getResumenes()[$name];
     }
 
 }
