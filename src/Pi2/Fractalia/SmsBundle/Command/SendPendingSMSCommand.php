@@ -79,7 +79,7 @@ class SendPendingSMSCommand extends Command
    
    private static function GetParameters()
    {
-       $params = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.api');
+       $params = $GLOBALS['kernel']->getContainer()->getParameter('fractalia_sms.envio_sms.api');
        return $params;
    }
    
@@ -294,12 +294,17 @@ class SendPendingSMSCommand extends Command
     {
         if($smsData!=null)
         {
-            $sms = new SmsManager(self::GetLogger());
+//            $sms = new SmsManager();
             //Instantiate MOVISTAR client
             $params = self::GetParameters();
             $client = new XmlRpcClient($params['url']);
             
-            $parameters = $sms->preparaSmsAGrupo($smsData->getDestinatario(),$smsData->getMensaje()->getTexto());
+                
+            //Inyectando el servicio de manejo de sms
+            $smsManager =  $this->getApplication()->getKernel()->getContainer()->get('fractalia_sms.sms_manager');
+            
+//            $parameters = $sms->preparaSmsAGrupo($smsData->getDestinatario(),$smsData->getMensaje()->getTexto());
+            $parameters = $smsManager->preparaSmsAGrupo($smsData->getDestinatario(),$smsData->getMensaje()->getTexto());
             self::GetLogger()->debug("sending sms:".$this->PrintSms( $smsData));
             $output->writeln("<info>sending sms:".$this->PrintSms( $smsData)."</info>");
             

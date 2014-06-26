@@ -41,7 +41,7 @@ class MensajeManager
      * @param Incidencia|Array $data Incidencia Capturada o Array con resumenes
      * @return id id del Mensaje
      */
-    public function createMensaje($data, $em=null)
+    public function createMensaje($data, $plantilla, $em=null)
     {
         $now = (new \DateTime('NOW'));
         if ($data instanceof Incidencia)
@@ -72,17 +72,15 @@ class MensajeManager
 
             $mensaje->setFechaCreacion($now);
             $mensaje->setFechaActualizacion($now);
-            $mensaje->setNombrePlantilla($evento);
-            
-            //cambiar tipo Mensaje
-            $mensaje->setTipoMensaje('EVENTO');
-            
+            $mensaje->setNombrePlantilla($plantilla);
+            $eventoNombre = key($this->configuraciones->getEventos()[$plantilla]['estado']);
+            $mensaje->setTipoMensaje($eventoNombre);
             
             $mensaje->setEstado($estado);  
             $em->persist($mensaje);
               
             $em->flush();
-            $mensaje->setTexto($this->getText($columna));
+            $mensaje->setTexto($this->getText($columna, $plantilla));
             $mensaje->setColumnaEvento($columna);
             $em->persist($mensaje);
             $em->flush();
@@ -208,7 +206,7 @@ class MensajeManager
      * Se renderiza la plantilla con el texto en txt
      * que se copia como cuerpo del mensaje
      */
-    protected function getText($entity)
+    protected function getText($entity, $plantilla = null)
     {
         //Modificar templating
         $engine = $GLOBALS['kernel']->getContainer()->get('templating');
@@ -217,7 +215,7 @@ class MensajeManager
         if ($entity instanceof Columnaevento)
         {
             $content = $engine->render('FractaliaSmsBundle:Columnaevento:text.txt.twig', array(
-                'label' => $this->getLabelsFromConfigByEvento('RESOLUCION'),
+                'label' => $this->getLabelsFromConfigByEvento($plantilla),
                 'entity' => $entity
             ));
         }

@@ -62,18 +62,20 @@ class IncidenciaListener
             {
                 foreach ($arrayEventos as $plantillaNombre => $arrayFiltros)
                 {
-                    if ($this->isInPrioridades($inci, $arrayFiltros['prioridades']))
+                    if($plantillaNombre == null or is_array($arrayFiltros) == null or count($arrayFiltros) == 0){
+                        continue;
+                    }
+                    if ($this->isIn($inci->getPrioridad(), $arrayFiltros['prioridades']))
                     {
                         $now = (new \DateTime('NOW'));
-                        $eventoNombre = key($arrayFiltros['estados']);
-                        $arrayTmp = array_shift($arrayFiltros['estados']);
-
-                        if (in_array($inci->getEstado(), $arrayTmp))
+                        
+                        $arrayTmp = array_shift($arrayFiltros['estado']);
+                        
+                        if ($this->isIn($inci->getEstado(), $arrayTmp))
                         {
                             if (count($this->configuraciones->getDestinos()) > 0)
                             {
-                                
-                                $id_mensaje = $this->mensajeManager->createMensaje($inci, $em);
+                                $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantillaNombre, $em);
                                 foreach ($this->configuraciones->getDestinos() as $d)
                                 {
                                     $this->logger->info('Nuevo Intento de Notificación a las', array('Fecha y Hora' => $now->format('d/m/y H:i')));
@@ -82,7 +84,6 @@ class IncidenciaListener
 
                                     if (in_array($this->getDiaEsp(), $arrayDias) && ($now->format('H:i') >= $d['desde']) && ($now->format('H:i') <= $d['hasta']))
                                     {
-//                                        $sms_manager = new SmsManager();
                                         $this->smsManager->createSms($d['destinatario'], $id_mensaje);
                                         $resp = null;
                                         try
@@ -107,9 +108,9 @@ class IncidenciaListener
         }
     }
 
-    protected function isInPrioridades(Incidencia $incidencia, $arrayPrioridades)
+    protected function isIn($txt, $array)
     {
-        return in_array($incidencia->getPrioridad(), $arrayPrioridades);
+        return in_array($txt, $array);
     }
 
     protected function filtrarByServicesSOC(Incidencia $incidencia)

@@ -156,7 +156,7 @@ class DefaultController extends Controller {
             $msj->setEstado("CORRECT");
             $entity->setEstadoEnvio("POR_ENVIAR");
             if (null != $evento) {
-                $msj->setTexto($this->getText($evento));
+                $msj->setTexto($this->getText($evento, $msj->getNombrePlantilla()));
             }
             if (count($resumen) > 0){
                 $msj->setTexto($this->getText($resumen));
@@ -224,10 +224,10 @@ class DefaultController extends Controller {
      * que se copia como cuerpo del mensaje
      */
 
-    protected function getText($entity) {
+    protected function getText($entity, $plantilla = null) {
         if ($entity instanceof Columnaevento) {
             return $this->renderView('FractaliaSmsBundle:Default:evento.txt.twig', array(
-                'label' => $this->getLabelsFromConfigByEvento('RESUELTO'),
+                'label' => $this->getLabelsFromConfigByEvento($plantilla),
                 'entity' => $entity
             ));
         }
@@ -244,11 +244,11 @@ class DefaultController extends Controller {
      */
 
     protected function getLabelsFromConfigByEvento($name) {
-        return $this->container->getParameter('pi2_frac_sgsd_soap_server.plantillas')[$name];
+        return $this->container->getParameter('fractalia_sms.plantillas')[$name];
     }
 
     protected function getLabelFromConfigByResumen($name) {
-        return $this->container->getParameter('pi2_frac_sgsd_soap_server.resumenes.resumen')[$name];
+        return $this->container->getParameter('fractalia_sms.resumenes.resumen')[$name];
     }
 
 }

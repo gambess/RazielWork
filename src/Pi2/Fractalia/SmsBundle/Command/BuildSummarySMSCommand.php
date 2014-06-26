@@ -38,8 +38,6 @@ class BuildSummarySMSCommand extends Command
         $this
             ->setName('cron:buildsummary')
             ->setDescription('Builds and enqueues sumary SMS, intended to be run every 4 hours.')
-
-
         ;
     }
 
@@ -47,14 +45,14 @@ class BuildSummarySMSCommand extends Command
     {
 
         $em = self::GetDoctrine();
-        $servicios = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.servicio');
-        $datosResumenes = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.resumenes.resumen');
+        $servicios = $GLOBALS['kernel']->getContainer()->getParameter('fractalia_sms.envio_sms.servicio');
+        $datosResumenes = $GLOBALS['kernel']->getContainer()->getParameter('fractalia_sms.resumenes.resumen');
 
         $array = $em->getRepository('Pi2\Fractalia\Entity\SGSD\Incidencia')->getResumen($datosResumenes['estados'], $servicios);
 
         if (is_array($array) and count($array) > 0)
         {
-            $gruposDestino = $GLOBALS['kernel']->getContainer()->getParameter('pi2_frac_sgsd_soap_server.envio_sms.grupo_destino');
+            $gruposDestino = $GLOBALS['kernel']->getContainer()->getParameter('fractalia_sms.envio_sms.grupo_destino');
 
             $msj_manager = new MensajeManager();
             $messageId = $msj_manager->createMensaje($array, $em);
