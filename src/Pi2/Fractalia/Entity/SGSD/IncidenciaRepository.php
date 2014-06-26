@@ -134,7 +134,14 @@ class IncidenciaRepository extends EntityRepository
 
         try
         {
-            return $query->getResult();
+            $resultado = $query->getResult();
+            if (count($resultado) == 0 ){
+                
+                return '"No hay tickets pendientes"';
+            }
+            if (count($resultado) > 0 ){
+            return $resultado;
+            }
         }
         catch (\Doctrine\Orm\NoResultException $e)
         {

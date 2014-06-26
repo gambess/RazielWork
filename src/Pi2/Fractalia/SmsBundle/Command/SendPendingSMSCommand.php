@@ -48,9 +48,6 @@ class SMSEvent extends Event
  */
 class SendPendingSMSCommand extends Command
 {
-    
-    
- 
    //for locking
    private static $_pid;
    
@@ -185,8 +182,6 @@ class SendPendingSMSCommand extends Command
                     $output->writeln("Sending SMS, id= ".$mId);
                     if(( $error =  $this->SendSMS($message, $output)) == 0)
                     {
-                        
-                        
                         $count++;
                         self::GetLogger()->info("SMS Sent, calling event");
                         $output->writeln("<info>SMS Sent, calling event</info>");

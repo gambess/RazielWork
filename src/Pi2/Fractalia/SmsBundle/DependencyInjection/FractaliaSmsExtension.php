@@ -34,7 +34,7 @@ class FractaliaSmsExtension extends Extension
         $container->setParameter('fractalia_sms.eventos', $config['eventos']);
         $container->setParameter('fractalia_sms.plantillas', $config['plantillas']);
         $container->setParameter('fractalia_sms.resumenes.resumen', $config['resumenes']['RESUMEN']);
-
+     
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
     }
