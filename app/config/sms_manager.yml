@@ -76,42 +76,42 @@ fractalia_sms:
                 NOT:
             filtro_titulo:
 
-#        MODIFICACION:
-#            prioridades:
-#                - CRITICA
-#            estado:
-#                MODIFICADO:
-#                    - OPEN
-#                    - STOPPED
-#                    - CLOSED
-#            grupo_origen:
-#                IN:
-#                NOT:
-#                    - SOC SEGURIDAD
-#            grupo_destino: 
-#                IN:
-#                NOT:
-#            filtro_titulo:
+        MODIFICACION:
+            prioridades:
+                - CRITICA
+            estado:
+                MODIFICADO:
+                    - OPEN
+                    - STOPPED
+                    - CLOSED
+            grupo_origen:
+                IN:
+                NOT:
+                    - SOC SEGURIDAD
+            grupo_destino: 
+                IN:
+                NOT:
+            filtro_titulo:
 #       EVENTO ASIGNACION
 
-#        ASIGNACION:
-#            prioridades:
-#                - CRITICA
-#            estado:
-#                ASIGNADO:
-#                    - WORK IN PROGRESS
-#            grupo_origen:
-#                IN:
-#                NOT:
-#            grupo_destino: 
-#                IN:
-#                    - SOPORTE SEGURIDAD
-#                    - SEGEST SOC
-#                    - SEG MERCEDES
-#                    - SEGEST MON
-#                NOT:
-#            filtro_titulo:
-#                - AS
+        ASIGNACION:
+            prioridades:
+                - CRITICA
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen:
+                IN:
+                NOT:
+            grupo_destino: 
+                IN:
+                    - SOPORTE SEGURIDAD
+                    - SEGEST SOC
+                    - SEG MERCEDES
+                    - SEGEST MON
+                NOT:
+            filtro_titulo:
+                - AS
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:
@@ -124,24 +124,24 @@ fractalia_sms:
             fecha: 'FECHA: '
             modo: 'MODO RECEPCION: '
             detalle: 'RESOLUCION: '
-#        MODIFICACION:
-#            id: 'REPRIORIZACION ID: '
-#            cliente: 'CLIENTE: '
-#            tipo: 'TIPO: '
-#            tecnico: 'TECNICO: '
-#            tsol: 'TSOL: '
-#            fecha: 'FECHA: '
-#            modo: 'MODO RECEPCION: '
-#            detalle: 'RESUMEN: '
-#        ASIGNACION:
-#            id: 'ID: '
-#            cliente: 'CLIENTE: '
-#            tipo: 'TIPO: '
-#            tecnico: 'TECNICO: '
-#            tsol: 'TSOL: '
-#            fecha: 'FECHA: '
-#            modo: 'MODO RECEPCION: '
-#            detalle: 'RESUMEN: '
+        MODIFICACION:
+            id: 'REPRIORIZACION ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
+        ASIGNACION:
+            id: 'ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
             
     resumenes:
         RESUMEN:
