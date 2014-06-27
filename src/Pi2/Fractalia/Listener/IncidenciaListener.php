@@ -24,18 +24,6 @@ use Pi2\Fractalia\SmsBundle\Manager\SmsManager;
 class IncidenciaListener
 {
     /*
-     * Filtros de los eventos
-     */
-//    private $_prioridades;
-//    private $_estado;
-//    private $_grupoOrigenIn;
-//    private $_grupoOrigenNot;
-//    private $_grupoDestinoIn;
-//    private $_grupoDestinoNot;
-//    private $_filtroTitulo;
-
-
-    /*
      * Servicios Inyectados
      */
     private $logger;
@@ -62,8 +50,8 @@ class IncidenciaListener
     {
 //        $arrayEventos = array();
         $arrayTmp = array();
-        $arrayFiltros = array();
-        $arrayDias = array();
+        $pasoTodosFiltros = array();
+        $pasoFiltro = "";
 
         //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
@@ -75,7 +63,6 @@ class IncidenciaListener
         if ($this->filtrarByServicesSOC($inci))
         {
             $arrayEventos = $this->configuraciones->getEventos();
-
             //Existen Filtros
             if (count($arrayEventos) > 0)
             {
@@ -103,8 +90,8 @@ class IncidenciaListener
                     }
                     $arrayFiltroTitulo = array_slice($array, 4, 1, true);
                     //Cargados los filtros en cada Array
-//                print_r($arrayPrioridades);
-//                print_r($arrayEstados);
+//                    print_r($arrayPrioridades);
+//                    print_r($arrayEstados);
 //                    print_r($arrayGrupoDestinoIn);
 //                    print_r($arrayGrupoDestinoNot);
 //                    print_r($arrayGrupoOrigenIn);
@@ -113,16 +100,69 @@ class IncidenciaListener
 
                     if (count($arrayPrioridades) > 0 and ( $this->isIn($inci->getPrioridad(), $arrayPrioridades['prioridades'])))
                     {
+                        $pasoFiltro = true;
+                        $pasoTodosFiltros[] = $pasoFiltro;
+                        
                         $arrayTmp = array_shift($arrayEstados['estado']);
                         if (count($arrayEstados) > 0 and ( $this->isIn($inci->getEstado(), $arrayTmp)))
                         {
-                            if (count($this->configuraciones->getDestinos()) > 0)
+                            $pasoFiltro = true;
+                            $pasoTodosFiltros[] = $pasoFiltro;
+                            
+                            if (is_array($arrayGrupoOrigenIn) and count($arrayGrupoOrigenIn) > 0)
                             {
+                                if($this->filtrarByGrupo($inci->getGrupoOrigen(), $arrayGrupoOrigenIn['IN'], true)){
+                                    $pasoFiltro = true;
+                                }else{
+                                    $pasoFiltro = false;
+                                }
+                                $pasoTodosFiltros[] = $pasoFiltro;
 
-                                $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantillaNombre, $em);
-                                $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
-//                                break;
                             }
+                            if (is_array($arrayGrupoOrigenNot) and count($arrayGrupoOrigenNot) > 0)
+                            {
+                                if($this->filtrarByGrupo($inci->getGrupoOrigen(), $arrayGrupoOrigenNot['NOT'])){
+                                    $pasoFiltro = true;
+                                }else{
+                                    $pasoFiltro = false;
+                                }
+                                $pasoTodosFiltros[] = $pasoFiltro;
+                            }
+                            if (is_array($arrayGrupoDestinoIn) and count($arrayGrupoDestinoIn) > 0)
+                            {
+                                if($this->filtrarByGrupo($inci->getGrupoDestino(), $arrayGrupoDestinoIn['IN'], true)){
+                                    $pasoFiltro = true;
+                                }else{
+                                    $pasoFiltro = false;
+                                }
+                                $pasoTodosFiltros[] = $pasoFiltro;
+                            }
+                            if (is_array($arrayGrupoDestinoNot) and count($arrayGrupoDestinoNot) > 0)
+                            {
+                                if($this->filtrarByGrupo($inci->getGrupoDestino(), $arrayGrupoDestinoNot['NOT'])){
+                                    $pasoFiltro = true;
+                                }else{
+                                    $pasoFiltro = false;
+                                }
+                                $pasoTodosFiltros[] = $pasoFiltro;
+                            }
+                            var_dump($pasoTodosFiltros);die;
+
+//                            if (is_array($arrayFiltroTitulo) and count($arrayFiltroTitulo) > 0)
+//                            {
+//                                
+//                            }
+
+                            goto crear_mensaje;
+                        }
+
+                        crear_mensaje:
+                        if (count($this->configuraciones->getDestinos()) > 0)
+                        {
+
+                            $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantillaNombre, $em);
+                            $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
+//                                break;
                         }
                     }
                 }
@@ -132,6 +172,7 @@ class IncidenciaListener
 
     protected function crearSmsPorDestinatario($id_mensaje, $destinatarios)
     {
+        $arrayDias = array();
         $now = (new \DateTime('NOW'));
         foreach ($destinatarios as $d)
         {
@@ -163,6 +204,38 @@ class IncidenciaListener
         {
             return false;
         }
+    }
+
+    protected function filtrarByGrupo($texto, $array, $not = false)
+    {
+
+        if ($not)
+        {
+            if (in_array($texto, $array))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (!in_array($texto, $array))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    protected function filtrarByTitulo($texto, $array)
+    {
+        
     }
 
     //Se obtiene el dia de hoy en idioma español
