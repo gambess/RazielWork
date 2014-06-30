@@ -29,7 +29,7 @@ fractalia_sms:
 #       Traducciones
 #       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
-            - VOCENTO
+            - "[VOCENTO]"
 #            - FERROVIAL    
 #            - DGOG
 #            - SAICA
@@ -71,11 +71,11 @@ fractalia_sms:
             grupo_origen_IN:
             grupo_origen_NOT:
             grupo_destino_IN:
-            grupo_detino_NOT:
+            grupo_destino_NOT:
             filtro_titulo:
 
         MODIFICACION:
-            prioridades:
+            prioridad:
                 - CRITICA
             estado:
                 MODIFICADO:
@@ -86,12 +86,12 @@ fractalia_sms:
             grupo_origen_NOT:
               - SOC SEGURIDAD
             grupo_destino_IN:
-            grupo_detino_NOT:
+            grupo_destino_NOT:
             filtro_titulo:
 #       EVENTO ASIGNACION
 
         ASIGNACION:
-            prioridades:
+            prioridad:
                 - CRITICA
             estado:
                 ASIGNADO:
@@ -103,11 +103,11 @@ fractalia_sms:
               - SEGEST SOC
               - SEG MERCEDES
               - SEGEST MON
-            grupo_detino_NOT:
+            grupo_destino_NOT:
             filtro_titulo:
 
         ALARMA:
-            prioridades:
+            prioridad:
                 - CRITICA
             estado:
                 ASIGNADO:
@@ -119,9 +119,9 @@ fractalia_sms:
               - SEGEST SOC
               - SEG MERCEDES
               - SEGEST MON
-            grupo_detino_NOT:
+            grupo_destino_NOT:
             filtro_titulo:
-                - AS
+                - "[AS]"
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:

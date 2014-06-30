@@ -82,7 +82,7 @@ class IncidenciaArrayEvento
 
     protected function setFooModo()
     {
-        $this->modo = 'Correo LoremIpsum';
+        $this->modo = 'CorreoFoo';
         $this->array['modo'] = $this->modo;
     }
 
