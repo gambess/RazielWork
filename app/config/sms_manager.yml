@@ -61,19 +61,17 @@ fractalia_sms:
 #       DEBE EXISTIR PLANTILLA RESOLUCION EN LAS PLANTILLAs
 #       EVENTO RESOLUCION
         RESOLUCION:
-            prioridades:
+            prioridad:
                 - CRITICA
             #ESTADO del EVENTO como KEY los valores son los sinonimos del estado
             estado:
                 RESUELTO:
                     - RESUELTO
                     - RESOLVED
-            grupo_origen:
-                IN:
-                NOT:
-            grupo_destino:
-                IN:
-                NOT:
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+            grupo_detino_NOT:
             filtro_titulo:
 
         MODIFICACION:
@@ -84,13 +82,11 @@ fractalia_sms:
                     - OPEN
                     - STOPPED
                     - CLOSED
-            grupo_origen:
-                IN:
-                NOT:
-                    - SOC SEGURIDAD
-            grupo_destino: 
-                IN:
-                NOT:
+            grupo_origen_IN:
+            grupo_origen_NOT:
+              - SOC SEGURIDAD
+            grupo_destino_IN:
+            grupo_detino_NOT:
             filtro_titulo:
 #       EVENTO ASIGNACION
 
@@ -100,16 +96,14 @@ fractalia_sms:
             estado:
                 ASIGNADO:
                     - WORK IN PROGRESS
-            grupo_origen:
-                IN:
-                NOT:
-            grupo_destino: 
-                IN:
-                    - SOPORTE SEGURIDAD
-                    - SEGEST SOC
-                    - SEG MERCEDES
-                    - SEGEST MON
-                NOT:
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SEGEST MON
+            grupo_detino_NOT:
             filtro_titulo:
 
         ALARMA:
@@ -118,16 +112,14 @@ fractalia_sms:
             estado:
                 ASIGNADO:
                     - WORK IN PROGRESS
-            grupo_origen:
-                IN:
-                NOT:
-            grupo_destino: 
-                IN:
-                    - SOPORTE SEGURIDAD
-                    - SEGEST SOC
-                    - SEG MERCEDES
-                    - SEGEST MON
-                NOT:
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SEGEST MON
+            grupo_detino_NOT:
             filtro_titulo:
                 - AS
 
