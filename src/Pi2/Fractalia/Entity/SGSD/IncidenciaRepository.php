@@ -115,7 +115,9 @@ class IncidenciaRepository extends EntityRepository
     }
 
     /*
-     * Retorna un array con los datos para generar el mensaje
+     * Retorna un array con los datos para generar el mensaje de RESUMEN
+     * Esta Query se debe lanzar cada cierto periodo configurado en crontab
+     * 
      */
 
     public function getResumen($estados, $servicio = null)
@@ -123,7 +125,7 @@ class IncidenciaRepository extends EntityRepository
 //        $estados = array('Open', 'Work In Progress', 'Suspended');
         $missing = "missing";
         $query = $this->getEntityManager()->createQuery(
-                "SELECT lower(COALESCE(NULLIF(i.numeroCaso, ''),(:missing))) AS numeroCaso,
+                "SELECT COALESCE(NULLIF(i.numeroCaso, ''),(:missing)) AS numeroCaso,
                     lower(COALESCE(NULLIF(i.estado, ''),(:missing))) AS estado,
                     lower(COALESCE(NULLIF(i.grupoDestino, ''),(:missing))) AS destino 
                     FROM Pi2\Fractalia\Entity\SGSD\Incidencia i WHERE 
@@ -137,7 +139,7 @@ class IncidenciaRepository extends EntityRepository
             $resultado = $query->getResult();
             if (count($resultado) == 0 ){
                 
-                return '"No hay tickets pendientes"';
+                return '"No hay tickets pendientes".';
             }
             if (count($resultado) > 0 ){
             return $resultado;

@@ -13,13 +13,17 @@ use Pi2\Fractalia\Entity\SGSD\Incidencia;
 /**
  * Description of PrepareArrayIncidencia
  * Cada Incidencia de un EVENTO que se captura en el listener
- * Se copia en este array para su gestion en el SMS
+ * Se copia en un array para su gestion en el SMS
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
 class IncidenciaArrayEvento
 {
     private $array = array();
+
+    /*
+     * Nombre de la plantilla
+     */
     private $platillaName;
 
     /*
@@ -31,7 +35,7 @@ class IncidenciaArrayEvento
     /*
      * Coleccion de filas de la Incidencia
      */
-    private $detalle='';
+    private $detalle = '';
 
     /*
      * Arrays de configuracion
@@ -62,10 +66,22 @@ class IncidenciaArrayEvento
         {
             $this->setFooModo();
         }
+        if (!is_null($modo))
+        {
+            $this->modo = $modo;
+        }
         $this->confCliente = $clientes;
         $this->traducciones = $traducciones;
         $this->tsol = strtolower(reset($tsol));
     }
+
+    /*
+     * 
+     * Setter del Array
+     * @Param $incidencia Incidencia
+     * @Return array array
+     *      
+     */
 
     public function setArrayIncidencia(Incidencia $incidencia)
     {
@@ -76,15 +92,24 @@ class IncidenciaArrayEvento
         $this->setTipo($incidencia);
         $this->setTecnico($incidencia);
         $this->setTsol();
-        $this->setResoluciones($incidencia);
+        $this->setDetalles($incidencia);
         return $this->array;
     }
+
+    /*
+     * Setear el modo fake en modo de envio
+     */
 
     protected function setFooModo()
     {
         $this->modo = 'CorreoFoo';
         $this->array['modo'] = $this->modo;
     }
+
+    /*
+     * Settea el numero de caso con el numero de caso de la incidencia
+     * @Param $incidencia Incidencia
+     */
 
     protected function setNumcaso(Incidencia $incidencia)
     {
@@ -99,6 +124,11 @@ class IncidenciaArrayEvento
         $this->array['id'] = $this->id;
     }
 
+    /*
+     * Settea la fecha con la fecha de apertura de la incidencia
+     * @Param $incidencia Incidencia
+     */
+
     protected function setFechaApertura(Incidencia $incidencia)
     {
 //        $format = 'd/m/y H:m:s';
@@ -112,6 +142,13 @@ class IncidenciaArrayEvento
         }
         $this->array['fecha'] = $this->fecha;
     }
+
+    /*
+     * Settea el cliente con un filtro sobre el campo titulo de la incidencia
+     * Si no se encuentra el patron en la incidencia se busca un patron el en titulo
+     * Tomado por configuracion
+     * @Param $incidencia Incidencia
+     */
 
     protected function setCliente(Incidencia $incidencia)
     {
@@ -142,6 +179,12 @@ class IncidenciaArrayEvento
         $this->array['cliente'] = $this->cliente;
     }
 
+    /*
+     * Settea el tipo de caso aplicando un filtro sobre el campo prioridad de la incidencia
+     * Y traduciendo el campo numerico tipo caso de la incidencia segun fichero de configuracion
+     * @Param $incidencia Incidencia
+     */
+
     protected function setTipo(Incidencia $incidencia)
     {
         if (method_exists($incidencia, 'getPrioridad') and null != $incidencia->getPrioridad())
@@ -154,6 +197,11 @@ class IncidenciaArrayEvento
         }
         $this->array['tipo'] = $this->tipo;
     }
+
+    /*
+     * Settea el tecnico obteniendo del dato del campo tecnico asignado final de la incidencia
+     * @Param $incidencia Incidencia
+     */
 
     protected function setTecnico(Incidencia $incidencia)
     {
@@ -168,6 +216,10 @@ class IncidenciaArrayEvento
         $this->array['tecnico'] = $this->tecnico;
     }
 
+    /*
+     * Settea el tsol obteniendo del dato del fichero de configuracion
+     */
+
     protected function setTsol()
     {
         if ($this->tsol == "")
@@ -177,21 +229,36 @@ class IncidenciaArrayEvento
         $this->array['tsol'] = $this->tsol;
     }
     
-    protected function setResoluciones(Incidencia $incidencia)
+    /*
+     * Settear el detalle del Mensaje
+     * Si el evento es resolucion se obtinen las resoluciones
+     * En caso contrario se copia el campo titulo de la incidencia
+     * @Param $incidencia Incidencia
+     */
+    protected function setDetalles(Incidencia $incidencia)
     {
-        if (method_exists($incidencia, 'getResoluciones') and null != $incidencia->getResoluciones())
+        switch ($this->platillaName)
         {
-            foreach ($incidencia->getResoluciones() as $resolucion)
-            {
-                $this->detalle .= $resolucion->getTexto();
-            }
+            case 'RESOLUCION':
+                if (method_exists($incidencia, 'getResoluciones') and null != $incidencia->getResoluciones())
+                {
+                    foreach ($incidencia->getResoluciones() as $resolucion)
+                    {
+                        $this->detalle .= $resolucion->getTexto();
+                    }
+                }
+                break;
+            default:
+                $this->detalle = $incidencia->getTitulo();
+                break;
         }
+
+
         if ($this->detalle == '')
         {
             $this->detalle = 'missing';
         }
         $this->array['detalle'] = $this->detalle;
     }
-    
 
 }
