@@ -70,6 +70,19 @@ class IncidenciaListener
             }
         }
     }
+    
+     /**
+     * Capturar la incidencia previa a la insercion
+     *
+     * @param LifecycleEventArgs $event
+     * @ORM\PrePersist
+     */
+    public function prePersistManager(Incidencia $incidencia, LifecycleEventArgs $event) {
+     echo $incidencia->getEstado();
+     $inci = $event->getObject();
+     echo $inci->getEstado();
+     die;
+    }
 
     protected function crearSmsPorDestinatario($id_mensaje, $destinatarios)
     {

@@ -31,6 +31,7 @@
             <tag name="monolog.logger" channel="listener"/>
             <tag name="doctrine.entity_listener" event="postPersist"/>
             <tag name="doctrine.entity_listener" event="postUpdate"/>
+            <tag name="doctrine.entity_listener" event="prePersist"/>
         </service>
         <!-- Listener Resolver -->
         <service id="incidencia.entity_listener_resolver" class="%incidencia.entity_listener_resolver.class%">
