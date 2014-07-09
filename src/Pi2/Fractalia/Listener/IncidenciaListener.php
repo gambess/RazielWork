@@ -64,7 +64,6 @@ class IncidenciaListener
             $plantilla = $filtros->pasarFiltro($inci);
             if (count($this->configuraciones->getDestinos()) > 0)
             {
-
                 $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
                 $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
             }

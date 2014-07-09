@@ -50,10 +50,11 @@ class MensajeManager {
             $columna = new Columnaevento();
             $evento = $data->getEstado(); //Al estar en la incidencia obtenemos el estado en hot
             //Cambiar esto
-            $array = new IncidenciaArrayEvento($evento, $this->configuraciones->getTsolGuardia(), $this->configuraciones->getNombresCortos(), $this->configuraciones->getTraduccionesTipos());
+            $array = new IncidenciaArrayEvento($plantilla, $this->configuraciones->getTsolGuardia(), $this->configuraciones->getNombresCortos(), $this->configuraciones->getTraduccionesTipos());
             //Array con los datos copiados de la incidencia Evento
-
             $arrayIncidencia = $array->setArrayIncidencia($data);
+            
+
             $estado = $this->setEstado($arrayIncidencia);
 
             $columna->setIncidencia($data);

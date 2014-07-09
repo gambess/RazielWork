@@ -18,7 +18,7 @@ use Pi2\Fractalia\Entity\SGSD\Incidencia;
 class FiltrosManager
 {
     private $filtros = array();
-    
+
     public function __construct(array $eventos)
     {
         $this->cargarFiltros($eventos);
@@ -44,41 +44,40 @@ class FiltrosManager
             $arrayGrupoDestinoNot = array_slice($evento, 5, 1, true);
             $arrayFiltroTitulo = array_slice($evento, 6, 1, true);
 
-            if (count($arrayPrioridad['prioridad']) > 0)
+            if (isset($arrayPrioridad['prioridad']))
             {
                 $this->filtros[$plantillaNombre][key($arrayPrioridad)] = $arrayPrioridad;
             }
-            if (count($arrayEstado['estado']) > 0)
+            if (isset($arrayEstado['estado']))
             {
                 $this->filtros[$plantillaNombre][key($arrayEstado)] = $arrayEstado;
             }
 
-            if (count($arrayGrupoOrigenIn['grupo_origen_IN']) > 0)
+            if (isset($arrayGrupoOrigenIn['grupo_origen_IN']))
             {
                 $this->filtros[$plantillaNombre][key($arrayGrupoOrigenIn)] = $arrayGrupoOrigenIn;
             }
 
-            if (count($arrayGrupoOrigenNot['grupo_origen_NOT']) > 0)
+            if (isset($arrayGrupoOrigenNot['grupo_origen_NOT']))
             {
                 $this->filtros[$plantillaNombre][key($arrayGrupoOrigenNot)] = $arrayGrupoOrigenNot;
             }
 
-            if (count($arrayGrupoDestinoIn['grupo_destino_IN']) > 0)
+            if (isset($arrayGrupoDestinoIn['grupo_destino_IN']))
             {
                 $this->filtros[$plantillaNombre][key($arrayGrupoDestinoIn)] = $arrayGrupoDestinoIn;
             }
 
-            if (count($arrayGrupoDestinoNot['grupo_destino_NOT']) > 0)
+            if (isset($arrayGrupoDestinoNot['grupo_destino_NOT']))
             {
                 $this->filtros[$plantillaNombre][key($arrayGrupoDestinoNot)] = $arrayGrupoDestinoNot;
             }
 
-            if (count($arrayFiltroTitulo['filtro_titulo']) > 0)
+            if (isset($arrayFiltroTitulo['filtro_titulo']))
             {
                 $this->filtros[$plantillaNombre][key($arrayFiltroTitulo)] = $arrayFiltroTitulo;
             }
         }
-
 //        return true;
     }
 
@@ -97,7 +96,7 @@ class FiltrosManager
             }
             foreach ($filtrosCargados as $clave => $filtro)
             {
-                if (is_array($filtro) == true and count($filtro) > 0 and $this->existeClaveEnArray($clave, $filtro) >= 1)
+                if (is_array($filtro) == true and count($filtro))
                 {
                     if ($clave == 'prioridad' and $this->estaEn($incidencia->getPrioridad(), $filtro['prioridad'], true))
                         $filtroEstado = true;
@@ -143,17 +142,24 @@ class FiltrosManager
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
 
-                    if ($clave == 'filtro_titulo' and strpos($filtro[$clave][0],$incidencia->getTitulo()) > 0)
+                    if ($clave == 'filtro_titulo')
                     {
-                        $filtroEstado = true;
+                        if(count($filtro[$clave]) == 0){
+                            $filtroEstado = false;
+                        }elseif (preg_match($this->processClientesConfig($filtro[$clave][0]), $incidencia->getTitulo(), $matches))
+                        {
+                            $filtroEstado = true;
+                        }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
                 }
             }
         }
 
-        foreach($pasoTodosFiltros as $plantilla => $filtros){
-            if(!$this->estaEn(false, $filtros) == true){
+        foreach ($pasoTodosFiltros as $plantilla => $filtros)
+        {
+            if (!$this->estaEn(false, $filtros) == true)
+            {
                 return $plantilla;
             }
         }
@@ -201,6 +207,41 @@ class FiltrosManager
             {
                 return false;
             }
+        }
+    }
+
+    /*
+     * Transformar las palabras del fichero de configuracion
+     * en Patron regEXP, para comparar
+     */
+
+    protected function processClientesConfig($string)
+    {
+        if (!is_null($string))
+        {
+            return '^\[' . $string . '\]^';
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /*
+     * Retira los square brackets del nombre corto del cliente encontrado
+     * en Patron regEXP, para comparar
+     */
+
+    protected function cleanCliente($string)
+    {
+
+        if (!is_null($string))
+        {
+            return trim($string, "[]");
+        }
+        else
+        {
+            return null;
         }
     }
 

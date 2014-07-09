@@ -154,6 +154,7 @@ class IncidenciaArrayEvento
     {
         $pattern = "^\[(.*?)\]^";
         $matches = array();
+        $matches2 = array();
         if (method_exists($incidencia, 'getTitulo') and null != $incidencia->getTitulo())
         {
             if (preg_match_all($pattern, $incidencia->getTitulo(), $matches, PREG_SET_ORDER) >= 3)
@@ -164,19 +165,55 @@ class IncidenciaArrayEvento
             {
                 foreach ($this->confCliente as $cliente)
                 {
-                    if (strpos(strtolower($incidencia->getTitulo()), strtolower($cliente)) > 0)
+                    $pattern2 = $this->processClientesConfig($cliente);
+                    if (preg_match($pattern2, $incidencia->getTitulo(), $matches2) > 0)
                     {
-                        $this->cliente = strtolower($cliente);
+                        $this->cliente = strtolower($this->cleanCliente($matches2[0]));
+                        break;
                     }
                 }
             }
-            $this->cliente = 'missing';
         }
         else
         {
             $this->cliente = 'missing';
         }
         $this->array['cliente'] = $this->cliente;
+    }
+
+    /*
+     * Transformar las palabras del fichero de configuracion
+     * en Patron regEXP, para comparar
+     */
+
+    protected function processClientesConfig($string)
+    {
+        if (!is_null($string))
+        {
+            return '^\[' . $string . '\]^';
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /*
+     * Retira los square brackets del nombre corto del cliente encontrado
+     * en Patron regEXP, para comparar
+     */
+
+    protected function cleanCliente($string)
+    {
+
+        if (!is_null($string))
+        {
+            return trim($string, "[]");
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /*
@@ -228,13 +265,14 @@ class IncidenciaArrayEvento
         }
         $this->array['tsol'] = $this->tsol;
     }
-    
+
     /*
      * Settear el detalle del Mensaje
      * Si el evento es resolucion se obtinen las resoluciones
      * En caso contrario se copia el campo titulo de la incidencia
      * @Param $incidencia Incidencia
      */
+
     protected function setDetalles(Incidencia $incidencia)
     {
         switch ($this->platillaName)
