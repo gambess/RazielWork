@@ -27,22 +27,12 @@ fractalia_sms:
             - SOC SEGURIDAD
 
 #       Traducciones
+#       Apartir de la VERSION 1.4 nombres cortos y tsol_guardia se dejan en el fichero de configuración para setear el campo por defecto. 
+#       En la version 1.4 la gestion de ambos items en a traves de la web
 #       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
-            - VOCENTO
-#            - FERROVIAL    
-#            - DGOG
-#            - SAICA
-#            - HOTELBEDS
-#            - NH
-#            - PRISA
-#            - DGPE
-#            - CEPSA
-#            - ICEX
-#            - GOBEX
-#            - NUTREXPA
-#            - COLOMER
-#            - ATENTO
+            - NOMBRECORTODEF
+
 #        Traduccion del tipo de caso
         traduccion_tipo_caso: 
             1: incidencia
@@ -52,7 +42,7 @@ fractalia_sms:
 
         #Para rellenar la información del TSOL de guardia
         tsol_guardia:
-            nombre: RV
+            nombre: TSOLDEF
             
 #     FILTROS PARA LOS  EVENTOS A MONITORIZAR
     eventos:
