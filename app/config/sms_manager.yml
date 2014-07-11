@@ -122,6 +122,7 @@ fractalia_sms:
             grupo_destino_NOT:
             filtro_titulo:
                 - AS
+#                - AC
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:
