@@ -8,7 +8,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   outline: none;
 }
 html { height: 101%; }
-body { font-size: 62.5%; line-height: 1; font-family: Verdana, Arial, Tahoma, sans-serif; }
+/*body { font-size: 62.5%; line-height: 1; font-family: Arial, Verdana, Tahoma, sans-serif; padding-bottom: 65px; }*/
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
 ol, ul { list-style: none; }
