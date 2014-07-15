@@ -35,6 +35,27 @@ class NombretsolController extends Controller
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all Nombretsol entities.
+     *
+     * @Route("/show", name="tsol_mostrar")
+     * @Method("GET")
+     * @Template()
+     */
+    public function mostrarAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+//         $em->getRepository('FractaliaSmsBundle:Nombretsol')->findOne();
+        $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
+
+
+        return array(
+            'entity' => $entity,
+        );
+    }
+
     /**
      * Creates a new Nombretsol entity.
      *
@@ -48,7 +69,8 @@ class NombretsolController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -58,7 +80,7 @@ class NombretsolController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -91,11 +113,11 @@ class NombretsolController extends Controller
     public function newAction()
     {
         $entity = new Nombretsol();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -112,14 +134,15 @@ class NombretsolController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Nombretsol entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -137,7 +160,8 @@ class NombretsolController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Nombretsol entity.');
         }
 
@@ -145,19 +169,81 @@ class NombretsolController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Nombretsol entity.
-    *
-    * @param Nombretsol $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Displays a form to edit an existing Nombretsol entity.
+     *
+     * @Route("/{id}/editar", name="tsol_editar")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editarAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
+
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Unable to find Nombretsol entity.');
+        }
+
+        $form = $this->createForm(new NombretsolType(), $entity, array(
+            'action' => $this->generateUrl('tsol_actualizar', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+        $form->add('nombre', 'text', array('label' => false));
+        $form->add('submit', 'submit', array('label' => 'Actualizar'));
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Nombretsol entity.
+     *
+     * @Route("/{id}", name="tsol_actualizar")
+     * @Method("PUT")
+     * @Template()
+     */
+    public function actualizarAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
+
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Unable to find Nombretsol entity.');
+        }
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        print_r($editForm->getErrorsAsString());
+        if ($editForm->isValid())
+        {
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('tsol_mostrar'));
+        }
+        return $this->redirect($this->generateUrl('tsol_editar', array('id' => $entity->getId())));
+    }
+
+    /**
+     * Creates a form to edit a Nombretsol entity.
+     *
+     * @param Nombretsol $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Nombretsol $entity)
     {
         $form = $this->createForm(new NombretsolType(), $entity, array(
@@ -169,6 +255,7 @@ class NombretsolController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Nombretsol entity.
      *
@@ -182,7 +269,8 @@ class NombretsolController extends Controller
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
 
-        if (!$entity) {
+        if (!$entity)
+        {
             throw $this->createNotFoundException('Unable to find Nombretsol entity.');
         }
 
@@ -190,18 +278,20 @@ class NombretsolController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid()) {
+        if ($editForm->isValid())
+        {
             $em->flush();
 
             return $this->redirect($this->generateUrl('tsol_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Nombretsol entity.
      *
@@ -213,11 +303,13 @@ class NombretsolController extends Controller
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->find($id);
 
-            if (!$entity) {
+            if (!$entity)
+            {
                 throw $this->createNotFoundException('Unable to find Nombretsol entity.');
             }
 
@@ -238,10 +330,11 @@ class NombretsolController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tsol_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                ->setAction($this->generateUrl('tsol_delete', array('id' => $id)))
+                ->setMethod('DELETE')
+                ->add('submit', 'submit', array('label' => 'Delete'))
+                ->getForm()
         ;
     }
+
 }

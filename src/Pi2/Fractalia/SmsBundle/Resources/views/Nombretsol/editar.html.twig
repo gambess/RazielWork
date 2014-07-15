@@ -1,0 +1,10 @@
+{% block content -%}
+    {{form_start(edit_form)}}
+        <div>
+            {{ form_widget (edit_form.nombre) }}
+            {{ form_row (edit_form.submit) }}
+        </div>
+        {{ form_errors (edit_form.nombre) }}
+    {{form_rest(edit_form)}}
+    {{form_end(edit_form)}}
+{% endblock %}

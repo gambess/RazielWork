@@ -14,7 +14,7 @@
         {% javascripts
             '@FractaliaSmsBundle/Resources/public/js/jquery-1.11.0.min.js'
             '@FractaliaSmsBundle/Resources/public/js/retina.js'
-            '@FractaliaSmsBundle/Resources/public/js/nav.js'
+            '@FractaliaSmsBundle/Resources/public/js/main.js'
             output='js/compiled/javascripts.js'
         %}
         <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
@@ -31,22 +31,24 @@
         <div id="view">
             <header>
                 <h1>Log Mensajes</h1>
-                <div id="w">
-                    <nav>
-                        <ul id="nav">
-                            <li><a href="#">Tsol</a>
-                                <ul>
-                                    <li><a  id="load_tsol" href="#">Click para ver datos</a></li>
-                                    <div id="tsol-data"></div>
-                                </ul>
-                            </li>
-                            <li><a href="#">Nombres Cortos</a>
-                                <ul>
-                                    <li><a href="{{ path('nombrecorto') }}">Gestionar</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
+                <div id='cssmenu'>
+                    <ul>
+                        <li><a href='#'><span>Configuraciones</span></a></li>
+                        <li><a href='#'><span>Tsol</span></a>
+                            <ul>
+                                <li><a href='#'>Ver/modificar</a></li>
+{#                                <li><a href='#'>Menus</a></li>
+                                <li><a href='#'>Products</a></li>#}
+                            </ul>
+                        </li>
+                        <li><a href='#'><span>Nombres Cortos</span></a>
+                            <ul>
+                                <li><a href='#'>Gestionar</a></li>
+{#                                <li><a href='#'>Location</a></li>#}
+                            </ul>
+                        </li>
+{#                        <li><a href='#'><span>Contact</span></a></li>#}
+                    </ul>
                 </div>
             </header>
 

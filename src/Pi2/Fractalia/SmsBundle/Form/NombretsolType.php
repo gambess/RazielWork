@@ -16,7 +16,7 @@ class NombretsolType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('fechaModificacion')
+//            ->add('fechaModificacion')
         ;
     }
     

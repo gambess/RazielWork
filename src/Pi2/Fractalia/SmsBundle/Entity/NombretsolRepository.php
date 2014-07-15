@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class NombretsolRepository extends EntityRepository
 {
+    
+    /*
+     * Retorna un array con los datos del Nombre TSOL
+     * 
+     */
+
+    public function getTsol()
+    {
+        $query = $this->getEntityManager()->createQuery(
+                "SELECT t FROM Pi2\Fractalia\SmsBundle\Entity\Nombretsol t"
+            );
+        try
+        {
+            return $query->getOneOrNullResult();
+            
+        }
+        catch (\Doctrine\Orm\NoResultException $e)
+        {
+            return null;
+        }
+    }
 }
