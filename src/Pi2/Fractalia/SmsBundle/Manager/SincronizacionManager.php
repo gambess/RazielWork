@@ -15,23 +15,19 @@ use Pi2\Fractalia\SmsBundle\Entity\Nombretsol;
  *
  * @author Raziel Valle Miranda <raziel.valle@fractaliasoftware.com>
  */
-class SincronizacionManager
-{
+class SincronizacionManager {
+
     private $tsolSync = false;
     private $nombreCortoSync = false;
     private $em;
     private $tsolArray = array();
     private $NombreCortoArray = array();
 
-    public function __construct($em = null)
-    {
-        if (is_null($em))
-        {
+    public function __construct($em = null) {
+        if (is_null($em)) {
             $doctrine = $this->getService('doctrine');
             $this->em = $doctrine->getManager();
-        }
-        else
-        {
+        } else {
             $this->em = $em;
         }
     }
@@ -40,76 +36,50 @@ class SincronizacionManager
     /*
      * tsol sync
      */
-    public function estaTsolSincronizado()
-    {
+    public function estaTsolSincronizado() {
         return $this->tsolSync;
     }
 
-    public function sincronizarTsol()
-    {
+    public function sincronizarTsol() {
         $now = (new \DateTime('NOW'));
         $configuracion = $this->getService('fractalia_sms.configuracion_manager');
-
-        if (!$this->estaTsolSincronizado())
-        {
-                        echo "entro3";
+        if (!$this->estaTsolSincronizado()) {
 
             $entities = $this->em->getRepository('FractaliaSmsBundle:Nombretsol')->findAll();
-            if (is_null($entities) or count($entities) == 0)
-            {
-                            echo "entro a guardar";
+            if (is_null($entities) or count($entities) == 0) {
 
                 $tsolObj = new Nombretsol();
                 $tsolObj->setNombre($configuracion->getTsolGuardia()['nombre']);
                 $tsolObj->setFechaModificacion($now);
-                print_r($tsolObj);
                 $this->em->persist($tsolObj);
                 $this->em->flush();
-                echo "despues de guardar debe tener id";
-                print_r($tsolObj);
 
                 $this->tsolSync = true;
-            }
-            elseif (count($entities) == 1 and $this->tsolSync == false)
-            {
-                            echo "aca no debo entrar";
+            } elseif (count($entities) == 1 and $this->tsolSync == false) {
 
                 $this->tsolSync = true;
-            }
-            elseif (count($entities) > 1)
-            {
+            } elseif (count($entities) > 1) {
                 //ERROR;
             }
         }
     }
 
-    public function setTsolDb()
-    {
-        if (!$this->estaTsolSincronizado())
-        {
-                        echo "entro2";
-
+    public function setTsolDb() {
+        if (!$this->estaTsolSincronizado()) {
             $this->sincronizarTsol();
         }
         $tsolObj = $this->em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
-        if ($tsolObj instanceof Nombretsol and isset($tsolObj))
-        {
-                        echo "entro";
+        if ($tsolObj instanceof Nombretsol and isset($tsolObj)) {
 
             $this->tsolArray['nombre'] = $tsolObj->getNombre();
-        }
-        else
-        {
+        } else {
             //ERROR
         }
     }
 
-    public function getTsolDb()
-    {
-        if (!$this->estaTsolSincronizado())
-        {
-            echo "entro1";
-            $this->setTsolDb(); 
+    public function getTsolDb() {
+        if (!$this->estaTsolSincronizado()) {
+            $this->setTsolDb();
         }
         return $this->tsolArray;
     }
@@ -119,8 +89,7 @@ class SincronizacionManager
      * Nombre corto sync
      */
 
-    private function getService($name)
-    {
+    private function getService($name) {
         return $GLOBALS['kernel']->getContainer()->get($name);
     }
 
