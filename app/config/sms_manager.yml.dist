@@ -27,22 +27,12 @@ fractalia_sms:
             - SOC SEGURIDAD
 
 #       Traducciones
+#       Apartir de la VERSION 1.4 nombres cortos y tsol_guardia se dejan en el fichero de configuración para setear el campo por defecto. 
+#       En la version 1.4 la gestion de ambos items en a traves de la web
 #       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
-            - VOCENTO
-#            - FERROVIAL    
-#            - DGOG
-#            - SAICA
-#            - HOTELBEDS
-#            - NH
-#            - PRISA
-#            - DGPE
-#            - CEPSA
-#            - ICEX
-#            - GOBEX
-#            - NUTREXPA
-#            - COLOMER
-#            - ATENTO
+            - NOMBRECORTODEF
+
 #        Traduccion del tipo de caso
         traduccion_tipo_caso: 
             1: incidencia
@@ -52,7 +42,7 @@ fractalia_sms:
 
         #Para rellenar la información del TSOL de guardia
         tsol_guardia:
-            nombre: RV
+            nombre: TSOLDEF
             
 #     FILTROS PARA LOS  EVENTOS A MONITORIZAR
     eventos:
@@ -88,23 +78,6 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
-#       EVENTO ASIGNACION
-
-        ASIGNACION:
-            prioridad:
-                - CRITICA
-            estado:
-                ASIGNADO:
-                    - WORK IN PROGRESS
-            grupo_origen_IN:
-            grupo_origen_NOT:
-            grupo_destino_IN:
-              - SOPORTE SEGURIDAD
-              - SEGEST SOC
-              - SEG MERCEDES
-              - SEGEST MON
-            grupo_destino_NOT:
-            filtro_titulo:
 
         ALARMA:
             prioridad:
@@ -122,6 +95,25 @@ fractalia_sms:
             grupo_destino_NOT:
             filtro_titulo:
                 - AS
+                - AC
+#       EVENTO ASIGNACION                
+        ASIGNACION:
+            prioridad:
+                - CRITICA
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SEGEST MON
+            grupo_destino_NOT:
+            filtro_titulo:
+
+
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:

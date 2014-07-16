@@ -27,14 +27,12 @@ class FiltrosManager
     protected function cargarFiltros(array $eventos)
     {
         $arrayFiltro = array();
-
         foreach ($eventos as $plantillaNombre => $evento)
         {
             if ($plantillaNombre == null or is_array($evento) == null or count($evento) == 0)
             {
                 break;
             }
-
             //load filtros
             $arrayPrioridad = array_slice($evento, 0, 1, true);
             $arrayEstado = array_slice($evento, 1, 1, true);
@@ -78,12 +76,11 @@ class FiltrosManager
                 $this->filtros[$plantillaNombre][key($arrayFiltroTitulo)] = $arrayFiltroTitulo;
             }
         }
-//        return true;
     }
 
     public function pasarFiltro(Incidencia $incidencia)
     {
-        $filtroEstado = false;
+        $filtroEstado = '';
         $filtrosArray = $this->copiArrayTemporal();
         $filtro = array();
         $pasoTodosFiltros = array();
@@ -94,76 +91,169 @@ class FiltrosManager
             {
                 break;
             }
+//            print_r($filtrosCargados);die;
             foreach ($filtrosCargados as $clave => $filtro)
             {
-                if (is_array($filtro) == true and count($filtro))
+                if (is_array($filtro))
                 {
-                    if ($clave == 'prioridad' and $this->estaEn($incidencia->getPrioridad(), $filtro['prioridad'], true))
-                        $filtroEstado = true;
-                    $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
-
-                    if ($clave == 'estado')
+                    if ($clave == 'prioridad')
                     {
-                        $arrayEstado = array_shift($filtro);
-                        $arrayTraducciones = array_shift($arrayEstado);
-
-                        if (($this->estaEn($incidencia->getEstado(), $arrayTraducciones, true)) == true)
+                        if (count($filtro['prioridad']) == 0)
                         {
-                            $filtroEstado = true;
+                            $filtroEstado = 'NOT_NEEDED';
+                        }
+                        if ($this->estaEn($incidencia->getPrioridad(), $filtro['prioridad']))
+                        {
+                            $filtroEstado = 'PASS';
                         }
                         else
-                            $filtroEstado = false;
+                        {
+                            $filtroEstado = 'FAIL';
+                        }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
-
-
-                    if ($clave == 'grupo_origen_IN' and $this->filtrarByGrupo($incidencia->getGrupoOrigen(), $filtro[$clave], true))
+                    if ($clave == 'estado')
                     {
-                        $filtroEstado = true;
+                        if (count($filtro) > 0)
+                        {
+                            $arrayEstado = array_shift($filtro);
+                            if (count($arrayEstado) == 0)
+                            {
+                                $filtroEstado = 'NOT_NEEDED';
+                            }
+                        }
+                        if (count($arrayEstado) > 0)
+                        {
+                            $arrayTraducciones = array_shift($arrayEstado);
+                        }
+                        if (($this->estaEn($incidencia->getEstado(), $arrayTraducciones)) == true)
+                        {
+                            $filtroEstado = 'PASS';
+                        }
+                        else
+                            $filtroEstado = 'FAIL';
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
-
-
-                    if ($clave == 'grupo_origen_NOT' and $this->filtrarByGrupo($incidencia->getGrupoOrigen(), $filtro[$clave]))
+                    if ($clave == 'grupo_origen_IN')
                     {
-                        $filtroEstado = true;
+                        if (count($filtro['grupo_origen_IN']) == 0)
+                        {
+                            $filtroEstado = 'NOT_NEEDED';
+                        }
+                        else
+                        {
+                            if ($this->filtrarByGrupo($incidencia->getGrupoOrigen(), $filtro[$clave], true))
+                            {
+                                $filtroEstado = 'PASS';
+                            }
+                            else
+                            {
+                                $filtroEstado = 'FAIL';
+                            }
+                        }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
-
-                    if ($clave == 'grupo_destino_IN' and $this->filtrarByGrupo($incidencia->getGrupoDestino(), $filtro[$clave], true))
+                    if ($clave == 'grupo_origen_NOT')
                     {
-                        $filtroEstado = true;
+                        if (count($filtro['grupo_origen_NOT']) == 0)
+                        {
+                            $filtroEstado = 'NOT_NEEDED';
+                        }
+                        else
+                        {
+                            if ($this->filtrarByGrupo($incidencia->getGrupoOrigen(), $filtro[$clave]))
+                            {
+                                $filtroEstado = 'PASS';
+                            }
+                            else
+                            {
+                                $filtroEstado = 'FAIL';
+                            }
+                        }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
-
-                    if ($clave == 'grupo_destino_NOT' and $this->filtrarByGrupo($incidencia->getGrupoDestino(), $filtro[$clave]))
+                    if ($clave == 'grupo_destino_IN')
                     {
-                        $filtroEstado = true;
+                        if (count($filtro['grupo_destino_IN']) == 0)
+                        {
+                            $filtroEstado = 'NOT_NEEDED';
+                        }
+                        else
+                        {
+                            if ($this->filtrarByGrupo($incidencia->getGrupoDestino(), $filtro[$clave], true))
+                            {
+                                $filtroEstado = 'PASS';
+                            }
+                            else
+                            {
+                                $filtroEstado = 'FAIL';
+                            }
+                        }
+                        $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
+                    }
+                    if ($clave == 'grupo_destino_NOT')
+                    {
+                        if (count($filtro['grupo_destino_NOT']) == 0)
+                        {
+                            $filtroEstado = 'NOT_NEEDED';
+                        }
+                        else
+                        {
+                            if ($this->filtrarByGrupo($incidencia->getGrupoDestino(), $filtro[$clave]))
+                            {
+                                $filtroEstado = 'PASS';
+                            }
+                            else
+                            {
+                                $filtroEstado = 'FAIL';
+                            }
+                        }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
 
                     if ($clave == 'filtro_titulo')
                     {
-                        if(count($filtro[$clave]) == 0){
-                            $filtroEstado = false;
-                        }elseif (preg_match($this->processClientesConfig($filtro[$clave][0]), $incidencia->getTitulo(), $matches))
+                        if (count($filtro[$clave]) == 0)
                         {
-                            $filtroEstado = true;
+                            //TODO: FIX - HOOK FOR DIFERENCE BEtWEEN ASIGNACION Y ALARMA
+//                            if ($plantillaNombre == "ASIGNACION")
+//                            {
+//                                $filtroEstado = 'FAIL';
+//                            }
+//                            else
+//                            {
+                                $filtroEstado = 'NOT_NEEDED';
+//                            }
                         }
+                        else
+                        {
+                            foreach ($filtro[$clave] as $filter)
+                            {
+                                if (!preg_match($this->processClientesConfig($filter), $incidencia->getTitulo(), $matches))
+                                {
+                                    $filtroEstado = 'FAIL';
+                                }
+                                else
+                                {
+                                    $filtroEstado = 'PASS';
+                                    break;
+                                }
+                            }
+                        }
+
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
                     }
                 }
             }
         }
-
         foreach ($pasoTodosFiltros as $plantilla => $filtros)
         {
-            if (!$this->estaEn(false, $filtros) == true)
+            if (!$this->estaEn('FAIL', $filtros) == true)
             {
                 return $plantilla;
             }
         }
-        return false;
+        
     }
 
     protected function copiArrayTemporal()

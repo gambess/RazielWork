@@ -9,8 +9,6 @@
     </parameters>
     <services>
         <service id="fractalia_sms.configuracion_manager" class="%fractalia_sms.configuracion_manager.class%">
-            <argument type="service" id="logger" />
-            <tag name="monolog.logger" channel="listener"/>
             <call method="setDatosApi">
                 <argument>%fractalia_sms.envio_sms.api%</argument>
             </call>

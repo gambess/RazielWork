@@ -78,23 +78,6 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
-#       EVENTO ASIGNACION
-
-        ASIGNACION:
-            prioridad:
-                - CRITICA
-            estado:
-                ASIGNADO:
-                    - WORK IN PROGRESS
-            grupo_origen_IN:
-            grupo_origen_NOT:
-            grupo_destino_IN:
-              - SOPORTE SEGURIDAD
-              - SEGEST SOC
-              - SEG MERCEDES
-              - SEGEST MON
-            grupo_destino_NOT:
-            filtro_titulo:
 
         ALARMA:
             prioridad:
@@ -112,7 +95,25 @@ fractalia_sms:
             grupo_destino_NOT:
             filtro_titulo:
                 - AS
-#                - AC
+                - AC
+#       EVENTO ASIGNACION                
+        ASIGNACION:
+            prioridad:
+                - CRITICA
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SEGEST MON
+            grupo_destino_NOT:
+            filtro_titulo:
+
+
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:

@@ -20,7 +20,6 @@ class ConfiguracionManager
     /*
      * Inyectamos el logger en el servicio se asigna en el constructor
      */
-    private $logger;
     
     /*
      * Array donde se almacenan los datos de Envio de SMS a traves del API de telefonica
@@ -71,11 +70,6 @@ class ConfiguracionManager
      * Array con las plantillas de resumen y los estados que se deben monitorizar
      */
     private $resumenes = array();
-    
-    function __construct($logger)
-    {
-        $this->logger = $logger;
-    }
 
     /*
      * Setear los datos de conexión a la API
@@ -176,14 +170,5 @@ class ConfiguracionManager
         return $this->resumenes;
     }
 
-    public function getLogger()
-    {
-        if( $this->logger == NULL)
-       {
-//           $this->logger = $GLOBALS['kernel']->getContainer()->get('logger');
-           $this->logger = $this->getContainer()->get('logger');
-       }
-       return $this->logger;
-    }
 
 }
