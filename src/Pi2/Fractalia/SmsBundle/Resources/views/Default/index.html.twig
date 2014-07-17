@@ -34,20 +34,18 @@
                 <div id='cssmenu'>
                     <ul>
                         <li><a href='#'><span>Configuraciones</span></a></li>
-                        <li><a href='#'><span>Tsol</span></a>
+                        <li><a href='#'><span>Ver/Modificar Tsol</span></a>
                             <ul>
-                                <li><a href='#'>Ver/modificar</a></li>
-{#                                <li><a href='#'>Menus</a></li>
-                                <li><a href='#'>Products</a></li>#}
+                                <li id="show_tsol"><a id="click_editar" href='#' title="Click Para Editar">{{tsol.nombre}}</a></li>
+{#                                <li id="editar_tsol"></li>#}
                             </ul>
                         </li>
-                        <li><a href='#'><span>Nombres Cortos</span></a>
+                        <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
                             <ul>
-                                <li><a href='#'>Gestionar</a></li>
+                                <li><a href='#'>NOMBRECORTODEF</a></li>
 {#                                <li><a href='#'>Location</a></li>#}
                             </ul>
                         </li>
-{#                        <li><a href='#'><span>Contact</span></a></li>#}
                     </ul>
                 </div>
             </header>
@@ -93,12 +91,20 @@
         </div>
         <script>
 
-            $(document).ready(function() {
-                $('#load_tso').click(function(event) {
-                    event.preventDefault(); //cancela el comportamiento por defecto
-                    $('#tsol-data').load('{{ path('tsol') }}');
-                });
+            $("#click_editar").on("click", function(){
+               $.ajax({
+                        url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_tsol").html(msg);
+                    });
             });
+            $("#pi2_fractalia_smsbundle_nombretsol").on("click", function(){
+                alert("capturada")
+            });
+            
 
         </script>
     {% endblock %}

@@ -28,7 +28,6 @@ class NombretsolController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository('FractaliaSmsBundle:Nombretsol')->findAll();
 
         return array(
@@ -46,11 +45,7 @@ class NombretsolController extends Controller
     public function mostrarAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-//         $em->getRepository('FractaliaSmsBundle:Nombretsol')->findOne();
         $entity = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
-
-
         return array(
             'entity' => $entity,
         );
@@ -226,13 +221,13 @@ class NombretsolController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        print_r($editForm->getErrorsAsString());
         if ($editForm->isValid())
         {
+            $entity->setFechaModificacion((new \DateTime('NOW')));
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('tsol_mostrar'));
+            return $this->redirect($this->generateUrl('mensajes'));
         }
         return $this->redirect($this->generateUrl('tsol_editar', array('id' => $entity->getId())));
     }

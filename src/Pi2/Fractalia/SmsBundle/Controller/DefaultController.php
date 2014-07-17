@@ -29,6 +29,7 @@ class DefaultController extends Controller {
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
+        
 
         $entities = $em->getRepository('FractaliaSmsBundle:Sms')
                     ->findBy(
@@ -44,9 +45,12 @@ class DefaultController extends Controller {
                                 'fechaEnvio'=>'DESC',
                                 )
                             );
+        
+        $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
 
         return array(
             'entities' => $entities,
+            'tsol' => $tsol,
         );
     }
 

@@ -52,8 +52,8 @@ class IncidenciaListener
         //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
         $em = $event->getEntityManager();
-
-        $now = (new \DateTime('NOW'));
+        
+        
         //Se inicia el monitoreo de la incidencia si en los campos grupo origen o grupo destino
         //se encuentra algun servicio SOC, obtenido del fichero de configuración
         if ($this->filtrarByServicesSOC($inci))
