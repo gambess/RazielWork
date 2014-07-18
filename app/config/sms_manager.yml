@@ -31,7 +31,21 @@ fractalia_sms:
 #       En la version 1.4 la gestion de ambos items en a traves de la web
 #       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
-            - NOMBRECORTODEF
+#            - NOMBRECORTODEF
+             - VOCENTO
+             - FERROVIAL
+             - DGOG
+             - SAICA
+             - HOTELBEDS
+             - NH
+             - PRISA
+             - DGPE
+             - CEPSA
+             - ICEX
+             - GOBEX
+             - NUTREXPA
+             - COLOMER
+             - ATENTO
 
 #        Traduccion del tipo de caso
         traduccion_tipo_caso: 

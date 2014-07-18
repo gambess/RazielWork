@@ -190,7 +190,7 @@ class IncidenciaArrayEvento
     {
         if (!is_null($string))
         {
-            return '^\[' . $string . '\]^';
+            return '^\[' . strtolower($string) . '\]^';
         }
         else
         {

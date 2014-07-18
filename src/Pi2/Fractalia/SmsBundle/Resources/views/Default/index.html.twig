@@ -37,13 +37,13 @@
                         <li><a href='#'><span>Ver/Modificar Tsol</span></a>
                             <ul>
                                 <li id="show_tsol"><a id="click_editar" href='#' title="Click Para Editar">{{tsol.nombre}}</a></li>
-{#                                <li id="editar_tsol"></li>#}
+                                    {#                                <li id="editar_tsol"></li>#}
                             </ul>
                         </li>
                         <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
                             <ul>
                                 <li><a href='#'>NOMBRECORTODEF</a></li>
-{#                                <li><a href='#'>Location</a></li>#}
+                                    {#                                <li><a href='#'>Location</a></li>#}
                             </ul>
                         </li>
                     </ul>
@@ -91,20 +91,26 @@
         </div>
         <script>
 
-            $("#click_editar").on("click", function(){
-               $.ajax({
-                        url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
-                        type: "GET",
-                        dataTpe: "html",
-                        context: document.body
-                    }).done(function(msg) {
-                        $("#show_tsol").html(msg);
-                    });
+            $("#click_editar").on("click", function() {
+                $.ajax({
+                    url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
+                    type: "GET",
+                    dataTpe: "html",
+                    context: document.body
+                }).done(function(msg) {
+                    $("#show_tsol").html(msg);
+                });
             });
-            $("#pi2_fractalia_smsbundle_nombretsol").on("click", function(){
-                alert("capturada")
-            });
-            
+
+            {#$(document).on("click", '#pi2_fractalia_smsbundle_nombretsol_submit', function(event) {
+                event.preventDefault();
+                $('form[name="pi2_fractalia_smsbundle_nombretsol"]').submit();
+            });#}
+            {#            $('form[name="pi2_fractalia_smsbundle_nombretsol"]').on("submit", function(){alert("1");});#}
+
+
+
+
 
         </script>
     {% endblock %}
