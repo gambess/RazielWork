@@ -206,7 +206,7 @@ class NombretsolController extends Controller
      *
      * @Route("/{id}", name="tsol_actualizar")
      * @Method("PUT")
-     * @Template()
+     * @Template("FractaliaSmsBundle:Nombretsol:mostrar.html.twig")
      */
     public function actualizarAction(Request $request, $id)
     {
@@ -227,7 +227,10 @@ class NombretsolController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mensajes'));
+//            return $this->redirect($this->generateUrl('mensajes'));
+            return array(
+                'entity' => $entity,
+            );
         }
         return $this->redirect($this->generateUrl('tsol_editar', array('id' => $entity->getId())));
     }
