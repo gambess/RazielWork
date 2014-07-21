@@ -35,6 +35,23 @@ class NombrecortoController extends Controller
             'entities' => $entities,
         );
     }
+    
+    /**
+     * Lists all Nombretsol entities.
+     *
+     * @Route("/show", name="nombrecorto_mostrar")
+     * @Method("GET")
+     * @Template()
+     */
+    public function mostrarAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->FindAll();
+        return array(
+            'nombres' => $nombres,
+        );
+    }
+    
     /**
      * Creates a new Nombrecorto entity.
      *
@@ -149,6 +166,70 @@ class NombrecortoController extends Controller
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
+    }
+    
+       /**
+     * Displays a form to edit an existing Nombrecorto entity.
+     *
+     * @Route("/{id}/editar", name="nombrecorto_editar")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editarAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
+
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
+        }
+
+        $form = $this->createForm(new NombrecortoType(), $entity, array(
+            'action' => $this->generateUrl('nombrecorto_actualizar', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+        $form->add('nombre', 'text', array('label' => false));
+        $form->add('submit', 'submit', array('label' => 'Actualizar'));
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Nombrecorto entity.
+     *
+     * @Route("/{id}", name="nombrecorto_actualizar")
+     * @Method("PUT")
+     * @Template("FractaliaSmsBundle:Nombrecorto:mostrar.html.twig")
+     */
+    public function actualizarAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
+
+        if (!$entity)
+        {
+            throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
+        }
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid())
+        {
+            $entity->setFechaModificacion((new \DateTime('NOW')));
+            $em->persist($entity);
+            $em->flush();
+
+            return array(
+                'nombres' => $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll(),
+            );
+        }
+        return $this->redirect($this->generateUrl('tsol_editar', array('id' => $entity->getId())));
     }
 
     /**

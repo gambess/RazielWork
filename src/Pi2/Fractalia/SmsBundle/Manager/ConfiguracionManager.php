@@ -9,6 +9,7 @@
 namespace Pi2\Fractalia\SmsBundle\Manager;
 
 use Pi2\Fractalia\SmsBundle\Entity\Nombretsol;
+use Pi2\Fractalia\SmsBundle\Entity\Nombrecorto;
 
 /**
  * Description of ConfiguracionManager
@@ -66,7 +67,6 @@ class ConfiguracionManager
      * Array con las plantillas de resumen y los estados que se deben monitorizar
      */
     private $resumenes = array();
-
 
     /*
      * Setear los datos de conexión a la API
@@ -158,8 +158,12 @@ class ConfiguracionManager
     }
 
     /*
-     * Methods para tomar de configuración y añadir
+     * Methods para tomar de configuración y añadir en dase de datos
      */
+    /*
+     * Comprobar si esta tsol sincronizado en base de datos
+     */
+
     public function isTsolReady()
     {
         $em = $this->getManagerDoctrine();
@@ -174,27 +178,30 @@ class ConfiguracionManager
         }
     }
 
+    /*
+     * Guardar tsol de configuracion en base de datos
+     *
+     */
+
     public function saveTsol()
     {
-        $now = (new \DateTime('NOW'));
         $em = $this->getManagerDoctrine();
         $newTsolObj = new Nombretsol();
-        $newTsolObj->setFechaModificacion($now);
+
         if (is_array($this->tsolGuardia) and count($this->tsolGuardia) == 1)
         {
             $newTsolObj->setNombre($this->tsolGuardia['nombre']);
+            $newTsolObj->setFechaModificacion(new \DateTime('NOW'));
         }
-//        else
-//        {
-//            $newTsolObj->setNombre('TSOLDEF');
-//        }
         $em->persist($newTsolObj);
         $em->flush();
     }
 
-     /*
+    /*
+     * Sobre carga del Metodo para que en vez de recuperar de Config lo haga de DB
      * Getter tsolGuardia from DB
      */
+
     public function getTsolGuardia()
     {
         if (!$this->isTsolReady())
@@ -206,8 +213,9 @@ class ConfiguracionManager
             $em = $this->getManagerDoctrine();
             $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
         }
-        if($tsol instanceof Nombretsol){
-            return array('nombre'=>$tsol->getNombre());
+        if ($tsol instanceof Nombretsol)
+        {
+            return array('nombre' => $tsol->getNombre());
         }
         return $this->tsolGuardia;
     }
@@ -217,14 +225,75 @@ class ConfiguracionManager
         $this->nombresCortos = $nombresCortos;
     }
 
-    public function getNombresCortos()
+    /*
+     * Methods para tomar de configuración y añadir en dase de datos
+     */
+    /*
+     * Comprobar si esta tsol sincronizado en base de datos
+     */
+
+    public function isNombreCortoReady()
     {
-        return $this->nombresCortos;
+        $em = $this->getManagerDoctrine();
+        $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+        if (is_array($nombres) and count($nombres) > 0)
+        {
+            return true;
+        }
+        if (!is_array($nombres) or count($nombres) == 0)
+        {
+            return false;
+        }
     }
 
-    public function saveNombresCortos()
+    /*
+     * Guardar tsol de configuracion en base de datos
+     *
+     */
+
+    public function saveNombreCorto()
     {
-        
+        $now = (new \DateTime('NOW'));
+        $em = $this->getManagerDoctrine();
+        print_r($this->nombresCortos);
+        var_dump($this->nombresCortos);
+        if (is_array($this->nombresCortos) and count($this->nombresCortos) > 0)
+        { 
+            foreach ($this->nombresCortos as $nombreCorto)
+            {
+                $newNombreCortoObj = new Nombrecorto();
+                $newNombreCortoObj->setFechaCreacion($now);
+                $newNombreCortoObj->setFechaModificacion($now);
+                $newNombreCortoObj->setNombre($nombreCorto);
+                $em->persist($newNombreCortoObj);
+                $em->flush();
+            }
+        }
+    }
+
+    /*
+     * Sobre carga del Metodo para que en vez de recuperar de Config lo haga de DB
+     * Getter tsolGuardia from DB
+     */
+
+    public function getNombresCortos()
+    {
+        $arrayTmp = array();
+        if (!$this->isNombreCortoReady())
+        {
+            $this->saveNombreCorto();
+        }
+        if ($this->isNombreCortoReady())
+        {
+            $em = $this->getManagerDoctrine();
+            $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+        }
+        foreach ($nombres as $indice => $nombre)
+        {
+            echo $nombre->getNombre();
+            $arrayTmp[$indice] = $nombre->getNombre();
+        }
+        return $arrayTmp;
     }
 
     /*

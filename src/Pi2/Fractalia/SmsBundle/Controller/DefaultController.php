@@ -52,10 +52,18 @@ class DefaultController extends Controller {
             $configuraciones->saveTsol();
             $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
         }
+        
+        $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+        if(!is_array($nombres) or count($nombres) == 0){
+            $configuraciones = $this->container->get('fractalia_sms.configuracion_manager');
+            $configuraciones->saveNombreCorto();
+            $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+        }
 
         return array(
             'entities' => $entities,
             'tsol' => $tsol,
+            'nombres' => $nombres,
         );
     }
 

@@ -227,7 +227,6 @@ class NombretsolController extends Controller
             $em->persist($entity);
             $em->flush();
 
-//            return $this->redirect($this->generateUrl('mensajes'));
             return array(
                 'entity' => $entity,
             );

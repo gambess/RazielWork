@@ -16,8 +16,8 @@ class NombrecortoType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('fechaCreacion')
-            ->add('fechaModificacion')
+//            ->add('fechaCreacion')
+//            ->add('fechaModificacion')
         ;
     }
     

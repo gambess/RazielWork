@@ -1,0 +1,8 @@
+{% block content -%}
+
+    {%for ncorto in nombres %}
+        <li id="show_nombre_{{ncorto.id}}"><a class="editar_nombre" href='#' data-shortnameid="{{ncorto.id}}" title="Click para editar">{{ncorto.nombre}}</a></li>
+    {%endfor%}
+    <li id="add_more"><a id="add_nombre" href='#' title="Click para agregar"><span>Añadir nombre corto</span></a>
+
+    {% endblock %}

@@ -36,12 +36,15 @@
                         <li><a href='#'><span>Configuraciones</span></a></li>
                         <li><a href='#'><span>Ver/Modificar Tsol</span></a>
                             <ul>
-                                <li id="show_tsol"><a id="click_editar" href='#' title="Click Para Editar">{{tsol.nombre}}</a></li>
+                                <li id="show_tsol"><a id="click_editar" href='#' title="Click Para editar">{{tsol.nombre}}</a></li>
                             </ul>
                         </li>
                         <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
-                            <ul>
-                                <li><a href='#'>NOMBRECORTODEF</a></li>
+                            <ul id="ncortos">
+                                {%for ncorto in nombres %}
+                                    <li id="show_nombre_{{ncorto.id}}"><a class="editar_nombre" href='#' data-location="{{ path('nombrecorto_editar', { 'id': ncorto.id }) }}" data-shortnameid="{{ncorto.id}}" title="Click para editar">{{ncorto.nombre}}</a></li>
+                                    {%endfor%}
+                                <li id="add_more"><a id="add_nombre" href='#' title="Click para agregar"><span>Añadir nombre corto</span></a>
                             </ul>
                         </li>
                     </ul>
@@ -88,32 +91,75 @@
             </div>
         </div>
         <script>
-            $(document).on("click", "#click_editar", function(event) {
-                event.preventDefault();
-                $.ajax({
-                    url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
-                    type: "GET",
-                    dataTpe: "html",
-                    context: document.body
-                }).done(function(msg) {
-                    $("#show_tsol").html(msg);
-                });
-            });
-            $(document).on("click", "#pi2_fractalia_smsbundle_nombretsol_submit", function(event) {
-                var val = $("#pi2_fractalia_smsbundle_nombretsol_nombre").val();
-                var form = $('form[name="pi2_fractalia_smsbundle_nombretsol"]');
-                if (val != '') {
+            {#  Jquery para Manipular tsol #}
+                $(document).on("click", "#click_editar", function(event) {
                     event.preventDefault();
                     $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: form.attr('action'),
-                        data: form.serialize(),
-                        success: function(data) {
-                            $("#show_tsol").html(data);
-                        }
+                        url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_tsol").html(msg);
                     });
-                }
-            });
+                });
+                $(document).on("click", "#pi2_fractalia_smsbundle_nombretsol_submit", function(event) {
+                    var val = $("#pi2_fractalia_smsbundle_nombretsol_nombre").val();
+                    var form = $('form[name="pi2_fractalia_smsbundle_nombretsol"]');
+                    if (val != '') {
+                        event.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                $("#show_tsol").html(data);
+                            }
+                        });
+                    }
+                });
+            {#  FIN Jquery para Manipular tsol #}
+            {#  Jquery para Manipular Nombres Cortos #}
+                $(document).on("click", "a.editar_nombre", function(event) {
+                    $.ajax({
+                        url: "{{ path('nombrecorto_editar', { 'id': 1 }) }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_nombre_1").html(msg);
+                    });
+                });
+
+                $(document).on("click", "#pi2_fractalia_smsbundle_nombrecorto_submit", function(event) {
+                    var val = $("#pi2_fractalia_smsbundle_nombrecorto_nombre").val();
+                    var form = $('form[name="pi2_fractalia_smsbundle_nombrecorto"]');
+                    if (val != '') {
+                        event.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                alert(data);
+            {#                            $("#show_tsol").html(data);#}
+                                $.ajax({
+                                    url: "{{ path('nombrecorto_mostrar') }}",
+                                    type: "GET",
+                                    dataTpe: "html",
+                                    context: document.body
+                                }).done(function(msg) {
+                                    $("#ncortos").html(msg);
+                                });
+                            }
+                        });
+                    }
+                });
+            {#  FIN Jquery para Manipular Nombres Cortos #}
+
+
+
         </script>
     {% endblock %}
