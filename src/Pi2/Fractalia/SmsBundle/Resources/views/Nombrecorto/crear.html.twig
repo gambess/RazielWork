@@ -1,0 +1,8 @@
+{% block content -%}
+    {{form_start(form)}}
+            {{ form_widget (form.nombre) }}
+            {{ form_row (form.submit) }}
+        {{ form_errors (form.nombre) }}
+    {{form_rest(form)}}
+    {{form_end(form)}}
+{% endblock %}

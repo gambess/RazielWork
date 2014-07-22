@@ -15,6 +15,7 @@
             '@FractaliaSmsBundle/Resources/public/js/jquery-1.11.0.min.js'
             '@FractaliaSmsBundle/Resources/public/js/retina.js'
             '@FractaliaSmsBundle/Resources/public/js/main.js'
+            '@FractaliaSmsBundle/Resources/public/js/jquery-impromptu.js'
             output='js/compiled/javascripts.js'
         %}
         <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
@@ -42,8 +43,22 @@
                         <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
                             <ul id="ncortos">
                                 {%for ncorto in nombres %}
-                                    <li id="show_nombre_{{ncorto.id}}"><a class="editar_nombre" href='#' data-location="{{ path('nombrecorto_editar', { 'id': ncorto.id }) }}" data-shortnameid="{{ncorto.id}}" title="Click para editar">{{ncorto.nombre}}</a></li>
-                                    {%endfor%}
+                                    <li id="show_nombre_{{ncorto.id}}">
+                                        <a 
+                                            class="editar_nombre" 
+                                            href='#' 
+                                            data-location="{{ path('nombrecorto_editar', { 'id': ncorto.id }) }}" 
+                                            data-shortnameid="{{ncorto.id}}" 
+                                            title="Click para editar">
+                                            {{ncorto.nombre}}
+                                        </a>
+                                        <p class="borrar_nombre"
+                                           data-location="{{ path('nombrecorto_borrar', { 'id': ncorto.id }) }}" 
+                                           title="Click para borrar">
+                                            x 
+                                        </p>
+                                    </li>
+                                {%endfor%}
                                 <li id="add_more"><a id="add_nombre" href='#' title="Click para agregar"><span>Añadir nombre corto</span></a>
                             </ul>
                         </li>
@@ -122,13 +137,16 @@
             {#  FIN Jquery para Manipular tsol #}
             {#  Jquery para Manipular Nombres Cortos #}
                 $(document).on("click", "a.editar_nombre", function(event) {
+                    var id = $(this).data("shortnameid");
+                    var url = $(this).data("location");
+                    event.preventDefault();
                     $.ajax({
-                        url: "{{ path('nombrecorto_editar', { 'id': 1 }) }}",
+                        url: url,
                         type: "GET",
                         dataTpe: "html",
                         context: document.body
                     }).done(function(msg) {
-                        $("#show_nombre_1").html(msg);
+                        $("#show_nombre_" + id).html(msg);
                     });
                 });
 
@@ -143,8 +161,6 @@
                             url: form.attr('action'),
                             data: form.serialize(),
                             success: function(data) {
-                                alert(data);
-            {#                            $("#show_tsol").html(data);#}
                                 $.ajax({
                                     url: "{{ path('nombrecorto_mostrar') }}",
                                     type: "GET",
@@ -158,7 +174,53 @@
                     }
                 });
             {#  FIN Jquery para Manipular Nombres Cortos #}
+            {#  Jquery para Manipular Creacion nombres cortos #}
+                $(document).on("click", "#add_nombre", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('nombrecorto_nuevo') }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#add_more").html(msg);
+                    });
+                });
+            {#  FIN Jquery para Manipular Creacion nombres cortos #}
+            {#  Jquery para Borrar nombres cortos #}
 
+                $(document).on("mouseover", ".borrar_nombre", function() {
+                    $(this).css("cursor", "pointer");
+                });
+                $(document).on("click", ".borrar_nombre", function(event) {
+                    event.preventDefault();
+                    var url = $(this).data("location");
+                    removeNombreCorto(url);
+                });
+            {#  FIN Jquery para Borrar nombres cortos #}
+                function removeNombreCorto(url) {
+                    var texto = '¿Esta seguro/a que desea borrar este nombre?';
+
+                    $.prompt(texto, {
+                        buttons: {Cancelar: false, Borrar: true},
+                        close: function(e, v, m, f) {
+
+                            if (v) {
+                                $.ajax({
+                                    url: url,
+                                    type: "GET",
+                                    dataTpe: "html",
+                                    context: document.body
+                                }).done(function(msg) {
+                                    $("#ncortos").html(msg);
+                                });
+                            }
+                            else {
+                            }
+
+                        }
+                    });
+                }
 
 
         </script>
