@@ -152,16 +152,17 @@ class IncidenciaArrayEvento
 
     protected function setCliente(Incidencia $incidencia)
     {
-        $pattern = "^\[(.*?)\]^";
+        $pattern = "/^(\[(\w+)*\]){3}/";
         $matches = array();
         $matches2 = array();
         if (method_exists($incidencia, 'getTitulo') and null != $incidencia->getTitulo())
         {
-            if (preg_match_all($pattern, $incidencia->getTitulo(), $matches, PREG_SET_ORDER) >= 3)
+            $result = preg_match($pattern, $incidencia->getTitulo(), $matches);
+            if ($result == 1 and count($matches) == 3)
             {
-                $this->cliente = strtolower($matches[2][1]);
+                $this->cliente = strtolower($matches[2]);
             }
-            else
+            if ($result == 0)
             {
                 foreach ($this->confCliente as $cliente)
                 {
