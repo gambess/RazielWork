@@ -290,7 +290,6 @@ class ConfiguracionManager
         }
         foreach ($nombres as $indice => $nombre)
         {
-            echo $nombre->getNombre();
             $arrayTmp[$indice] = $nombre->getNombre();
         }
         return $arrayTmp;

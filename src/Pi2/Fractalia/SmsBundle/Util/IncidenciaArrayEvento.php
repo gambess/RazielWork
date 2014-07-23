@@ -47,8 +47,8 @@ class IncidenciaArrayEvento
      * Valores para almacenar las configuraciones
      */
     private $tipo;
-    private $cliente;
-    private $tsol = "";
+    private $cliente = '';
+    private $tsol = '';
 
     /*
      * De momento Fake a falta de conversaciones con telefonica
@@ -131,7 +131,6 @@ class IncidenciaArrayEvento
 
     protected function setFechaApertura(Incidencia $incidencia)
     {
-//        $format = 'd/m/y H:m:s';
         if (method_exists($incidencia, 'getFechaApertura') and null != $incidencia->getFechaApertura())
         {
             $this->fecha = $incidencia->getFechaApertura();
@@ -157,6 +156,7 @@ class IncidenciaArrayEvento
         $matches2 = array();
         if (method_exists($incidencia, 'getTitulo') and null != $incidencia->getTitulo())
         {
+
             $result = preg_match($pattern, $incidencia->getTitulo(), $matches);
             if ($result == 1 and count($matches) == 3)
             {
@@ -173,12 +173,11 @@ class IncidenciaArrayEvento
                         break;
                     }
                 }
+                $this->cliente = 'missing';
             }
-        }
-        else
-        {
+        }else{
             $this->cliente = 'missing';
-        }
+        }    
         $this->array['cliente'] = $this->cliente;
     }
 
