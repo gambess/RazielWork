@@ -99,3 +99,21 @@ and open the template in the editor.
     top:6px;
     /*z-index: 999;*/ 
 }
+
+#pi2_fractalia_smsbundle_nombretsol_{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -112px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:40px;
+    top:6px;
+    border: none;
+    background-color: transparent;
+}
