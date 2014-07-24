@@ -35,11 +35,11 @@ class DefaultController extends Controller {
                     ->findBy(
                             array('estadoEnvio'=> 
                                 array(
-                                    'POR_ENVIAR', 'ERROR', 'ERROR_BUILD', 'ENVIADO'
+                                    'ERROR', 'POR_ENVIAR', 'ERROR_BUILD', 'ENVIADO'
                                     )
                                 ),
                             array(
-                                'estadoEnvio'=>'DESC',
+                                'estadoEnvio'=>'ASC',
                                 'fechaActualizacion'=>'DESC',	 	
                                 'fechaCreacion'=>'DESC',
                                 'fechaEnvio'=>'DESC',

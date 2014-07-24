@@ -37,13 +37,28 @@ class NombrecortoController extends Controller
     }
 
     /**
-     * Lists all Nombretsol entities.
+     * Show one Entity.
      *
-     * @Route("/show", name="nombrecorto_mostrar")
+     * @Route("/{id}/show", name="nombrecorto_mostrar")
      * @Method("GET")
      * @Template()
      */
-    public function mostrarAction()
+    public function mostrarAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $nombre = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
+        return array(
+            'nombre' => $nombre,
+        );
+    }
+    /**
+     * Lists all Nombretsol entities.
+     *
+     * @Route("/show", name="nombrecorto_todos")
+     * @Method("GET")
+     * @Template()
+     */
+    public function todosAction()
     {
         $em = $this->getDoctrine()->getManager();
         $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->FindAll();
@@ -133,7 +148,6 @@ class NombrecortoController extends Controller
             'method' => 'POST',
         ));
         $form->add('nombre', 'text', array('label' => false));
-        $form->add('submit', 'submit', array('label' => 'Añadir'));
 
         return array(
             'entity' => $entity,

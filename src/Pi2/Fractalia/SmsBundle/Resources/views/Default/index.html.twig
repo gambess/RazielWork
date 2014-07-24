@@ -37,7 +37,7 @@
                         <li><a href='#'><span>Configuraciones</span></a></li>
                         <li><a href='#'><span>Ver/Modificar Tsol</span></a>
                             <ul>
-                                <li id="show_tsol"><a id="click_editar" href='#' title="Click Para editar">{{tsol.nombre}}</a></li>
+                                <li id="show_tsol"><a id="click_editar" href='#' title="Click para editar">{{tsol.nombre}}</a></li>
                             </ul>
                         </li>
                         <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
@@ -52,11 +52,10 @@
                                             title="Click para editar">
                                             {{ncorto.nombre}}
                                         </a>
-                                        <p class="borrar_nombre"
-                                           data-location="{{ path('nombrecorto_borrar', { 'id': ncorto.id }) }}" 
-                                           title="Click para borrar">
-                                            x 
-                                        </p>
+                                        <span class="borrar_nombre"
+                                              data-location="{{ path('nombrecorto_borrar', { 'id': ncorto.id }) }}" 
+                                              title="Click para borrar">
+                                        </span>
                                     </li>
                                 {%endfor%}
                                 <li id="add_more"><a id="add_nombre" href='#' title="Click para agregar"><span>Añadir nombre corto</span></a>
@@ -75,16 +74,20 @@
                             {%elseif entity.estadoenvio == 'ENVIADO' or entity.estadoenvio == 'POR_ENVIAR' %}
                                 <a href="{{ path('mensajes_show', { 'id': entity.id }) }}">
                                 {%endif%}
-                                <li class="clearfix">
+                                <li class="clearfix" 
+                                    {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
+                                        style="list-style-position: inside; border: 2px solid #D53B1D;"
+                                    {%endif%}
+                                    >
                                     {% set namepic = entity.destinatario | lower %}
                                     {% image '@FractaliaSmsBundle/Resources/public/images/icon-default.png' %}
                                     <img src="{{ asset_url }}" alt="thumb" class="thumbnail"/>
                                     {% endimage %}
                                     <h2>
                                         {%if entity.estadoenvio == 'ERROR_BUILD' %}
-                                            ERROR EN EL MENSAJE  (grupo envio: {{ entity.destinatario }})
+                                            <span style="text-shadow: -1px 1px 1px #D53B1D;">ERROR EN EL MENSAJE</span> (grupo envio: {{ entity.destinatario }})
                                         {%elseif entity.estadoenvio == 'ERROR' %}
-                                            ERROR EN LOS DATOS   (grupo envio: {{ entity.destinatario }})                              
+                                            <span style="text-shadow: -1px 1px 1px #D53B1D;;">ERROR EN ENVIO</span> (grupo envio: {{ entity.destinatario }})                              
                                         {%elseif entity.estadoenvio == 'ENVIADO' %}
                                             {{ entity.estadoenvio }} al grupo: {{ entity.destinatario }}
                                         {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
@@ -118,7 +121,10 @@
                         $("#show_tsol").html(msg);
                     });
                 });
-                $(document).on("click", "#pi2_fractalia_smsbundle_nombretsol_submit", function(event) {
+                //Quiero capturar el dato 
+            {#                var val_before_click = $("#pi2_fractalia_smsbundle_nombretsol_nombre").val();#}
+            {#                $(document).on("click", "#pi2_fractalia_smsbundle_nombretsol_submit", function(event) {#}
+                $(document).on("click", "#editar_tsol", function(event) {
                     var val = $("#pi2_fractalia_smsbundle_nombretsol_nombre").val();
                     var form = $('form[name="pi2_fractalia_smsbundle_nombretsol"]');
                     if (val != '') {
@@ -133,6 +139,17 @@
                             }
                         });
                     }
+                });
+                $(document).on("click", "#cancelar_tsol", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('tsol_mostrar') }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_tsol").html(msg);
+                    });
                 });
             {#  FIN Jquery para Manipular tsol #}
             {#  Jquery para Manipular Nombres Cortos #}
@@ -150,7 +167,7 @@
                     });
                 });
 
-                $(document).on("click", "#pi2_fractalia_smsbundle_nombrecorto_submit", function(event) {
+                $(document).on("click", "#agregar_nombre", function(event) {
                     var val = $("#pi2_fractalia_smsbundle_nombrecorto_nombre").val();
                     var form = $('form[name="pi2_fractalia_smsbundle_nombrecorto"]');
                     if (val != '') {
@@ -162,7 +179,7 @@
                             data: form.serialize(),
                             success: function(data) {
                                 $.ajax({
-                                    url: "{{ path('nombrecorto_mostrar') }}",
+                                    url: "{{ path('nombrecorto_todos') }}",
                                     type: "GET",
                                     dataTpe: "html",
                                     context: document.body
@@ -173,6 +190,20 @@
                         });
                     }
                 });
+            {#  Jquery para Cancelar creacionde nombres cortos #} 
+                $(document).on("click", "#cancelar_agregar_nombre", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('nombrecorto_todos') }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#ncortos").html(msg);
+                    });
+                });
+            {#  FIN Jquery para Cancelar creacionde nombres cortos #}
+
             {#  FIN Jquery para Manipular Nombres Cortos #}
             {#  Jquery para Manipular Creacion nombres cortos #}
                 $(document).on("click", "#add_nombre", function(event) {
@@ -197,7 +228,7 @@
                     var url = $(this).data("location");
                     removeNombreCorto(url);
                 });
-            {#  FIN Jquery para Borrar nombres cortos #}
+
                 function removeNombreCorto(url) {
                     var texto = '¿Esta seguro/a que desea borrar este nombre?';
 
@@ -221,6 +252,7 @@
                         }
                     });
                 }
+            {#  FIN Jquery para Borrar nombres cortos #}
 
 
         </script>

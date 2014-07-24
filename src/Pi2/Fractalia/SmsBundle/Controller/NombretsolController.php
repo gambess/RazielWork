@@ -193,7 +193,6 @@ class NombretsolController extends Controller
             'method' => 'PUT',
         ));
         $form->add('nombre', 'text', array('label' => false));
-        $form->add('submit', 'submit', array('label' => 'Actualizar'));
 
         return array(
             'entity' => $entity,

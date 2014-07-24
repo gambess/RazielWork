@@ -1,0 +1,101 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24-jul-2014, 13:51:47
+    Author     : raziel
+*/
+
+#editar_tsol{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -112px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:40px;
+    top:6px;
+    /*z-index: 999;*/ 
+}
+#cancelar_tsol{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:6px;
+    /*z-index: 999;*/ 
+}
+
+.borrar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -176px -96px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:8px;
+    /*z-index: 999;*/ 
+}
+.input_form{
+    margin: 5px 1px 5px 0;
+    width: 70%;
+    font-size: 0.81em;
+    box-shadow: 2px 1px 3px #888888;
+}
+.input_form:focus{
+    outline: none;
+}
+
+#agregar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -112px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:40px;
+    top:6px;
+    /*z-index: 999;*/ 
+}
+#cancelar_agregar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:6px;
+    /*z-index: 999;*/ 
+}

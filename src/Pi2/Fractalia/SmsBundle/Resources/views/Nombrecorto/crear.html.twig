@@ -1,8 +1,9 @@
 {% block content -%}
     {{form_start(form)}}
-            {{ form_widget (form.nombre) }}
-            {{ form_row (form.submit) }}
-        {{ form_errors (form.nombre) }}
+            {{ form_errors (form.nombre) }}
+            {{ form_widget (form.nombre , { 'attr': {'class': 'input_form'} }) }}
+                            <span id="agregar_nombre" title="Guardar"></span>
+                            <span id="cancelar_agregar_nombre" title="Cancelar"></span>
     {{form_rest(form)}}
     {{form_end(form)}}
 {% endblock %}
