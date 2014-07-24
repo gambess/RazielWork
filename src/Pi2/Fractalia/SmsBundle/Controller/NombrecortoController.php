@@ -148,6 +148,7 @@ class NombrecortoController extends Controller
             'method' => 'POST',
         ));
         $form->add('nombre', 'text', array('label' => false));
+        $form->add('', 'submit', array('label' => false));
 
         return array(
             'entity' => $entity,

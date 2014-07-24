@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : raziel
 */
 
-#editar_tsol{
+/*#editar_tsol{
     cursor: pointer;
     list-style: none outside none;
     background-image: url("../images/ui-icons_cc0000_256x240.png");
@@ -22,8 +22,8 @@ and open the template in the editor.
     position:absolute;
     right:40px;
     top:6px;
-    /*z-index: 999;*/ 
-}
+    z-index: 999; 
+}*/
 #cancelar_tsol{
     cursor: pointer;
     list-style: none outside none;
@@ -67,7 +67,7 @@ and open the template in the editor.
     outline: none;
 }
 
-#agregar_nombre{
+#pi2_fractalia_smsbundle_nombrecorto_{
     cursor: pointer;
     list-style: none outside none;
     background-image: url("../images/ui-icons_cc0000_256x240.png");
@@ -81,7 +81,8 @@ and open the template in the editor.
     position:absolute;
     right:40px;
     top:6px;
-    /*z-index: 999;*/ 
+    border: none;
+    background-color: transparent;
 }
 #cancelar_agregar_nombre{
     cursor: pointer;
