@@ -62,6 +62,7 @@ and open the template in the editor.
     width: 70%;
     font-size: 0.81em;
     box-shadow: 2px 1px 3px #888888;
+    background-color: #F0F0F0;
 }
 .input_form:focus{
     outline: none;
@@ -85,6 +86,23 @@ and open the template in the editor.
     background-color: transparent;
 }
 #cancelar_agregar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:6px;
+    /*z-index: 999;*/ 
+}
+
+.cancelar_nombre{
     cursor: pointer;
     list-style: none outside none;
     background-image: url("../images/ui-icons_cc0000_256x240.png");

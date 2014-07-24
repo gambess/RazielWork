@@ -2,10 +2,7 @@
     {{form_start(edit_form)}}
             {{ form_errors (edit_form.nombre) }}
             {{ form_widget (edit_form.nombre , { 'attr': {'class': 'input_form'} }) }}
-            {#{{ form_row (edit_form.submit) }}#}
-{{form_rest(edit_form)}}
-                            <!--<span id="editar_tsol" title="Actualizar"></span>-->
+            {{form_rest(edit_form)}}
             <span id="cancelar_tsol" title="Cancelar"></span>
-    
     {{form_end(edit_form)}}
 {% endblock %}

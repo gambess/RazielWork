@@ -201,6 +201,20 @@
                                             });
                                         });
                                         {#  FIN Jquery para Cancelar creacionde nombres cortos #}
+                                    
+                                    {#  Jquery para Cancelar edicion de nombres cortos #}
+                                        $(document).on("click", "span.cancelar_nombre", function(event) {
+                                            event.preventDefault();
+                                            $.ajax({
+                                                url: "{{ path('nombrecorto_todos') }}",
+                                                type: "GET",
+                                                dataTpe: "html",
+                                                context: document.body
+                                            }).done(function(msg) {
+                                                $("#ncortos").html(msg);
+                                            });
+                                        });
+                                        {#  FIN Jquery para edicion creacionde nombres cortos #}
 
                                         {#  FIN Jquery para Manipular Nombres Cortos #}
                                         {#  Jquery para Manipular Creacion nombres cortos #}
@@ -218,9 +232,7 @@
                                         {#  FIN Jquery para Manipular Creacion nombres cortos #}
                                         {#  Jquery para Borrar nombres cortos #}
 
-                                        $(document).on("mouseover", ".borrar_nombre", function() {
-                                            $(this).css("cursor", "pointer");
-                                        });
+
                                         $(document).on("click", ".borrar_nombre", function(event) {
                                             event.preventDefault();
                                             var url = $(this).data("location");
