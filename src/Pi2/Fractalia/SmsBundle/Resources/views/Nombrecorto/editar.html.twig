@@ -1,12 +1,13 @@
 {% block content -%}
-    {{form_start(edit_form, { 'attr': {'id': 'pi2_fractalia_smsbundle_nombretsol_editar', 'data-url' : 'path' } })}}
+    {{form_start(edit_form, { 'attr': {'id': 'form_edit_nc_'~entity.id} })}}
         {{ form_errors (edit_form.nombre) }}
-        {{ form_widget (edit_form.nombre , { 'attr': {'class': 'input_form'} }) }}
-        {{form_rest(edit_form)}}
+        {{ form_widget (edit_form.nombre, {'id' : 'input_edit_nc_'~entity.id,'attr': {'class': 'input_form'} }) }}
+        {{ form_row (edit_form.up, {'id' : 'button_add_nc_'~entity.id, 'attr': {'class': 'button_guardar', 'data-idf': entity.id } })}}
         <span class="cancelar_nombre" 
             data-location="{{ path('nombrecorto_mostrar', { 'id': entity.id }) }}" 
             data-shortid="{{entity.id}}" 
             title="Cancelar">
         </span>
+        {{form_rest(edit_form)}}
     {{form_end(edit_form)}}
 {% endblock %}

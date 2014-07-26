@@ -1,8 +1,9 @@
 {% block content -%}
-    {{form_start(form)}}
+    {{form_start(form, { 'attr': {'id': 'form_add_nc'} })}}
             {{ form_errors (form.nombre) }}
-            {{ form_widget (form.nombre , { 'attr': {'class': 'input_form'} }) }}
-            {{form_rest(form)}}               
+            {{ form_widget (form.nombre, {'id' : 'input_add_nc','attr': {'class': 'input_form'} }) }}
+            {{ form_row (form.ad, {'id' : 'button_add_nc', 'attr': {'class': 'button_guardar'} })}}
             <span id="cancelar_agregar_nombre" title="Cancelar"></span>
+            {{form_rest(form)}}               
     {{form_end(form)}}
 {% endblock %}

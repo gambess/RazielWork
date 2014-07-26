@@ -1,29 +1,8 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
 /* 
     Created on : 24-jul-2014, 13:51:47
-    Author     : raziel
+    Author     : Raziel Valle Miranda
 */
 
-/*#editar_tsol{
-    cursor: pointer;
-    list-style: none outside none;
-    background-image: url("../images/ui-icons_cc0000_256x240.png");
-    background-repeat: no-repeat;
-    background-position: -96px -112px;
-    display: block;
-    overflow: hidden;
-    text-indent: -99999px;
-    height: 16px;
-    width: 16px;
-    position:absolute;
-    right:40px;
-    top:6px;
-    z-index: 999; 
-}*/
 #cancelar_tsol{
     cursor: pointer;
     list-style: none outside none;
@@ -37,7 +16,7 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:20px;
-    top:6px;
+    top:11px;
     /*z-index: 999;*/ 
 }
 
@@ -54,18 +33,32 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:20px;
-    top:8px;
+    top:11px;
     /*z-index: 999;*/ 
 }
 .input_form{
-    margin: 5px 1px 5px 0;
-    width: 70%;
+    /*display: block;*/
+    margin: 5px 2px 5px 20px;
+    width: 60%;
+    font-family: sans-serif;
     font-size: 0.81em;
-    box-shadow: 2px 1px 3px #888888;
-    background-color: #F0F0F0;
+
+    /*    appearance: none;
+        box-shadow: none;
+        border-radius: none;*/
+    
+    padding: 2px;
+    border: solid 4px #c9c9c9;
+    transition: border 0.3s;
+
+    /*    box-shadow: -1px 2px 3px #C9361A;*/
+    /*box-shadow: 12px 16px 9px #C9361A;*/
+    /*background-color: transparent;*/
 }
 .input_form:focus{
-    outline: none;
+    border: solid 4px #C9361A;
+    /*outline: none;*/
+
 }
 
 #pi2_fractalia_smsbundle_nombrecorto_{
@@ -81,7 +74,7 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:40px;
-    top:6px;
+    top:11px;
     border: none;
     background-color: transparent;
 }
@@ -98,7 +91,7 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:20px;
-    top:6px;
+    top:11px;
     /*z-index: 999;*/ 
 }
 
@@ -115,11 +108,11 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:20px;
-    top:6px;
+    top:11px;
     /*z-index: 999;*/ 
 }
 
-#pi2_fractalia_smsbundle_nombretsol_{
+.button_guardar, #pi2_fractalia_smsbundle_nombretsol_{
     cursor: pointer;
     list-style: none outside none;
     background-image: url("../images/ui-icons_cc0000_256x240.png");
@@ -132,7 +125,7 @@ and open the template in the editor.
     width: 16px;
     position:absolute;
     right:40px;
-    top:6px;
+    top:11px;
     border: none;
     background-color: transparent;
 }

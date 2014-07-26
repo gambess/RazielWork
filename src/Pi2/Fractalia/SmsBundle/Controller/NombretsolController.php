@@ -177,7 +177,7 @@ class NombretsolController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editarAction($id, Request $request)
+    public function editarAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -193,7 +193,7 @@ class NombretsolController extends Controller
             'method' => 'PUT',
         ));
         $form->add('nombre', 'text', array('label' => false));
-        $form->add("", 'submit', array('label' => false));
+        $form->add("act", 'submit', array('label' => " "));
 
         return array(
             'entity' => $entity,

@@ -190,7 +190,7 @@ class ConfiguracionManager
 
         if (is_array($this->tsolGuardia) and count($this->tsolGuardia) == 1)
         {
-            $newTsolObj->setNombre($this->tsolGuardia['nombre']);
+            $newTsolObj->setNombre(strtoupper($this->tsolGuardia['nombre']));
             $newTsolObj->setFechaModificacion(new \DateTime('NOW'));
         }
         $em->persist($newTsolObj);
@@ -215,7 +215,7 @@ class ConfiguracionManager
         }
         if ($tsol instanceof Nombretsol)
         {
-            return array('nombre' => $tsol->getNombre());
+            return array('nombre' => strtoupper($tsol->getNombre()));
         }
         return $this->tsolGuardia;
     }
@@ -264,7 +264,7 @@ class ConfiguracionManager
                 $newNombreCortoObj = new Nombrecorto();
                 $newNombreCortoObj->setFechaCreacion($now);
                 $newNombreCortoObj->setFechaModificacion($now);
-                $newNombreCortoObj->setNombre($nombreCorto);
+                $newNombreCortoObj->setNombre(strtoupper($nombreCorto));
                 $em->persist($newNombreCortoObj);
                 $em->flush();
             }
@@ -290,7 +290,7 @@ class ConfiguracionManager
         }
         foreach ($nombres as $indice => $nombre)
         {
-            $arrayTmp[$indice] = $nombre->getNombre();
+            $arrayTmp[$indice] = strtoupper($nombre->getNombre());
         }
         return $arrayTmp;
     }

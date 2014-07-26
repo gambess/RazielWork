@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Pi2\Fractalia\SmsBundle\Entity\Nombrecorto;
 use Pi2\Fractalia\SmsBundle\Form\NombrecortoType;
 
@@ -148,7 +149,7 @@ class NombrecortoController extends Controller
             'method' => 'POST',
         ));
         $form->add('nombre', 'text', array('label' => false));
-        $form->add('', 'submit', array('label' => false));
+        $form->add('ad', 'submit', array('label' => " "));
 
         return array(
             'entity' => $entity,
@@ -217,7 +218,7 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editarAction($id, Request $request)
+    public function editarAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -233,7 +234,7 @@ class NombrecortoController extends Controller
             'method' => 'PUT',
         ));
         $form->add('nombre', 'text', array('label' => false));
-        $form->add('', 'submit', array('label' => false));
+        $form->add('up', 'submit', array('label' => " "));
 
         return array(
             'entity' => $entity,
@@ -267,11 +268,12 @@ class NombrecortoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return array(
-                'nombres' => $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll(),
-            );
+            return new Response('Nombre Corto Actualizado');
+//            return array(
+//                'nombres' => $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll(),
+//            );
         }
-        return $this->redirect($this->generateUrl('tsol_editar', array('id' => $entity->getId())));
+        return $this->redirect($this->generateUrl('nombrecorto_editar', array('id' => $entity->getId())));
     }
 
     /**
@@ -379,7 +381,7 @@ class NombrecortoController extends Controller
      *
      * @Route("/{id}/borrar", name="nombrecorto_borrar")
      * @Method("GET")
-     * @Template("FractaliaSmsBundle:Nombrecorto:mostrar.html.twig")
+     * @Template("FractaliaSmsBundle:Nombrecorto:todos.html.twig")
      */
     public function borrarAction($id)
     {
