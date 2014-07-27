@@ -58,7 +58,7 @@
                                         </span>
                                     </li>
                                 {%endfor%}
-                                    <li id="add_more"><a id="add_nombre" href='#' title="Click para agregar"><span>Añadir nombre corto</span></a>
+                                    <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Añadir nombre corto</span></a>
                                 </ul>
                             </li>
                         </ul>
@@ -160,14 +160,16 @@
 
                                         {#  Jquery para Cancelar edicion de nombres cortos #}
                                         $(document).on("click", "span.cancelar_nombre", function(event) {
+                                            var id = $(this).data("shortid");
+                                            var url = $(this).data("location");
                                             event.preventDefault();
                                             $.ajax({
-                                                url: "{{ path('nombrecorto_todos') }}",
+                                                url: url,
                                                 type: "GET",
                                                 dataTpe: "html",
                                                 context: document.body
                                             }).done(function(msg) {
-                                                $("#ncortos").html(msg);
+                                                $("#show_nombre_"+id).html(msg);
                                             });
                                         });
                                         {#  FIN Jquery para cancelar edicion de nombres cortos #}
@@ -199,14 +201,16 @@
                                                     url: form.attr('action'),
                                                     data: form.serialize(),
                                                     success: function(data) {
-                                                        $.ajax({
-                                                            url: "{{ path('nombrecorto_todos') }}",
+                                                    $("#show_nombre_"+id).html(data)    
+                                                    
+                                                        /*$.ajax({
+                                                            url: "{# {{ path('nombrecorto_todos') }} #}",
                                                             type: "GET",
                                                             dataTpe: "html",
                                                             context: document.body
                                                         }).done(function(msg) {
                                                             $("#ncortos").html(msg);
-                                                        });
+                                                        });*/
                                                     }
                                                 });
                                             }
@@ -254,15 +258,9 @@
                                         
                                         {#  Jquery para Cancela el enviar Formulario #}
                                         $(document).on("click", "#cancelar_agregar_nombre", function(event) {
+                                            var li_add = '<a id="add_nombre" href="#" title="Click para crear"><span>Crear nombre corto</span></a>';
                                             event.preventDefault();
-                                            $.ajax({
-                                                url: "{{ path('nombrecorto_todos') }}",
-                                                type: "GET",
-                                                dataTpe: "html",
-                                                context: document.body
-                                            }).done(function(msg) {
-                                                $("#ncortos").html(msg);
-                                            });
+                                            $("#add_more").html(li_add);
                                         });
                                         {#  FIN Jquery para Creacion y Cancelar nombres cortos #}
 

@@ -16,8 +16,7 @@ use Pi2\Fractalia\SmsBundle\Form\NombrecortoType;
  *
  * @Route("/nombrecorto")
  */
-class NombrecortoController extends Controller
-{
+class NombrecortoController extends Controller {
 
     /**
      * Lists all Nombrecorto entities.
@@ -26,8 +25,7 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
@@ -44,14 +42,14 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function mostrarAction($id)
-    {
+    public function mostrarAction($id) {
         $em = $this->getDoctrine()->getManager();
         $nombre = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
         return array(
             'nombre' => $nombre,
         );
     }
+
     /**
      * Lists all Nombretsol entities.
      *
@@ -59,8 +57,7 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function todosAction()
-    {
+    public function todosAction() {
         $em = $this->getDoctrine()->getManager();
         $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->FindAll();
         return array(
@@ -75,14 +72,12 @@ class NombrecortoController extends Controller
      * @Method("POST")
      * @Template("FractaliaSmsBundle:Nombrecorto:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Nombrecorto();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -103,8 +98,7 @@ class NombrecortoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Nombrecorto $entity)
-    {
+    private function createCreateForm(Nombrecorto $entity) {
         $form = $this->createForm(new NombrecortoType(), $entity, array(
             'action' => $this->generateUrl('nombrecorto_create'),
             'method' => 'POST',
@@ -122,8 +116,7 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Nombrecorto();
         $form = $this->createCreateForm($entity);
 
@@ -140,8 +133,7 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function crearAction()
-    {
+    public function crearAction() {
         $entity = new Nombrecorto();
 //        $form   = $this->createCreateForm($entity);
         $form = $this->createForm(new NombrecortoType(), $entity, array(
@@ -164,14 +156,12 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
 
@@ -190,14 +180,12 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
 
@@ -218,14 +206,12 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editarAction($id)
-    {
+    public function editarAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
 
@@ -249,29 +235,22 @@ class NombrecortoController extends Controller
      * @Method("PUT")
      * @Template("FractaliaSmsBundle:Nombrecorto:mostrar.html.twig")
      */
-    public function actualizarAction(Request $request, $id)
-    {
+    public function actualizarAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid())
-        {
+        if ($editForm->isValid()) {
             $entity->setFechaModificacion((new \DateTime('NOW')));
             $em->persist($entity);
             $em->flush();
-
-            return new Response('Nombre Corto Actualizado');
-//            return array(
-//                'nombres' => $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll(),
-//            );
+            return $this->redirect($this->generateUrl('nombrecorto_mostrar', array('id' => $entity->getId())));
         }
         return $this->redirect($this->generateUrl('nombrecorto_editar', array('id' => $entity->getId())));
     }
@@ -283,8 +262,7 @@ class NombrecortoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Nombrecorto $entity)
-    {
+    private function createEditForm(Nombrecorto $entity) {
         $form = $this->createForm(new NombrecortoType(), $entity, array(
             'action' => $this->generateUrl('nombrecorto_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -302,14 +280,12 @@ class NombrecortoController extends Controller
      * @Method("PUT")
      * @Template("FractaliaSmsBundle:Nombrecorto:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
 
@@ -317,8 +293,7 @@ class NombrecortoController extends Controller
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        if ($editForm->isValid())
-        {
+        if ($editForm->isValid()) {
             $em->flush();
 
             return $this->redirect($this->generateUrl('nombrecorto_edit', array('id' => $id)));
@@ -337,18 +312,15 @@ class NombrecortoController extends Controller
      * @Route("/{id}", name="nombrecorto_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-            if (!$entity)
-            {
+            if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
             }
 
@@ -366,13 +338,12 @@ class NombrecortoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-                ->setAction($this->generateUrl('nombrecorto_delete', array('id' => $id)))
-                ->setMethod('DELETE')
-                ->add('submit', 'submit', array('label' => 'Delete'))
-                ->getForm()
+                        ->setAction($this->generateUrl('nombrecorto_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
 
@@ -383,17 +354,14 @@ class NombrecortoController extends Controller
      * @Method("GET")
      * @Template("FractaliaSmsBundle:Nombrecorto:todos.html.twig")
      */
-    public function borrarAction($id)
-    {
+    public function borrarAction($id) {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->find($id);
 
-        if (!$entity)
-        {
+        if (!$entity) {
             throw $this->createNotFoundException('Unable to find Nombrecorto entity.');
         }
-        if ($entity)
-        {
+        if ($entity) {
             $em->remove($entity);
             $em->flush();
 
