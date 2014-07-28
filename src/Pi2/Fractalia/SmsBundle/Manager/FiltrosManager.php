@@ -91,7 +91,6 @@ class FiltrosManager
             {
                 break;
             }
-//            print_r($filtrosCargados);die;
             foreach ($filtrosCargados as $clave => $filtro)
             {
                 if (is_array($filtro))

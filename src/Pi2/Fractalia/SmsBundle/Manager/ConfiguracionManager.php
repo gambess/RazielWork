@@ -255,8 +255,6 @@ class ConfiguracionManager
     {
         $now = (new \DateTime('NOW'));
         $em = $this->getManagerDoctrine();
-        print_r($this->nombresCortos);
-        var_dump($this->nombresCortos);
         if (is_array($this->nombresCortos) and count($this->nombresCortos) > 0)
         { 
             foreach ($this->nombresCortos as $nombreCorto)

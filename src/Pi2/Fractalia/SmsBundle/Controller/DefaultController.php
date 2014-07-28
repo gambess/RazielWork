@@ -138,7 +138,7 @@ class DefaultController extends Controller {
             ));
         }
 
-        $form->add('submit', 'submit', array('label' => 'Reparar Mensaje'));
+        $form->add('submit', 'submit', array('label' => 'Actualizar Sms'));
 
         return $form;
     }
@@ -231,7 +231,7 @@ class DefaultController extends Controller {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('mensajes_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Cancelar y Archivar'))
+                        ->add('submit', 'submit', array('label' => 'Remover del Listado'))
                         ->getForm()
         ;
     }

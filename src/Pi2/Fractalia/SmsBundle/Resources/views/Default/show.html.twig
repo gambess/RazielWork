@@ -20,11 +20,11 @@
             </tr>
             <tr>
                 {%if entity.fechaEnvio%}
-                <th>Fecha de Envio</th>
-                <td>{{ entity.fechaEnvio|date('d/m/y H:i:s') }}</td>
+                    <th>Fecha de Envio</th>
+                    <td>{{ entity.fechaEnvio|date('d/m/y H:i:s') }}</td>
                 {%elseif entity.fechaCreacion%}
-                <th>Fecha de Creación</th>
-                <td>{{ entity.fechaEnvio|date('d/m/y H:i:s') }}</td>
+                    <th>Fecha de Creación</th>
+                    <td>{{ entity.fechaCreacion|date('d/m/y H:i:s') }}</td>
                 {%endif%}
             </tr>
             {%if entity.estadoEnvio == "POR_ENVIAR" or entity.estadoEnvio == "ENVIADO" %}
@@ -39,13 +39,13 @@
         <ul class="record_actions">
     <li>
         <a href="{{ path('mensajes') }}">
-            Back to the list
+            Volver al Listado
         </a>
     </li>
     {%if entity.estadoenvio == "ERROR" or entity.estadoenvio == "ERROR_BUILD" %}
     <li>
         <a href="{{ path('mensajes_edit', { 'id': entity.id }) }}">
-            Edit
+            Editar
         </a>
     </li>
     {%endif%}
