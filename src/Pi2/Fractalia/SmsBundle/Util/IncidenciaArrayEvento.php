@@ -167,17 +167,32 @@ class IncidenciaArrayEvento
                 foreach ($this->confCliente as $cliente)
                 {
                     $pattern2 = $this->processClientesConfig($cliente);
-                    if (preg_match($pattern2, $incidencia->getTitulo(), $matches2) > 0)
+                    $result2 = preg_match($pattern2, strtolower($incidencia->getTitulo()), $matches2);
+                    if ($result2 > 0)
                     {
-                        $this->cliente = strtolower($this->cleanCliente($matches2[0]));
+                        $this->cliente = strtolower($cliente);
                         break;
                     }
+                    if ($result2 == 0)
+                    {
+                        $result3 = preg_match("/". strtolower($cliente). "/", strtolower($incidencia->getTitulo()), $matches3);
+                        if ($result3 > 0)
+                        {
+                            $this->cliente = strtolower($cliente);
+                            break;
+                        }
+                    }
                 }
+            }
+            if ($this->cliente == '')
+            {
                 $this->cliente = 'missing';
             }
-        }else{
+        }
+        else
+        {
             $this->cliente = 'missing';
-        }    
+        }
         $this->array['cliente'] = $this->cliente;
     }
 
