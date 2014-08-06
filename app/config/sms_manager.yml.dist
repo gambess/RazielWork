@@ -63,6 +63,9 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
         MODIFICACION:
             prioridad:
@@ -78,6 +81,9 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
         ALARMA:
             prioridad:
@@ -96,6 +102,9 @@ fractalia_sms:
             filtro_titulo:
                 - AS
                 - AC
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 #       EVENTO ASIGNACION                
         ASIGNACION:
             prioridad:
@@ -112,6 +121,9 @@ fractalia_sms:
               - SEGEST MON
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
 
 
