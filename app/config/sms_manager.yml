@@ -32,20 +32,6 @@ fractalia_sms:
 #       Para agregar y remplazar en el campo nombre de clientes
         nombres_cortos: 
             - NOMBRECORTODEF
-#             - VOCENTO
-#             - FERROVIAL
-#             - DGOG
-#             - SAICA
-#             - HOTELBEDS
-#             - NH
-#             - PRISA
-#             - DGPE
-#             - CEPSA
-#             - ICEX
-#             - GOBEX
-#             - NUTREXPA
-#             - COLOMER
-#             - ATENTO
 
 #        Traduccion del tipo de caso
         traduccion_tipo_caso: 
@@ -77,6 +63,9 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
         MODIFICACION:
             prioridad:
@@ -92,6 +81,9 @@ fractalia_sms:
             grupo_destino_IN:
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
         ALARMA:
             prioridad:
@@ -110,6 +102,9 @@ fractalia_sms:
             filtro_titulo:
                 - AS
                 - AC
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 #       EVENTO ASIGNACION                
         ASIGNACION:
             prioridad:
@@ -126,6 +121,9 @@ fractalia_sms:
               - SEGEST MON
             grupo_destino_NOT:
             filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
 
 
 
