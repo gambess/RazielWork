@@ -259,16 +259,16 @@ class FiltrosManager
 
                         if (count($filtro[$clave]) > 0)
                         {
-                            $filtroEstado = 'REQUIRED_';
                             foreach ($filtro[$clave] as $filter)
                             {
                                 if (!preg_match($this->processClientesConfig($filter), $incidencia->getTitulo(), $matches))
                                 {
-                                    $filtroEstado .= 'BUT_FAIL';
+                                    $filtroEstado = 'REQUIRED_BUT_FAIL';
+                                    continue;
                                 }
                                 else
                                 {
-                                    $filtroEstado .= 'AND_PASS';
+                                    $filtroEstado = 'REQUIRED_AND_PASS';
                                     break;
                                 }
                             }
@@ -285,16 +285,16 @@ class FiltrosManager
 
                         if (count($filtro[$clave]) > 0)
                         {
-                            $filtroEstado = 'REQUIRED_';
                             foreach ($filtro[$clave] as $filter)
                             {
                                 if (!preg_match($this->processClientesConfig($filter), $incidencia->getTitulo(), $matches))
                                 {
-                                    $filtroEstado .= 'BUT_FAIL';
+                                    $filtroEstado = 'REQUIRED_AND_PASS';
+                                    continue;
                                 }
                                 else
                                 {
-                                    $filtroEstado .= 'AND_PASS';
+                                    $filtroEstado = 'REQUIRED_AND_FAIL';
                                     break;
                                 }
                             }
@@ -348,12 +348,7 @@ class FiltrosManager
                 }
             }
         }
-
-//        foreach ($pasoTodosFiltros as $arrayfiltros){
-//            print_r(array_count_values($arrayfiltros));
-//        }
-
-
+        
         foreach ($pasoTodosFiltros as $plantilla => $filtros)
         {
             if (!$this->estaEn('REQUIRED_BUT_FAIL', $filtros) == true)
@@ -365,6 +360,7 @@ class FiltrosManager
         {
             return key($resultados);
         }
+        
         $temp1 = array();
         $temp2 = array();
         if (count($resultados) > 1)
