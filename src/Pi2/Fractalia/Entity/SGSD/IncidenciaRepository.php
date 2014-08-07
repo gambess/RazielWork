@@ -124,13 +124,14 @@ class IncidenciaRepository extends EntityRepository
     {
 //        $estados = array('Open', 'Work In Progress', 'Suspended');
         $missing = "missing";
+        $ficticio = "ficticio";
         $query = $this->getEntityManager()->createQuery(
                 "SELECT COALESCE(NULLIF(i.numeroCaso, ''),(:missing)) AS numeroCaso,
                     lower(COALESCE(NULLIF(i.estado, ''),(:missing))) AS estado,
-                    lower(COALESCE(NULLIF(i.grupoDestino, ''),(:missing))) AS destino 
+                    lower(COALESCE(NULLIF(i.grupoDestino, ''), NULLIF(i.grupoOrigen, ''),(:ficticio))) AS destino 
                     FROM Pi2\Fractalia\Entity\SGSD\Incidencia i WHERE 
                     (i.estado in (:estados) AND (i.grupoOrigen in (:servicio) OR i.grupoDestino in (:servicio)))")->setParameters(array('estados' => $estados,
-            'servicio' => $servicio, 'missing' => $missing)
+            'servicio' => $servicio, 'missing' => $missing, 'ficticio' => $ficticio)
         );
         
 
