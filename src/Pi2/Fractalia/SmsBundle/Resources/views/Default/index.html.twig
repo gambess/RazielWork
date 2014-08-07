@@ -76,20 +76,17 @@
                                 {%endif%}
                                 <li class="clearfix" 
                                     {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
-                                        style="list-style-position: inside; border: 1px solid #D33B1D;"
-                                    {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
-                                        style="list-style-position: inside; border: 1px solid #7287B1;"
+                                        style="background: -moz-linear-gradient(center top, #ebebeb , #D33B1D) repeat scroll 0 0 #D33B1D;"
                                     {%endif%}
                                     >
-                                    {% set namepic = entity.destinatario | lower %}
                                     {% image '@FractaliaSmsBundle/Resources/public/images/icon-default.png' %}
                                     <img src="{{ asset_url }}" alt="thumb" class="thumbnail"/>
                                     {% endimage %}
                                     <h2>
                                         {%if entity.estadoenvio == 'ERROR_BUILD' %}
-                                            {{ entity.destinatario }}  {# <span style="text-shadow: -1px 1px 1px #D53B1D;">ERROR</span> #}
+                                            {{ entity.destinatario }} 
                                         {%elseif entity.estadoenvio == 'ERROR' %}
-                                            {{ entity.destinatario }}  {# <span style="text-shadow: -1px 1px 1px #D53B1D;;">ERROR</span>     #}                         
+                                            {{ entity.destinatario }}                         
                                         {%elseif entity.estadoenvio == 'ENVIADO' %}
                                             {{ entity.destinatario }}
                                         {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
@@ -98,9 +95,7 @@
                                     </h2>
                                     <p class="desc">{{entity.mensaje.tipomensaje}} {{entity.mensaje.texto|slice(0, 23)}}...</p>
                                     <span class="price">
-                                        {% if entity.fechaEnvio %}
-                                            {{ entity.fechaEnvio|date('d/m/y H:i:s') }}
-                                        {% elseif entity.fechaCreacion %}
+                                        {% if entity.fechaCreacion %}
                                             {{ entity.fechaCreacion|date('d/m/y H:i:s') }}
                                         {% endif %}
                                     </span>

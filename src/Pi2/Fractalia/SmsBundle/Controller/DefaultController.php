@@ -39,10 +39,7 @@ class DefaultController extends Controller {
                                     )
                                 ),
                             array(
-                                'estadoEnvio'=>'ASC',
-                                'fechaActualizacion'=>'DESC',	 	
                                 'fechaCreacion'=>'DESC',
-                                'fechaEnvio'=>'DESC',
                                 )
                             );
         
