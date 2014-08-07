@@ -102,7 +102,7 @@ class IncidenciaArrayEvento
 
     protected function setFooModo()
     {
-        $this->modo = 'CorreoFoo';
+        $this->modo = 'correo-foo-lorem';
         $this->array['modo'] = $this->modo;
     }
 
@@ -175,7 +175,7 @@ class IncidenciaArrayEvento
                     }
                     if ($result2 == 0)
                     {
-                        $result3 = preg_match("/". strtolower($cliente). "/", strtolower($incidencia->getTitulo()), $matches3);
+                        $result3 = preg_match("/" . strtolower($cliente) . "/", strtolower($incidencia->getTitulo()), $matches3);
                         if ($result3 > 0)
                         {
                             $this->cliente = strtolower($cliente);
@@ -261,9 +261,13 @@ class IncidenciaArrayEvento
         {
             $this->tecnico = strtolower($incidencia->getTecnicoAsignadoFinal());
         }
+        elseif (method_exists($incidencia, 'getTecnicoAsignadoInicial') and null != $incidencia->getTecnicoAsignadoInicial())
+        {
+            $this->tecnico = strtolower($incidencia->getTecnicoAsignadoInicial());
+        }
         else
         {
-            $this->tecnico = 'missing';
+            $this->tecnico = 'ficticio';
         }
         $this->array['tecnico'] = $this->tecnico;
     }
@@ -297,12 +301,12 @@ class IncidenciaArrayEvento
                 {
                     foreach ($incidencia->getResoluciones() as $resolucion)
                     {
-                        $this->detalle .= $resolucion->getTexto();
+                        $this->detalle .= strtolower($resolucion->getTexto()).' ';
                     }
                 }
                 break;
             default:
-                $this->detalle = $incidencia->getTitulo();
+                $this->detalle = strtolower($incidencia->getTitulo()).' ';
                 break;
         }
 
@@ -311,7 +315,7 @@ class IncidenciaArrayEvento
         {
             $this->detalle = 'missing';
         }
-        $this->array['detalle'] = $this->detalle;
+        $this->array['detalle'] = rtrim($this->detalle);
     }
 
 }
