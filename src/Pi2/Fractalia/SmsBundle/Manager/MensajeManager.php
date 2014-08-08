@@ -80,7 +80,16 @@ class MensajeManager {
             $em->persist($mensaje);
 
             $em->flush();
-            $mensaje->setTexto($this->getText($columna, $plantilla));
+            $t = $this->getText($columna, $plantilla);
+            if(strlen($t) <= 483){
+                $mensaje->setTexto($this->getText($columna, $plantilla));
+            }
+            
+            if(strlen($t) > 484){
+                $mensaje->setTexto(substr($this->getText($columna, $plantilla), 0, 483));
+            }
+            
+            
             $mensaje->setColumnaEvento($columna);
             $em->persist($mensaje);
             $em->flush();
