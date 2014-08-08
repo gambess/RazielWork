@@ -52,8 +52,8 @@ class IncidenciaListener
         //capturo el objeto en un insercion o actualizacion
         $inci = $event->getObject();
         $em = $event->getEntityManager();
-        
-        
+
+
         //Se inicia el monitoreo de la incidencia si en los campos grupo origen o grupo destino
         //se encuentra algun servicio SOC, obtenido del fichero de configuración
         if ($this->filtrarByServicesSOC($inci))
@@ -62,10 +62,16 @@ class IncidenciaListener
 
             $filtros = new FiltrosManager($arrayEventos);
             $plantilla = $filtros->pasarFiltro($inci);
-            if (count($this->configuraciones->getDestinos()) > 0)
+            if ($plantilla != "")
             {
-                $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
-                $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
+                if (count($this->configuraciones->getDestinos()) > 0)
+                {
+                    $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
+                    $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
+                }
+            }
+            if($plantilla == ""){
+                $this->logger->info("No se encontro Plantilla para la incidencia con numero de Caso: " . $incidencia->getNumeroCaso(). ", la prioridad: " . $incidencia->getPrioridad() ." y el estado: " . $incidencia->getEstado());
             }
         }
     }
@@ -85,13 +91,13 @@ class IncidenciaListener
         }
     }
 
-
     /*
      * Primer filtro del Listener SOLO SERVICIOS SOC
      */
 
     protected function filtrarByServicesSOC(Incidencia $incidencia)
     {
+        
         if (in_array($incidencia->getGrupoDestino(), $this->configuraciones->getServiciosSOC()) or in_array($incidencia->getGrupoOrigen(), $this->configuraciones->getServiciosSOC()))
         {
             return true;

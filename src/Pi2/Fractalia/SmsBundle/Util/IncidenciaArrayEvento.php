@@ -195,6 +195,7 @@ class IncidenciaArrayEvento
         }
         $this->array['cliente'] = $this->cliente;
     }
+    
 
     /*
      * Transformar las palabras del fichero de configuracion

@@ -151,7 +151,7 @@ class FiltrosManager
                         {
                             $arrayTraducciones = array_shift($arrayEstado);
                             $filtroEstado = 'REQUIRED_';
-                            if (($this->estaEn($incidencia->getEstado(), $arrayTraducciones)) == true)
+                            if (($this->estaEn(strtoupper($incidencia->getEstado()), $arrayTraducciones)) == true)
                             {
                                 $filtroEstado .= 'AND_PASS';
                             }
@@ -356,9 +356,11 @@ class FiltrosManager
                 $resultados[$plantilla] = $filtros;
             }
         }
+        $nombrePlantilla = "";
         if (count($resultados) == 1)
         {
-            return key($resultados);
+            $nombrePlantilla = key($resultados);
+            return $nombrePlantilla;
         }
         
         $temp1 = array();
