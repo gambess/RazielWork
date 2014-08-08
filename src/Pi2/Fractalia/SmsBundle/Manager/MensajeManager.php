@@ -88,11 +88,11 @@ class MensajeManager {
             return $mensaje->getId();
         }
         if ((is_array($data) and count($data) > 0)and $plantilla == "RESUMEN" ) {
+
             $mensaje = new Mensaje();
             $mensaje->setColumnaEvento(null);
             $mensaje->setFechaCreacion($now);
             $mensaje->setFechaActualizacion($now);
-            //CAMBIAR nombre tipo plantilla y tipo mensaje
             $mensaje->setNombrePlantilla($plantilla);
             $mensaje->setTipoMensaje($plantilla);
             $em->persist($mensaje);
