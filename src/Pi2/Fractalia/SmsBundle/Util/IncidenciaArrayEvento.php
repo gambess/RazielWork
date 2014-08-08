@@ -102,7 +102,7 @@ class IncidenciaArrayEvento
 
     protected function setFooModo()
     {
-        $this->modo = 'correo-foo-lorem';
+        $this->modo = 'correo-foo';
         $this->array['modo'] = $this->modo;
     }
 
@@ -160,7 +160,11 @@ class IncidenciaArrayEvento
             $result = preg_match($pattern, $incidencia->getTitulo(), $matches);
             if ($result == 1 and count($matches) == 3)
             {
-                $this->cliente = strtolower($matches[2]);
+                if(in_array(strtoupper($matches[2]), $this->confCliente)){
+                        $this->cliente = strtolower($matches[2]);
+                }else{
+                    $result = 0;
+                }
             }
             if ($result == 0)
             {
@@ -195,7 +199,6 @@ class IncidenciaArrayEvento
         }
         $this->array['cliente'] = $this->cliente;
     }
-    
 
     /*
      * Transformar las palabras del fichero de configuracion
