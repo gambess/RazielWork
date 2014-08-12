@@ -8,8 +8,8 @@ fractalia_sms:
             remitente: '217812'
             
         grupo_destino:
-            - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
-#            - { destinatario: BEGO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: RAZ, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+            - { destinatario: BEGO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
 #                GRUPOS DE PRODUCCION ¡¡¡CUIDADO!!!
 #            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
 #            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 23:00, hasta: 07:00 }
@@ -25,6 +25,7 @@ fractalia_sms:
             - SEG MERCEDES
             - SOPORTE SEGURIDAD
             - SOC SEGURIDAD
+            - SEGEST MONOCLIENTE
 
 #       Traducciones
 #       Apartir de la VERSION 1.4 nombres cortos y tsol_guardia se dejan en el fichero de configuración para setear el campo por defecto. 
@@ -49,8 +50,9 @@ fractalia_sms:
 #       CADA EVENTO DEBE COINCIDIR CON LA PLANTILLA
 #       EJEMPLO EVENTO RESOLUCION ESTADO RESUELTO dentro del filtro 
 #       DEBE EXISTIR PLANTILLA RESOLUCION EN LAS PLANTILLAs
-#       EVENTO RESOLUCION
+
         RESOLUCION:
+            tipo_accion:
             prioridad:
                 - CRITICA
             #ESTADO del EVENTO como KEY los valores son los sinonimos del estado
@@ -67,7 +69,47 @@ fractalia_sms:
             tecnico_inicial:
             tecnico_final:
 
-        MODIFICACION:
+#        MODIFICACION:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                MODIFICADO:
+#                    - OPEN
+#                    - STOPPED
+#                    - CLOSED
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#              - SOC SEGURIDAD
+#            grupo_destino_IN:
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#            tecnico_inicial:
+#            tecnico_final:
+
+#        ASIGNACION:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                ASIGNADO:
+#                    - WORK IN PROGRESS
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#            grupo_destino_IN:
+#              - SOPORTE SEGURIDAD
+#              - SEGEST SOC
+#              - SEG MERCEDES
+#              - SEGEST MON
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#            tecnico_inicial:
+#            tecnico_final:
+
+        MODIFICACION_CON_USUARIO:
+            tipo_accion:
             prioridad:
                 - CRITICA
             estado:
@@ -79,6 +121,76 @@ fractalia_sms:
             grupo_origen_NOT:
               - SOC SEGURIDAD
             grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST MONOCLIENTE
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+              - BULBASAUR
+              - CHARMANDER
+              - SQUIRTLE
+
+        MODIFICACION_SIN_USUARIO:
+            tipo_accion:
+            prioridad:
+                - CRITICA
+            estado:
+                MODIFICADO:
+                    - OPEN
+                    - STOPPED
+                    - CLOSED
+            grupo_origen_IN:
+            grupo_origen_NOT:
+              - SOC SEGURIDAD
+            grupo_destino_IN:
+              - SEGEST MON
+              - SEGEST SOC
+              - SEG MERCEDES
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+
+        ASIGNACION_CON_USUARIO:
+            tipo_accion:
+            prioridad:
+                - CRITICA
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST MONOCLIENTE
+              - SEGEST MON
+              - SEGEST SOC
+              - SEG MERCEDES
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+              - BULBASAUR
+              - CHARMANDER
+              - SQUIRTLE
+
+        ASIGNACION_SIN_USUARIO:
+            tipo_accion:
+            prioridad:
+                - CRITICA
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SEGEST MON
+              - SEGEST SOC
+              - SEG MERCEDES
             grupo_destino_NOT:
             filtro_titulo:
             filtro_titulo_NOT:
@@ -86,6 +198,7 @@ fractalia_sms:
             tecnico_final:
 
         ALARMA:
+            tipo_accion:
             prioridad:
                 - CRITICA
             estado:
@@ -105,27 +218,6 @@ fractalia_sms:
             filtro_titulo_NOT:
             tecnico_inicial:
             tecnico_final:
-#       EVENTO ASIGNACION                
-        ASIGNACION:
-            prioridad:
-                - CRITICA
-            estado:
-                ASIGNADO:
-                    - WORK IN PROGRESS
-            grupo_origen_IN:
-            grupo_origen_NOT:
-            grupo_destino_IN:
-              - SOPORTE SEGURIDAD
-              - SEGEST SOC
-              - SEG MERCEDES
-              - SEGEST MON
-            grupo_destino_NOT:
-            filtro_titulo:
-            filtro_titulo_NOT:
-            tecnico_inicial:
-            tecnico_final:
-
-
 
 #    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
     plantillas:
@@ -138,7 +230,27 @@ fractalia_sms:
             fecha: 'FECHA: '
             modo: 'MODO RECEPCION: '
             detalle: 'RESOLUCION: '
-        MODIFICACION:
+
+#        MODIFICACION:
+#            id: 'REPRIORIZACION ID: '
+#            cliente: 'CLIENTE: '
+#            tipo: 'TIPO: '
+#            tecnico: 'TECNICO: '
+#            tsol: 'TSOL: '
+#            fecha: 'FECHA: '
+#            modo: 'MODO RECEPCION: '
+#            detalle: 'RESUMEN: '
+#        ASIGNACION:
+#            id: 'ID: '
+#            cliente: 'CLIENTE: '
+#            tipo: 'TIPO: '
+#            tecnico: 'TECNICO: '
+#            tsol: 'TSOL: '
+#            fecha: 'FECHA: '
+#            modo: 'MODO RECEPCION: '
+#            detalle: 'RESUMEN: '
+
+        MODIFICACION_CON_USUARIO:
             id: 'REPRIORIZACION ID: '
             cliente: 'CLIENTE: '
             tipo: 'TIPO: '
@@ -147,7 +259,25 @@ fractalia_sms:
             fecha: 'FECHA: '
             modo: 'MODO RECEPCION: '
             detalle: 'RESUMEN: '
-        ASIGNACION:
+        MODIFICACION_SIN_USUARIO:
+            id: 'REPRIORIZACION ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
+        ASIGNACION_CON_USUARIO:
+            id: 'ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            modo: 'MODO RECEPCION: '
+            detalle: 'RESUMEN: '
+        ASIGNACION_SIN_USUARIO:
             id: 'ID: '
             cliente: 'CLIENTE: '
             tipo: 'TIPO: '
