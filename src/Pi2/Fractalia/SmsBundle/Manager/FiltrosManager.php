@@ -339,14 +339,13 @@ class FiltrosManager
 
                         if (count($filtro['tecnico_inicial']) > 0)
                         {
-                            $filtroEstado = 'REQUIRED_';
                             if ($this->estaEn($incidencia->getTecnicoAsignadoInicial(), $filtro['tecnico_inicial']))
                             {
-                                $filtroEstado .= 'AND_PASS';
+                                $filtroEstado = 'REQUIRED_AND_PASS';
                             }
                             else
                             {
-                                $filtroEstado .= 'BUT_FAIL';
+                                $filtroEstado = 'REQUIRED_BUT_FAIL';
                             }
                         }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
@@ -361,14 +360,13 @@ class FiltrosManager
 
                         if (count($filtro['tecnico_final']) > 0)
                         {
-                            $filtroEstado = 'REQUIRED_';
                             if ($this->estaEn($incidencia->getTecnicoAsignadoFinal(), $filtro['tecnico_final']))
                             {
-                                $filtroEstado .= 'AND_PASS';
+                                $filtroEstado = 'REQUIRED_AND_PASS';
                             }
                             else
                             {
-                                $filtroEstado .= 'AND_PASS';
+                                $filtroEstado = 'REQUIRED_BUT_FAIL';
                             }
                         }
                         $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
