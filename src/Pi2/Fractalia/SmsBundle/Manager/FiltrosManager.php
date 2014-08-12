@@ -34,17 +34,22 @@ class FiltrosManager
                 break;
             }
             //load filtros
-            $arrayPrioridad = array_slice($evento, 0, 1, true);
-            $arrayEstado = array_slice($evento, 1, 1, true);
-            $arrayGrupoOrigenIn = array_slice($evento, 2, 1, true);
-            $arrayGrupoOrigenNot = array_slice($evento, 3, 1, true);
-            $arrayGrupoDestinoIn = array_slice($evento, 4, 1, true);
-            $arrayGrupoDestinoNot = array_slice($evento, 5, 1, true);
-            $arrayFiltroTitulo = array_slice($evento, 6, 1, true);
-            $arrayFiltroTituloNot = array_slice($evento, 7, 1, true);
-            $arrayTecnicoInicial = array_slice($evento, 8, 1, true);
-            $arrayTecnicoFinal = array_slice($evento, 9, 1, true);
+            $arrayTipoAccion = array_slice($evento, 0, 1, true);
+            $arrayPrioridad = array_slice($evento, 1, 1, true);
+            $arrayEstado = array_slice($evento, 2, 1, true);
+            $arrayGrupoOrigenIn = array_slice($evento, 3, 1, true);
+            $arrayGrupoOrigenNot = array_slice($evento, 4, 1, true);
+            $arrayGrupoDestinoIn = array_slice($evento, 5, 1, true);
+            $arrayGrupoDestinoNot = array_slice($evento, 6, 1, true);
+            $arrayFiltroTitulo = array_slice($evento, 7, 1, true);
+            $arrayFiltroTituloNot = array_slice($evento, 8, 1, true);
+            $arrayTecnicoInicial = array_slice($evento, 9, 1, true);
+            $arrayTecnicoFinal = array_slice($evento, 10, 1, true);
 
+            if (isset($arrayTipoAccion['tipo_accion']))
+            {
+                $this->filtros[$plantillaNombre][key($arrayTipoAccion)] = $arrayTipoAccion;
+            }
             if (isset($arrayPrioridad['prioridad']))
             {
                 $this->filtros[$plantillaNombre][key($arrayPrioridad)] = $arrayPrioridad;
@@ -114,6 +119,30 @@ class FiltrosManager
             {
                 if (is_array($filtro))
                 {
+                    if ($clave == 'tipo_accion')
+                    {
+                        if (count($filtro['tipo_accion']) == 0)
+                        {
+                            $filtroEstado = 'NOT_NEEDED_AND_EMPTY';
+                        }
+
+                        if (count($filtro['tipo_accion']) > 0 and count ($filtro['tipo_accion']) < 2)
+                        {
+                            $tipo_accion = strtoupper(trim($incidencia->getTipoAccion(), "#"));
+                            if ($this->estaEn($tipo_accion, $filtro['tipo_accion']))
+                            {
+                                $filtroEstado = 'REQUIRED_AND_PASS';
+                            }
+                            else
+                            {
+                                $filtroEstado = 'REQUIRED_BUT_FAIL';
+                            }
+                        }
+
+
+                        $pasoTodosFiltros[$plantillaNombre][$clave] = $filtroEstado;
+                    }
+                    
                     if ($clave == 'prioridad')
                     {
                         if (count($filtro['prioridad']) == 0)
@@ -123,14 +152,13 @@ class FiltrosManager
 
                         if (count($filtro['prioridad']) > 0)
                         {
-                            $filtroEstado = 'REQUIRED_';
                             if ($this->estaEn($incidencia->getPrioridad(), $filtro['prioridad']))
                             {
-                                $filtroEstado .= 'AND_PASS';
+                                $filtroEstado = 'REQUIRED_AND_PASS';
                             }
                             else
                             {
-                                $filtroEstado .= 'BUT_FAIL';
+                                $filtroEstado = 'REQUIRED_BUT_FAIL';
                             }
                         }
 
@@ -348,6 +376,7 @@ class FiltrosManager
                 }
             }
         }
+//        print_r($pasoTodosFiltros);die;
         
         foreach ($pasoTodosFiltros as $plantilla => $filtros)
         {

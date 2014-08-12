@@ -48,13 +48,10 @@ class MensajeManager {
         if ($data instanceof Incidencia and $plantilla != null) {
             $mensaje = new Mensaje();
             $columna = new Columnaevento();
-            $evento = $data->getEstado(); //Al estar en la incidencia obtenemos el estado en hot
             //Cambiar esto
             $array = new IncidenciaArrayEvento($plantilla, $this->configuraciones->getTsolGuardia(), $this->configuraciones->getNombresCortos(), $this->configuraciones->getTraduccionesTipos());
             //Array con los datos copiados de la incidencia Evento
             $arrayIncidencia = $array->setArrayIncidencia($data);
-            
-
             $estado = $this->setEstado($arrayIncidencia);
 
             $columna->setIncidencia($data);
@@ -81,6 +78,7 @@ class MensajeManager {
 
             $em->flush();
             $t = $this->getText($columna, $plantilla);
+            //FIX PARA CONTROLAR QUE EL MENSAJE DE TEXTO NO EXCEDA LOS 500 caracteres
             if(strlen($t) <= 483){
                 $mensaje->setTexto($this->getText($columna, $plantilla));
             }
