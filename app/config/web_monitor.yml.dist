@@ -86,8 +86,8 @@ pi2_frac_sgsd_web_monitor:
                      - ICEX
                      - GOBEX
                      - NUTREXPA
-                     - COLOMER
-                     - ATENTO
+                     - SERVIHOTEL
+                     - DIGITEX
    
         REHABITIC:
             buzones:
@@ -110,4 +110,25 @@ pi2_frac_sgsd_web_monitor:
                       condiciones:
                          - { campo: estado, valor: OPEN, operacion: = }
                          
+        FERROVIAL:
+           buzones:
+               - SOPORTE SEGURIDAD
+           categorias:
+               'TICKETS OPEN':
+                     alarma:
+                         max_time: 60
+                     prioridad:
+                        - ALTA
+                        - CRITICA
+                     campos:
+                        - numeroCaso
+                        - prioridad
+                        - tipoCaso
+                        - grupoDestino
+                        - fechaActualizacion
+                        - titulo
+                        - tecnicoAsignadoFinal
+                     condiciones:
+                        - { campo: estado, valor: OPEN, operacion: = }
+
     actualiza_web_segundos: 60               
