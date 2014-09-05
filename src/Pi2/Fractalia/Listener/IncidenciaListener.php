@@ -64,14 +64,21 @@ class IncidenciaListener
             $plantilla = $filtros->pasarFiltro($inci);
             if ($plantilla != "")
             {
+                $this->logger->info("Se enviaran uno o mas sms's: "
+                    . "Utilizando Plantilla: " . $plantilla
+                    . " Datos Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso()
+                    . " prioridad: " . $incidencia->getPrioridad()
+                    . " estado: " . $incidencia->getEstado()
+                );
                 if (count($this->configuraciones->getDestinos()) > 0)
                 {
                     $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
                     $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
                 }
             }
-            if($plantilla == ""){
-                $this->logger->info("No se encontro Plantilla para la incidencia con numero de Caso: " . $incidencia->getNumeroCaso(). ", la prioridad: " . $incidencia->getPrioridad() ." y el estado: " . $incidencia->getEstado());
+            if ($plantilla == "")
+            {
+                $this->logger->info("No se encontro Plantilla para una Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso() . ", prioridad: " . $incidencia->getPrioridad() . " estado: " . $incidencia->getEstado());
             }
         }
     }
@@ -97,7 +104,7 @@ class IncidenciaListener
 
     protected function filtrarByServicesSOC(Incidencia $incidencia)
     {
-        
+
         if (in_array($incidencia->getGrupoDestino(), $this->configuraciones->getServiciosSOC()) or in_array($incidencia->getGrupoOrigen(), $this->configuraciones->getServiciosSOC()))
         {
             return true;

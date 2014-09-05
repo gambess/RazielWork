@@ -31,6 +31,7 @@ class FractaliaSmsExtension extends Extension
         $container->setParameter('fractalia_sms.envio_sms.nombres_cortos', $config['envio_sms']['nombres_cortos']);
         $container->setParameter('fractalia_sms.envio_sms.traduccion_tipo_caso', $config['envio_sms']['traduccion_tipo_caso']);
         $container->setParameter('fractalia_sms.envio_sms.tsol_guardia', $config['envio_sms']['tsol_guardia']);
+        $container->setParameter('fractalia_sms.envio_sms.prioridades', $config['envio_sms']['prioridades']);
         $container->setParameter('fractalia_sms.eventos', $config['eventos']);
         $container->setParameter('fractalia_sms.plantillas', $config['plantillas']);
         $container->setParameter('fractalia_sms.resumenes.resumen', $config['resumenes']['RESUMEN']);

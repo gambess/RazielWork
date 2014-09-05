@@ -195,20 +195,13 @@ class DefaultController extends Controller
                         //Se comprueba si la categoria tiene clientes críticos
                         if (!empty($services['servicios'][$request->get('servicio')]['categorias'][$key]['clientes_criticos']))
                         {
+                            //Recuperamos el listado de clientes criticos en el array en mayusculas
                             $clientesCriticos = $services['servicios'][$request->get('servicio')]['categorias'][$key]['clientes_criticos'];
-
-                            foreach ($clientesCriticos as $cliente)
-                            {
-                                $sql[] = "i.cliente LIKE '%[%" . $cliente . "%]%'";
-                            }
-
-                            $sql = implode(" OR ", $sql);
-
-                            //Se comprueba si el ticket es de un cliente crítico
                             foreach ($tickets[$key]['datos'] as $indice => $campo)
                             {
-                                $existeClienteCritico = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')
-                                    ->getExisteClienteCritico($campo['numeroCaso'], $sql);
+                                //Fix History 154
+                                $incidenciaOb = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')->findOneBy(array('numeroCaso'=> $campo['numeroCaso']));
+                                $existeClienteCritico = $this->getCliente($incidenciaOb, $clientesCriticos);
 
                                 if ($existeClienteCritico)
                                 {
@@ -340,6 +333,97 @@ class DefaultController extends Controller
         }
 
         return ($dia);
+    }
+
+    //TODO: WE NEED SEPARATE THIS FUNCTIONALITY IS USED IN ALL APP
+    
+    /*
+     * Se Obtiene el Cliente del campo titulo de incidencia comparandolo con los clientes de la configuración
+     * Si no se encuentra el patron en la incidencia se busca un patron el en titulo
+     * @Param $incidencia Incidencia
+     * @Param $confCliente array
+     */
+
+    protected function getCliente($incidencia, $confCliente)
+    {
+        //patron a buscar en el primer intento
+        //[SDnumerocaso][otrodato][nombrecortocliente]
+        $pattern = "/^(\[(\w+)*\]){3}/";
+        $matches = array();
+        $matches2 = array();
+        
+        if (method_exists($incidencia, 'getTitulo') and null != $incidencia->getTitulo())
+        {
+
+            $result = preg_match($pattern, $incidencia->getTitulo(), $matches);
+            if ($result == 1 and count($matches) == 3)
+            {
+                if(in_array(strtoupper($matches[2]), $confCliente)){
+                        return strtolower($matches[2]);
+                }else{
+                    $result = 0;
+                }
+            }
+            if ($result == 0)
+            {
+                foreach ($confCliente as $cliente)
+                {
+                    $pattern2 = $this->processClientesConfig($cliente);
+                    $result2 = preg_match($pattern2, strtolower($incidencia->getTitulo()), $matches2);
+                    if ($result2 > 0)
+                    {
+                        return strtolower($cliente);
+                    }
+                    if ($result2 == 0)
+                    {
+                        $result3 = preg_match("/" . strtolower($cliente) . "/", strtolower($incidencia->getTitulo()), $matches3);
+                        if ($result3 > 0)
+                        {
+                            return strtolower($cliente);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /*
+     * Transformar las palabras del fichero de configuracion
+     * en Patron regEXP, para comparar
+     */
+
+    private function processClientesConfig($string)
+    {
+        if (!is_null($string))
+        {
+            return '^\[' . strtolower($string) . '\]^';
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /*
+     * Retira los square brackets del nombre corto del cliente encontrado
+     * en Patron regEXP, para comparar
+     */
+
+    private function cleanCliente($string)
+    {
+
+        if (!is_null($string))
+        {
+            return trim($string, "[]");
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

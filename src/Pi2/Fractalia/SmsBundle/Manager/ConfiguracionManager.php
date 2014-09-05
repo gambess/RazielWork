@@ -67,6 +67,11 @@ class ConfiguracionManager
      * Array con las plantillas de resumen y los estados que se deben monitorizar
      */
     private $resumenes = array();
+    
+    /*
+     * Array con las plantillas de resumen y los estados que se deben monitorizar
+     */
+    private $prioridades = array();
 
     /*
      * Setear los datos de conexión a la API
@@ -291,6 +296,16 @@ class ConfiguracionManager
             $arrayTmp[$indice] = strtoupper($nombre->getNombre());
         }
         return $arrayTmp;
+    }
+    
+    public function setPrioridades($prioridades)
+    {
+        $this->prioridades = $prioridades;
+    }
+    
+    public function getPrioridades()
+    {
+        return $this->prioridades;
     }
 
     /*

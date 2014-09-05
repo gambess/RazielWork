@@ -36,6 +36,9 @@
             <call method="setResumenes">
                 <argument>%fractalia_sms.resumenes.resumen%</argument>
             </call>
+            <call method="setPrioridades">
+                <argument>%fractalia_sms.envio_sms.prioridades%</argument>
+            </call>
         </service>
         <service id="fractalia_sms.mensaje_manager" class="%fractalia_sms.mensaje_manager.class%">
             <argument type="service" id="fractalia_sms.configuracion_manager" />

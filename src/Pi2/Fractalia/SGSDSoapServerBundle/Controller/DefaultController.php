@@ -62,8 +62,10 @@ class DefaultController extends Controller {
             $logger->notice('SGSD-WS: La petición al web service ha sido resuelta satisfactoriamente', array('from' => $request->getClientIp()));
         
             exit;
-        } catch (\Exception $e) {            
-            $soapServer->fault("1", $e->getMessage());
+        } catch (\Exception $e) {
+            $messageException = $e->getMessage();
+            $soapServer->fault("1", $messageException);
+            $logger->error('SGSD-WS: Una Excepción a sido capturada', array('mensaje' => $messageException));
             exit;
         }
     }
