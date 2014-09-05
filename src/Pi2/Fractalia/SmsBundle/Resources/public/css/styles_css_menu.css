@@ -175,3 +175,8 @@
 #cssmenu ul ul a:hover {
     color: #e94f31;
 }
+
+#scrollable{
+    max-height: 476px;
+    overflow-y: scroll;
+}

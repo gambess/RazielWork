@@ -42,6 +42,7 @@
                         </li>
                         <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
                             <ul id="ncortos">
+                                <div id="scrollable">
                                 {%for ncorto in nombres %}
                                     <li id="show_nombre_{{ncorto.id}}">
                                         <a 
@@ -60,6 +61,7 @@
                                 {%endfor%}
                                 <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Crear nombre corto</span></a>
                             </ul>
+                                </div>
                         </li>
                     </ul>
                 </div>
@@ -201,15 +203,6 @@
                             data: form.serialize(),
                             success: function(data) {
                                 $("#show_nombre_" + id).html(data)
-
-                                /*$.ajax({
-                                 url: "{# {{ path('nombrecorto_todos') }} #}",
-                                 type: "GET",
-                                 dataTpe: "html",
-                                 context: document.body
-                                 }).done(function(msg) {
-                                 $("#ncortos").html(msg);
-                                 });*/
                             }
                         });
                     }
@@ -248,6 +241,8 @@
                                     dataTpe: "html",
                                     context: document.body
                                 }).done(function(msg) {
+{#                          No funciona arreglar          #}
+{#                                    $("#ncortos").append("<div id=\"scrollable\">" + html(msg) + "</div>");#}
                                     $("#ncortos").html(msg);
                                 });
                             }

@@ -30,7 +30,7 @@ class DefaultController extends Controller {
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
         
-
+        //TODO: Quitar las peticiones de data access de aqui
         $entities = $em->getRepository('FractaliaSmsBundle:Sms')
                     ->findBy(
                             array('estadoEnvio'=> 
