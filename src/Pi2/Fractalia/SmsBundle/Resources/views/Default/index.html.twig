@@ -60,14 +60,16 @@
                                     </li>
                                 {%endfor%}
                                 <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Crear nombre corto</span></a>
-                            </ul>
                                 </div>
+                            </ul>
+                                
                         </li>
                     </ul>
                 </div>
             </header>
 
             <div id="container">
+                
                 <ul>
                     {%set namepic = "" %}
                     {% for entity in entities %}
@@ -105,6 +107,7 @@
 
                         {% endfor %}
                 </ul>
+                
             </div>
         </div>
 {#                {{ app.request.server.get('HTTP_USER_AGENT') }}#}

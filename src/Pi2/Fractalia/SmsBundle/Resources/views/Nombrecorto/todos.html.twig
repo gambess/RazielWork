@@ -1,4 +1,5 @@
 {% block content -%}
+<div id="scrollable">
     {%for ncorto in nombres %}
         <li id="show_nombre_{{ncorto.id}}">
             <a 
@@ -16,5 +17,5 @@
         </li>
     {%endfor%}
     <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Crear nombre corto</span></a>
-
+</div>
     {% endblock %}

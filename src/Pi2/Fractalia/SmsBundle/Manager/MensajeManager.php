@@ -52,7 +52,7 @@ class MensajeManager
         {
             $mensaje = new Mensaje();
             $columna = new Columnaevento();
-            //Cambiar esto
+
             $array = new IncidenciaArrayEvento($plantilla, $this->configuraciones->getTsolGuardia(), $this->configuraciones->getNombresCortos(), $this->configuraciones->getTraduccionesTipos());
             //Array con los datos copiados de la incidencia Evento
             $arrayIncidencia = $array->setArrayIncidencia($data);
@@ -79,21 +79,9 @@ class MensajeManager
 
             $mensaje->setEstado($estado);
             $em->persist($mensaje);
-
             $em->flush();
-            $t = $this->getText($columna, $plantilla);
-            //FIX PARA CONTROLAR QUE EL MENSAJE DE TEXTO NO EXCEDA LOS 500 caracteres
-            if (strlen($t) <= 483)
-            {
-                $mensaje->setTexto($this->getText($columna, $plantilla));
-            }
-
-            if (strlen($t) > 484)
-            {
-                $mensaje->setTexto(substr($this->getText($columna, $plantilla), 0, 483));
-            }
-
-
+            //Se almacena el texto, cumpliendo las normas de largo no mayor que 434 caracteres
+            $mensaje->setTexto($this->getText($columna, $plantilla));
             $mensaje->setColumnaEvento($columna);
             $em->persist($mensaje);
             $em->flush();
@@ -273,7 +261,10 @@ class MensajeManager
                 'entities' => $entity
             ));
         }
-        return $this->translateChars($content);
+        if (strlen($content) >= 434){
+            $content = substr($content, 0, 434);
+        }
+        return rtrim($this->translateChars($content));
     }
 
     /**

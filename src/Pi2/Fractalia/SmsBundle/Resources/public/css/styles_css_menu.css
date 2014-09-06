@@ -177,6 +177,6 @@
 }
 
 #scrollable{
-    max-height: 476px;
+    max-height: 480px;
     overflow-y: scroll;
 }
