@@ -67,9 +67,7 @@
                     </ul>
                 </div>
             </header>
-
             <div id="container">
-                
                 <ul>
                     {%set namepic = "" %}
                     {% for entity in entities %}
@@ -97,8 +95,23 @@
                                             {{ entity.destinatario }}
                                         {%endif%}
                                     </h2>
-                                    <p class="desc">{{entity.mensaje.tipomensaje}} {{entity.mensaje.texto|slice(0, 23)}}...</p>
-                                    <span class="price">
+                                    <span class="estado_envio">
+                                        {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                                            FALLO_TEXTO
+                                        {%elseif entity.estadoenvio == 'ERROR' %}
+                                            FALLO_ENVIO : {{entity.respuestaapi}}                
+                                        {%elseif entity.estadoenvio == 'ENVIADO' %}
+                                            CORRECTO
+                                        {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                                            POR_ENVIAR
+                                        {%endif%}
+                                    </span>
+                                    <span class="nombre_plantilla">
+                                        {{entity.mensaje.nombreplantilla}} 
+                                    </span>
+                                    
+                                    <p class="resumen_sms">{{entity.mensaje.texto|slice(0, 50)}}...</p>
+                                    <span class="fecha_creacion">
                                         {% if entity.fechaCreacion %}
                                             {{ entity.fechaCreacion|date('d/m/y H:i:s') }}
                                         {% endif %}
@@ -107,7 +120,6 @@
 
                         {% endfor %}
                 </ul>
-                
             </div>
         </div>
 {#                {{ app.request.server.get('HTTP_USER_AGENT') }}#}

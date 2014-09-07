@@ -42,9 +42,11 @@ a { text-decoration: none; }
 
 #container ul a { display: block; position: relative; width: 100%; }
 #container ul li h2 { font-size: 1.5em; line-height: 1.3em; font-weight: normal; letter-spacing: -0.03em; padding-top: 4px; color: #55678d; }
-#container ul li p.desc { color: #555; font-family: Arial, sans-serif; font-size: 1.2em; line-height: 1.3em; white-space: nowrap; overflow: hidden; }
+#container ul li p.resumen_sms { color: #555; font-family: Arial, sans-serif; font-size: 1.3em; line-height: 1.3em; white-space: nowrap; overflow: hidden; }
 
-#container ul li .price { position: absolute; bottom: 10px; left: 90px; font-size: 1em; font-weight: bold; color: #6ea247; }
+#container ul li .estado_envio { position: absolute; top: 7px; right: 5px; font-size: 0.8em; font-weight: bold; color: #555; }
+#container ul li .nombre_plantilla { position: absolute; top: 23px; right: 5px; font-size: 0.8em; font-weight: bold; color: #555; }
+#container ul li .fecha_creacion { position: absolute; bottom: 7px; right: 5px; font-size: 0.8em; font-weight: bold; color: #555; background-color: #ebebeb;}
 
 #container ul li img.thumbnail { 
 	background: #fff;
