@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+    {% block content_header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Logs Mensajes</title>
+        <meta name="author" content="Raziel Valle Miranda">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        {% stylesheets 'bundles/fractaliasms/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset( asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% javascripts
+            '@FractaliaSmsBundle/Resources/public/js/jquery-1.11.0.min.js'
+            '@FractaliaSmsBundle/Resources/public/js/retina.js'
+            '@FractaliaSmsBundle/Resources/public/js/main.js'
+            '@FractaliaSmsBundle/Resources/public/js/jquery-impromptu.js'
+            output='js/compiled/javascripts.js'
+        %}
+        <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+        {% endjavascripts %}
+        <!--[if lt IE 9]>
+          <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+          <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {%endblock%}
+
+    {% block body -%}
+        <div id="view">
+            <header>
+                <h1>Log Sms's (Envíos y Errores)</h1>
+                <div id='cssmenu'>
+                    <ul>
+                        <li><a href='#'><span>Configuraciones</span></a></li>
+                        <li><a href='#'><span>Ver/Modificar Tsol</span></a>
+                            <ul>
+                                <li id="show_tsol"><a id="click_editar" href='#' title="Click para editar">{{tsol.nombre}}</a></li>
+                            </ul>
+                        </li>
+                        <li><a href='#'><span>Gestionar Nombres Cortos</span></a>
+                            <ul id="ncortos">
+                                <div id="scrollable">
+                                {%for ncorto in nombres %}
+                                    <li id="show_nombre_{{ncorto.id}}">
+                                        <a 
+                                            class="editar_nombre" 
+                                            href='#' 
+                                            data-location="{{ path('nombrecorto_editar', { 'id': ncorto.id }) }}" 
+                                            data-shortnameid="{{ncorto.id}}" 
+                                            title="Click para editar">
+                                            {{ncorto.nombre}}
+                                        </a>
+                                        <span class="borrar_nombre"
+                                              data-location="{{ path('nombrecorto_borrar', { 'id': ncorto.id }) }}" 
+                                              title="Click para borrar">
+                                        </span>
+                                    </li>
+                                {%endfor%}
+                                <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Crear nombre corto</span></a>
+                                </div>
+                            </ul>
+                                
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <div id="container">
+                <ul>
+                    {%set namepic = "" %}
+                    {% for entity in entities %}
+                        {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
+                            <a href="{{ path('mensajes_edit', { 'id': entity.id }) }}">
+                            {%elseif entity.estadoenvio == 'ENVIADO' or entity.estadoenvio == 'POR_ENVIAR' %}
+                                <a href="{{ path('mensajes_show', { 'id': entity.id }) }}">
+                                {%endif%}
+                                <li class="clearfix" 
+                                    {%if entity.estadoenvio == 'ERROR_BUILD' or entity.estadoenvio == 'ERROR' %}
+                                        style="background: -moz-linear-gradient(center top, #ebebeb , #D33B1D) repeat scroll 0 0 #D33B1D;"
+                                    {%endif%}
+                                    >
+                                    {% image '@FractaliaSmsBundle/Resources/public/images/icon-default.png' %}
+                                    <img src="{{ asset_url }}" alt="thumb" class="thumbnail"/>
+                                    {% endimage %}
+                                    <h2>
+                                        {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                                            {{ entity.destinatario }} 
+                                        {%elseif entity.estadoenvio == 'ERROR' %}
+                                            {{ entity.destinatario }}                         
+                                        {%elseif entity.estadoenvio == 'ENVIADO' %}
+                                            {{ entity.destinatario }}
+                                        {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                                            {{ entity.destinatario }}
+                                        {%endif%}
+                                    </h2>
+                                    <span class="estado_envio">
+                                        {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                                            FALLO_TEXTO
+                                        {%elseif entity.estadoenvio == 'ERROR' %}
+                                            FALLO_ENVIO : {{entity.respuestaapi}}                
+                                        {%elseif entity.estadoenvio == 'ENVIADO' %}
+                                            CORRECTO
+                                        {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                                            POR_ENVIAR
+                                        {%endif%}
+                                    </span>
+                                    <span class="nombre_plantilla">
+                                        {{entity.mensaje.nombreplantilla}} 
+                                    </span>
+                                    
+                                    <p class="resumen_sms">{{entity.mensaje.texto|slice(0, 50)}}...</p>
+                                    <span class="fecha_creacion">
+                                        {% if entity.fechaCreacion %}
+                                            {{ entity.fechaCreacion|date('d/m/y H:i:s') }}
+                                        {% endif %}
+                                    </span>
+                                </li></a>
+
+                        {% endfor %}
+                </ul>
+            </div>
+        </div>
+{#                {{ app.request.server.get('HTTP_USER_AGENT') }}#}
+        <p id="back-top">
+            <a href="#top"><span></span>Subir</a>
+        </p>
+        <script>
+            {#  Jquery para Manipular tsol #}
+
+            {#  Cargar Formulario Edicion tsol #}
+                $(document).on("click", "#click_editar", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('tsol_editar', { 'id': tsol.id }) }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_tsol").html(msg);
+                    });
+                });
+
+            {#  Procesar y Enviar Formulario Edicion tsol #}
+                $(document).on("click", "#button_editar_tsol", function(event) {
+                    var val = $("#input_tsol_nombre").val();
+                    var form = $('form#form_edit_tsol');
+                    if (val != '') {
+                        event.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                $("#show_tsol").html(data);
+                            }
+                        });
+                    }
+                });
+
+            {#  Cancelar Edicion Formulario tsol #}
+                $(document).on("click", "#cancelar_tsol", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('tsol_mostrar') }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_tsol").html(msg);
+                    });
+                });
+            {#  FIN Jquery para Manipular tsol #}
+
+            {#  Jquery para Cancelar edicion de nombres cortos #}
+                $(document).on("click", "span.cancelar_nombre", function(event) {
+                    var id = $(this).data("shortid");
+                    var url = $(this).data("location");
+                    event.preventDefault();
+                    $.ajax({
+                        url: url,
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_nombre_" + id).html(msg);
+                    });
+                });
+            {#  FIN Jquery para cancelar edicion de nombres cortos #}
+
+            {#  Jquery para Manipular Nombres Cortos #}
+                $(document).on("click", "a.editar_nombre", function(event) {
+                    var id = $(this).data("shortnameid");
+                    var url = $(this).data("location");
+                    event.preventDefault();
+                    $.ajax({
+                        url: url,
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#show_nombre_" + id).html(msg);
+                    });
+                });
+
+                $(document).on("click", "button[id^='button_add_nc_']", function(event) {
+                    var id = $(this).data("idf")
+                    var val = $("#input_edit_nc_" + id).val();
+                    var form = $('form#form_edit_nc_' + id);
+                    if (val != '') {
+                        event.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                $("#show_nombre_" + id).html(data)
+                            }
+                        });
+                    }
+                });
+
+            {#  Jquery para creacion y Cancelar nombres cortos #}
+
+            {#  Jquery para Cargar el Formulario #}
+                $(document).on("click", "#add_nombre", function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "{{ path('nombrecorto_nuevo') }}",
+                        type: "GET",
+                        dataTpe: "html",
+                        context: document.body
+                    }).done(function(msg) {
+                        $("#add_more").html(msg);
+                    });
+                });
+
+            {#  Jquery para Procesar y enviar el Formulario #}
+                $(document).on("click", "#button_add_nc", function(event) {
+                    var val = $("#input_add_nc").val();
+                    var form = $('form#form_add_nc');
+                    if (val != '') {
+                        event.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                $.ajax({
+                                    url: "{{ path('nombrecorto_todos') }}",
+                                    type: "GET",
+                                    dataTpe: "html",
+                                    context: document.body
+                                }).done(function(msg) {
+{#                          No funciona arreglar          #}
+{#                                    $("#ncortos").append("<div id=\"scrollable\">" + html(msg) + "</div>");#}
+                                    $("#ncortos").html(msg);
+                                });
+                            }
+                        });
+                    }
+                });
+
+            {#  Jquery para Cancela el enviar Formulario #}
+                $(document).on("click", "#cancelar_agregar_nombre", function(event) {
+                    var li_add = '<a id="add_nombre" href="#" title="Click para crear"><span>Crear nombre corto</span></a>';
+                    event.preventDefault();
+                    $("#add_more").html(li_add);
+                });
+            {#  FIN Jquery para Creacion y Cancelar nombres cortos #}
+
+            {#  Jquery para Borrar nombres cortos #}
+                $(document).on("click", ".borrar_nombre", function(event) {
+                    event.preventDefault();
+                    var url = $(this).data("location");
+                    var nombre = $(this).prev().text();
+                    removeNombreCorto(url, nombre);
+                });
+
+                function removeNombreCorto(url, nombre) {
+                    var texto = '¿Esta seguro/a que deseas borrar el Nombre Corto: ' + nombre + '?';
+
+                    $.prompt(texto, {
+                        buttons: {Cancelar: false, Borrar: true},
+                        close: function(e, v, m, f) {
+                            if (v) {
+                                $.ajax({
+                                    url: url,
+                                    type: "GET",
+                                    dataTpe: "html",
+                                    context: document.body
+                                }).done(function(msg) {
+                                    $("#ncortos").html(msg);
+                                });
+                            }
+                            else {
+                            }
+
+                        }
+                    });
+                }
+            {#  FIN Jquery para Borrar nombres cortos #}
+        </script>
+        <script>
+            $(document).ready(function() {
+
+// hide #back-top first
+                $("#back-top").hide();
+
+// fade in #back-top
+                $(function() {
+                    $(window).scroll(function() {
+                        if ($(this).scrollTop() > 100) {
+                            $('#back-top').fadeIn();
+                        } else {
+                            $('#back-top').fadeOut();
+                        }
+                    });
+
+// scroll body to 0px on click
+                    $('#back-top a').click(function() {
+                        $('body,html').animate({
+                            scrollTop: 0
+                        }, 800);
+                        return false;
+                    });
+                });
+
+            });
+        </script>
+    {% endblock %}

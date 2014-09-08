@@ -18,13 +18,30 @@ class SmsRepository extends EntityRepository
      * @param string $string cadena a buscar
      * @return mixed collection or null
      */
+
     //
-    public function getByString($string)
+    public function findByString($string)
     {
         $query = $this->getEntityManager()->createQuery(
-                "SELECT s.* FROM Pi2\Fractalia\SmsBundle\Entity\Sms s
-                 WHERE s.destinatario = :string")
-            ->setParameters(array('string' => $string));
+                "SELECT s 
+                    FROM FractaliaSmsBundle:Sms s
+                    INNER JOIN FractaliaSmsBundle:Mensaje m
+                    WITH m.id = s.mensaje
+                    WHERE
+                    s.estadoEnvio in ('ERROR', 'POR_ENVIAR', 'ERROR_BUILD', 'ENVIADO')
+                    AND
+                    (
+                    s.destinatario = :string OR
+                    s.estadoEnvio = :state OR
+                    s.respuestaApi = :string OR
+                    s.remitente = :string OR
+                    s.fechaCreacion = :string OR
+                    s.fechaEnvio = :string OR
+                    m.nombrePlantilla = :string OR
+                    m.texto LIKE :pattern
+                    )
+                    ORDER BY s.fechaCreacion DESC")
+            ->setParameters(array('string' => $string, 'pattern' => "%" . $string . "%", 'state' => $this->translateState($string)));
 
         try
         {
@@ -40,4 +57,23 @@ class SmsRepository extends EntityRepository
             return $e;
         }
     }
+
+    protected function translateState($string)
+    {
+        if (!is_null($string))
+        {
+            switch ($string)
+            {
+                case 'CORRECTO':
+                    return "ENVIADO";
+                case 'FALLO_TEXTO':
+                    return "ERROR_BUILD";
+                case 'FALLO_ENVIO':
+                    return "FAIL";
+                case 'POR_ENVIAR':
+                    return 'POR_ENVIAR';
+            }
+        }
+    }
+
 }

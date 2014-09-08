@@ -189,7 +189,7 @@ class DefaultController extends Controller
                 {
                     $texto_evento = substr($texto_evento, 0, 434);
                 }
-                
+
                 $msj->setTexto(rtrim($this->translateChars($texto_evento)));
             }
             if (count($resumen) > 0)
@@ -328,6 +328,46 @@ class DefaultController extends Controller
             '€' => 'E',
         );
         return strtr($s, $replace);
+    }
+
+    /**
+     * Displays a list of existing Sms filters by string.
+     *
+     * @Route("/{string}/search", name="mensajes_search")
+     * @Method("GET")
+     * @Template()
+     */
+    public function searchAction($string)
+    {
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            //TODO: Quitar las peticiones de data access de aqui
+            $entities = $em->getRepository('FractaliaSmsBundle:Sms')->findByString($string);
+                
+
+            $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
+            if (is_null($tsol))
+            {
+                $configuraciones = $this->container->get('fractalia_sms.configuracion_manager');
+                $configuraciones->saveTsol();
+                $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
+            }
+
+            $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+            if (!is_array($nombres) or count($nombres) == 0)
+            {
+                $configuraciones = $this->container->get('fractalia_sms.configuracion_manager');
+                $configuraciones->saveNombreCorto();
+                $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
+            }
+
+            return array(
+                'entities' => $entities,
+                'tsol' => $tsol,
+                'nombres' => $nombres,
+            );
+        }
     }
 
 }
