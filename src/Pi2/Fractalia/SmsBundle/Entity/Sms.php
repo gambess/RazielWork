@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="Sms", indexes={@ORM\Index(name="fk_Sms_Mensaje1_idx", columns={"mensaje_id"})})
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\SmsRepository")
  */
 class Sms
 {

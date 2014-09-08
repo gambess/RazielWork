@@ -9,20 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="Mensaje", indexes={@ORM\Index(name="fk_Mensaje_ColumnaEvento1_idx", columns={"columna_evento_id"})})
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pi2\Fractalia\SmsBundle\Entity\MensajeRepository")
  */
 class Mensaje
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_plantilla", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nombre_plantilla", type="string", length=100, nullable=true)
      */
     private $nombrePlantilla;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo_mensaje", type="string", length=20, nullable=true)
+     * @ORM\Column(name="tipo_mensaje", type="string", length=100, nullable=true)
      */
     private $tipoMensaje;
 
@@ -36,7 +37,7 @@ class Mensaje
     /**
      * @var string
      *
-     * @ORM\Column(name="estado", type="string", length=20, nullable=true)
+     * @ORM\Column(name="estado", type="string", length=50, nullable=true)
      */
     private $estado;
 
