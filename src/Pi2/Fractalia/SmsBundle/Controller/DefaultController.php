@@ -257,6 +257,35 @@ class DefaultController extends Controller
                 ->getForm()
         ;
     }
+    
+    /**
+     * Creates a form to edit a Sms entity.
+     *
+     * @param Sms $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createSearchForm(Sms $entity)
+    {
+        if (null != $entity->getMensaje()->getColumnaEvento())
+        {
+            $form = $this->createForm(new SmseventoType(), $entity, array(
+                'action' => $this->generateUrl('mensajes_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            ));
+        }
+        if (count($entity->getMensaje()->getColumnaResumen()) > 0)
+        {
+            $form = $this->createForm(new SmsresumenType(), $entity, array(
+                'action' => $this->generateUrl('mensajes_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            ));
+        }
+
+        $form->add('submit', 'submit', array('label' => 'Actualizar Sms'));
+
+        return $form;
+    }
 
     /*
      * Se renderiza la plantilla con el texto en txt
@@ -343,6 +372,10 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             //TODO: Quitar las peticiones de data access de aqui
+            if(!is_null($string)){
+                $string = strtoupper($string);
+                $string = $this->translateState($string);
+            }
             $entities = $em->getRepository('FractaliaSmsBundle:Sms')->findByString($string);
                 
 
@@ -367,6 +400,30 @@ class DefaultController extends Controller
                 'tsol' => $tsol,
                 'nombres' => $nombres,
             );
+        }
+    }
+    
+    /*
+     * Returns a translate string for state
+     * @param string $string, a string to search in sms
+     */
+    protected function translateState($string)
+    {
+        if (!is_null($string))
+        {
+            switch ($string)
+            {
+                case 'CORRECTO':
+                    return "ENVIADO";
+                case 'FALLO_TEXTO':
+                    return "ERROR_BUILD";
+                case 'FALLO_ENVIO':
+                    return "FAIL";
+                case 'POR_ENVIAR':
+                    return 'POR_ENVIAR';
+                default:
+                    return $string;
+            }
         }
     }
 
