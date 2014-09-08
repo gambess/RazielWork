@@ -96,7 +96,7 @@ background: linear-gradient(to bottom,  #5a5955 0%,#51504c 50%,#494744 51%,#3f3d
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a5955', endColorstr='#3f3d3a',GradientType=0 );
 }
 
-header h1 { font-size: 2.4em; font-family: Tahoma, Arial, sans-serif; font-weight: bold; line-height: 55px; text-align: center; color: #efefef; text-shadow: 1px 1px 0px #000; }
+header h1 { font-size: 1.7em; font-family: Tahoma, Arial, sans-serif; font-weight: bold; line-height: 55px; text-align: center; color: #efefef; text-shadow: 1px 1px 0px #000; }
 
 
 /** basic media queries **/

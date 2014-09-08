@@ -13,7 +13,7 @@ use Pi2\Fractalia\SmsBundle\Form\MensajeType;
 /**
  * Mensaje controller.
  *
- * @Route("/mensaje")
+ * @Route("/preparacion_mensaje")
  */
 class MensajeController extends Controller
 {

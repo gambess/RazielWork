@@ -53,33 +53,40 @@ class IncidenciaListener
         $inci = $event->getObject();
         $em = $event->getEntityManager();
 
-
-        //Se inicia el monitoreo de la incidencia si en los campos grupo origen o grupo destino
-        //se encuentra algun servicio SOC, obtenido del fichero de configuración
-        if ($this->filtrarByServicesSOC($inci))
+        //Filtrar por prioridad antes de entrar a validar filtros
+        if (in_array(strtoupper($inci->getPrioridad()), $this->configuraciones->getPrioridades()))
         {
-            $arrayEventos = $this->configuraciones->getEventos();
-
-            $filtros = new FiltrosManager($arrayEventos);
-            $plantilla = $filtros->pasarFiltro($inci);
-            if ($plantilla != "")
+            //Se inicia el monitoreo de la incidencia si en los campos grupo origen o grupo destino
+            //se encuentra algun servicio SOC, obtenido del fichero de configuración
+            if ($this->filtrarByServicesSOC($inci))
             {
-                $this->logger->info("Se enviaran uno o mas sms's: "
-                    . "Utilizando Plantilla: " . $plantilla
-                    . " Datos Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso()
-                    . " prioridad: " . $incidencia->getPrioridad()
-                    . " estado: " . $incidencia->getEstado()
-                );
-                if (count($this->configuraciones->getDestinos()) > 0)
+                $arrayEventos = $this->configuraciones->getEventos();
+
+                $filtros = new FiltrosManager($arrayEventos);
+                $plantilla = $filtros->pasarFiltro($inci);
+                if ($plantilla != "")
                 {
-                    $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
-                    $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
+                    $this->logger->info("Se enviaran uno o mas sms's: "
+                        . "Utilizando Plantilla: " . $plantilla
+                        . " Datos Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso()
+                        . " prioridad: " . $incidencia->getPrioridad()
+                        . " estado: " . $incidencia->getEstado()
+                    );
+                    if (count($this->configuraciones->getDestinos()) > 0)
+                    {
+                        $id_mensaje = $this->mensajeManager->createMensaje($inci, $plantilla, $em);
+                        $this->crearSmsPorDestinatario($id_mensaje, $this->configuraciones->getDestinos());
+                    }
+                }
+                if ($plantilla == "")
+                {
+                    $this->logger->info("No se encontro Plantilla para una Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso() . ", prioridad: " . $incidencia->getPrioridad() . " estado: " . $incidencia->getEstado());
                 }
             }
-            if ($plantilla == "")
-            {
-                $this->logger->info("No se encontro Plantilla para una Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso() . ", prioridad: " . $incidencia->getPrioridad() . " estado: " . $incidencia->getEstado());
-            }
+        }
+        if (is_null($inci->getPrioridad()) or empty($inci->getPrioridad()))
+        {
+            $this->logger->info("La Incidencia.- numeroCaso: " . $incidencia->getNumeroCaso() . "con estado: " . $incidencia->getEstado() . ". Tiene el campo prioridad null o vacio");
         }
     }
 

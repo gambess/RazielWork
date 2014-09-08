@@ -16,7 +16,7 @@ use Pi2\Fractalia\SmsBundle\Entity\Columnaevento;
 /**
  * Mensajes controller.
  *
- * @Route("/mensajes")
+ * @Route("/log_sms")
  */
 class DefaultController extends Controller {
 

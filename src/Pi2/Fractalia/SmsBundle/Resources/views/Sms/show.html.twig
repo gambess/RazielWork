@@ -6,6 +6,10 @@
     <table class="record_properties">
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
                 <th>Destinatario</th>
                 <td>{{ entity.destinatario }}</td>
             </tr>
@@ -14,47 +18,51 @@
                 <td>{{ entity.remitente }}</td>
             </tr>
             <tr>
-                <th>Respuestaapi</th>
+                <th>Estado Envío</th>
+                <td>
+                    {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                        FALLO_TEXTO
+                    {%elseif entity.estadoenvio == 'ERROR' %}
+                        FALLO_ENVIO                
+                    {%elseif entity.estadoenvio == 'ENVIADO' %}
+                        CORRECTO
+                    {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                        POR_ENVIAR
+                    {%elseif '_Y_CANCEL' |slice(0, entity.estadoenvio|length) %}
+                        CANCELADO
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <th>Respuesta API</th>
                 <td>{{ entity.respuestaApi }}</td>
             </tr>
             <tr>
-                <th>Estadoenvio</th>
-                <td>{{ entity.estadoEnvio }}</td>
+                <th>Fecha envío</th>
+                <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{%endif%}</td>
             </tr>
             <tr>
-                <th>Log</th>
-                <td>{{ entity.log }}</td>
+                <th>Fecha Creación</th>
+                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{%endif%}</td>
             </tr>
             <tr>
-                <th>Fechaenvio</th>
-                <td>{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}</td>
+                <th>Fecha Actualización</th>
+                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{%endif%}</td>
             </tr>
-            <tr>
-                <th>Fechacreacion</th>
-                <td>{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Fechaactualizacion</th>
-                <td>{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
+            
         </tbody>
     </table>
 
         <ul class="record_actions">
     <li>
         <a href="{{ path('sms') }}">
-            Back to the list
+            Volver al Listado
         </a>
     </li>
     <li>
-        <a href="{{ path('sms_edit', { 'id': entity.id }) }}">
-            Edit
+        <a href="{{ path('mensajes') }}">
+            Volver al Log de Sms's
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
 </ul>
 {% endblock %}
