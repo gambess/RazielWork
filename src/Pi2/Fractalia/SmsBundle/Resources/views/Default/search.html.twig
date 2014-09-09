@@ -33,11 +33,15 @@
             <header>
                 <h1>Log Sms's (Envíos y Errores)</h1>
                 <section class="search_section">
-                    <form action="" method="">		    
-                            <input type="search" placeholder="Ingrese un criterio...">		    	
-                            <button>Buscar</button>
-                    </form>
+                    {{form_start(form)}}
+                        {{ form_errors (form.string) }}
+                        {{ form_widget (form.string, {'attr': {'placeholder': string } }) }}
+                        {{ form_widget (form.buscar)}}
+                        {{form_rest(form)}}               
+                    {{form_end(form)}}
+                    <span id="finish_search" title="Salir"></span>
                 </section>
+                
                 <div id='cssmenu'>
                     <ul>
                         <li><a href='#'><span>Configuraciones</span></a></li>
@@ -73,6 +77,7 @@
                     </ul>
                 </div>
             </header>
+            {%if entities %}
             <div id="container">
                 <ul>
                     {%set namepic = "" %}
@@ -127,6 +132,12 @@
                         {% endfor %}
                 </ul>
             </div>
+                {% else %}
+                    <div id="container">
+                        No se encontraron coincidencias.
+                    </div>
+                    
+                {%endif%}
         </div>
 {#                {{ app.request.server.get('HTTP_USER_AGENT') }}#}
         <p id="back-top">
@@ -135,6 +146,12 @@
         <script>
             {#  Jquery para Manipular tsol #}
 
+            {#  Volver a los Mensajes #}
+                $(document).on("click", "#finish_search", function(event) {
+                    event.preventDefault();
+                    window.location.href = '{{ path('mensajes') }}';
+                    return false;
+                });
             {#  Cargar Formulario Edicion tsol #}
                 $(document).on("click", "#click_editar", function(event) {
                     event.preventDefault();

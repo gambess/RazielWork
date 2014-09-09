@@ -33,10 +33,13 @@
             <header>
                 <h1>Log Sms's (envíos y errores)</h1>
                 <section class="search_section">
-                    <form action="" method="">		    
-                            <input type="search" placeholder="Ingrese un criterio...">		    	
-                            <button>Buscar</button>
-                    </form>
+                    {{form_start(form)}}
+                        {{ form_errors (form.string) }}
+                        {{ form_widget (form.string, {'attr': {'placeholder': 'Ingrese un criterio...'} }) }}
+                        {{ form_widget (form.buscar)}}
+{#                        <span id="clean_search" title="Limpiar"></span>#}
+                        {{form_rest(form)}}               
+                    {{form_end(form)}}
                 </section>
                 <div id='cssmenu'>
                     <ul>

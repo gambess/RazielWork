@@ -60,10 +60,13 @@ class DefaultController extends Controller
             $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
         }
 
+        $form = $this->createSearchForm();
+
         return array(
             'entities' => $entities,
             'tsol' => $tsol,
             'nombres' => $nombres,
+            'form' => $form->createView(),
         );
     }
 
@@ -257,34 +260,21 @@ class DefaultController extends Controller
                 ->getForm()
         ;
     }
-    
+
     /**
      * Creates a form to edit a Sms entity.
      *
-     * @param Sms $entity The entity
+     * @param string $string The string to search in sms and message
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createSearchForm(Sms $entity)
+    private function createSearchForm()
     {
-        if (null != $entity->getMensaje()->getColumnaEvento())
-        {
-            $form = $this->createForm(new SmseventoType(), $entity, array(
-                'action' => $this->generateUrl('mensajes_update', array('id' => $entity->getId())),
-                'method' => 'PUT',
-            ));
-        }
-        if (count($entity->getMensaje()->getColumnaResumen()) > 0)
-        {
-            $form = $this->createForm(new SmsresumenType(), $entity, array(
-                'action' => $this->generateUrl('mensajes_update', array('id' => $entity->getId())),
-                'method' => 'PUT',
-            ));
-        }
-
-        $form->add('submit', 'submit', array('label' => 'Actualizar Sms'));
-
-        return $form;
+        return $this->createFormBuilder()
+            ->add('string', 'search', array('required' => true))
+            ->add('buscar', 'submit', array('label' => 'Buscar'))
+            ->getForm();
+        
     }
 
     /*
@@ -372,12 +362,13 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             //TODO: Quitar las peticiones de data access de aqui
-            if(!is_null($string)){
+            if (!is_null($string))
+            {
                 $string = strtoupper($string);
                 $string = $this->translateState($string);
             }
             $entities = $em->getRepository('FractaliaSmsBundle:Sms')->findByString($string);
-                
+
 
             $tsol = $em->getRepository('FractaliaSmsBundle:Nombretsol')->getTsol();
             if (is_null($tsol))
@@ -394,19 +385,44 @@ class DefaultController extends Controller
                 $configuraciones->saveNombreCorto();
                 $nombres = $em->getRepository('FractaliaSmsBundle:Nombrecorto')->findAll();
             }
+            $form = $this->createSearchForm();
 
             return array(
+                'string' => $string,
                 'entities' => $entities,
                 'tsol' => $tsol,
                 'nombres' => $nombres,
+                'form' => $form->createView(),
             );
         }
     }
-    
+
+    /**
+     * Catch and redirects the searching.
+     *
+     * @Route("/", name="post_search")
+     * @Method("POST")
+     * @Template()
+     */
+    public function postSearchAction(Request $request)
+    {
+        $form = $this->createSearchForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid())
+        {
+           return $this->redirect($this->generateUrl('mensajes_search', array('string' => $form->getData()['string'])));
+        }
+        return $this->render('FractaliaSmsBundle:Default:index.html.twig', array(
+                'form' => $form->createView(),
+        ));
+    }
+
     /*
      * Returns a translate string for state
      * @param string $string, a string to search in sms
      */
+
     protected function translateState($string)
     {
         if (!is_null($string))
