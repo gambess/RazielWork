@@ -20,7 +20,19 @@ class SmsRepository extends EntityRepository {
 
     //
     public function findByString($string) {
-        $datetime = $this->getDateTime($string);
+        
+        //Patron para identificar la fecha en el string
+        $pattern = "/^(\d{2})-(\d{2})-(\d{2})-(\d{2})-(\d{2})-(\d{2})$/";
+        $matches = array();
+        $fecha = null;
+        
+        if (1 == preg_match($pattern, $string, $matches) and count($matches) == 7)
+        {
+            $datetime = $this->getDateTime($string);
+            $fecha = $datetime->format("Y-m-d H:i:s");
+        }
+        
+        
         $query = $this->getEntityManager()->createQuery(
                         "SELECT s 
                     FROM FractaliaSmsBundle:Sms s
@@ -43,7 +55,7 @@ class SmsRepository extends EntityRepository {
                 array(
                     'string' => $string,
                     'pattern' => "%" . $string . "%",
-                    'datetime' => $datetime->format("Y-m-d H:i:s"),
+                    'datetime' => (is_null($fecha)) ? $string : $fecha,
                 )
         );
 

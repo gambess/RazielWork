@@ -262,7 +262,7 @@ class MensajeManager
             ));
         }
         if (strlen($content) >= 434){
-            $content = substr($content, 0, 434);
+            $content = substr($content, 0, 430) . " ...";
         }
         return rtrim($this->translateChars($content));
     }
