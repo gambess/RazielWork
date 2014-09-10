@@ -320,10 +320,10 @@ class IncidenciaArrayEvento
             $this->detalle = 'missing';
         }
         //Solo se almacenaran los primeros 250 caracteres del detalle
-        if(strlen($this->detalle) > 250 ) {
-            $this->detalle = $this->translateChars(substr($this->detalle, 0, 250));
+        if(strlen($this->detalle) > 250 and $this->detalle != 'missing') {
+            $this->detalle = substr($this->detalle, 0, 250);
         }
-        $this->array['detalle'] = rtrim($this->detalle);
+        $this->array['detalle'] = trim($this->translateChars($this->detalle));
     }
     
     /**

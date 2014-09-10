@@ -271,6 +271,7 @@ class DefaultController extends Controller
     private function createSearchForm()
     {
         return $this->createFormBuilder()
+            ->setMethod('POST')
             ->add('string', 'search', array('required' => true))
             ->add('buscar', 'submit', array('label' => 'Buscar'))
             ->getForm();

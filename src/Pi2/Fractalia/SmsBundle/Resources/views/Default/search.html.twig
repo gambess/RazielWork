@@ -33,7 +33,7 @@
             <header>
                 <h1>Log Sms's (envíos y errores)</h1>
                 <section class="search_section">
-                    {{form_start(form)}}
+                    {{form_start(form, {'action': path('post_search')})}}
                         {{ form_errors (form.string) }}
                         {{ form_widget (form.string, {'attr': {'placeholder': string } }) }}
                         {{ form_widget (form.buscar)}}
