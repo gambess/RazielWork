@@ -134,8 +134,19 @@ class DefaultController extends Controller
 
                     //Se obtienen los registros
                     $tickets[$key]['menu'] = $campos;
-                    $tickets[$key]['datos'] = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')
+                    
+                    
+                    // INTERVENCION HISTORIA SGSD-163
+                    if( null !== $services['servicios'][$request->get('servicio')]['categorias'][$key]['filter_buzones'] and count($services['servicios'][$request->get('servicio')]['categorias'][$key]['filter_buzones']) > 0 ){
+                        $filter_buzones = $services['servicios'][$request->get('servicio')]['categorias'][$key]['filter_buzones'];
+                        $intersec_buzones = array_intersect($buzones, $filter_buzones);
+                        
+                        $tickets[$key]['datos'] = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')
+                        ->getTickets($intersec_buzones, $camposString, $condicion);
+                    }else {
+                        $tickets[$key]['datos'] = $em->getRepository('\Pi2\Fractalia\Entity\SGSD\Incidencia')
                         ->getTickets($buzones, $camposString, $condicion);
+                    }
 
                     //Se comprueba si hay un error en la semantica de los campos introducidos en el archivo de configuracion web_monitor.yml
                     if (!is_object($tickets[$key]['datos']) && property_exists("Doctrine\ORM\Query\QueryException", "message"))
