@@ -1,0 +1,14 @@
+{% block content -%}
+            <a 
+                class="editar_nombre" 
+                href='#' 
+                data-location="{{ path('nombrecorto_editar', { 'id': nombre.id }) }}" 
+                data-shortnameid="{{nombre.id}}" 
+                title="Click para editar">
+                {{nombre.nombre}}
+            </a>
+            <span class="borrar_nombre"
+                  data-location="{{ path('nombrecorto_borrar', { 'id': nombre.id }) }}" 
+                  title="Click para borrar">
+            </span>
+    {% endblock %}

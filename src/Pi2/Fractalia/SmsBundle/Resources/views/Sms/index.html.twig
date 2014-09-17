@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Log Construcción SMS's</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha Creación</th>
+                <th>Destinatario</th>
+                <th>Remitente</th>
+                <th>Estado Envío</th>
+                <th>Respuesta Api</th>
+                <th>Fecha Envío</th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('sms_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{{ entity.destinatario }}</td>
+                    <td>{{ entity.remitente }}</td>
+                    <td>
+                        {%if entity.estadoenvio == 'ERROR_BUILD' %}
+                            FALLO_TEXTO
+                        {%elseif entity.estadoenvio == 'ERROR' %}
+                            FALLO_ENVIO                
+                        {%elseif entity.estadoenvio == 'ENVIADO' %}
+                            CORRECTO
+                        {%elseif entity.estadoenvio == 'POR_ENVIAR' %}
+                            POR_ENVIAR
+                        {%elseif '_Y_CANCEL' |slice(0, entity.estadoenvio|length) %}
+                            CANCELADO
+                        {%endif%}
+                    </td>
+                    <td>{{ entity.respuestaApi }}</td>
+                    <td>{% if entity.fechaEnvio %}{{ entity.fechaEnvio|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('sms_show', { 'id': entity.id }) }}">ver</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mensajes') }}">
+                Volver al Log de Sms's
+            </a>
+        </li>
+    </ul>
+{% endblock %}

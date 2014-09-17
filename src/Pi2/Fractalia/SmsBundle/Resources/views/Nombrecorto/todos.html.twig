@@ -1,0 +1,21 @@
+{% block content -%}
+<div id="scrollable">
+    {%for ncorto in nombres %}
+        <li id="show_nombre_{{ncorto.id}}">
+            <a 
+                class="editar_nombre" 
+                href='#' 
+                data-location="{{ path('nombrecorto_editar', { 'id': ncorto.id }) }}" 
+                data-shortnameid="{{ncorto.id}}" 
+                title="Click para editar">
+                {{ncorto.nombre}}
+            </a>
+            <span class="borrar_nombre"
+                  data-location="{{ path('nombrecorto_borrar', { 'id': ncorto.id }) }}" 
+                  title="Click para borrar">
+            </span>
+        </li>
+    {%endfor%}
+    <li id="add_more"><a id="add_nombre" href='#' title="Click para crear"><span>Crear nombre corto</span></a>
+</div>
+    {% endblock %}
