@@ -41,23 +41,41 @@ class DefaultController extends Controller {
     public function soapServiceAction(Request $request) {
         
         $logger = $this->get('logger');
+        $logger->info("capturar request");
                 
         $logger->notice('SGSD-WS: Recibida petición al web service', array('from' => $request->getClientIp()));
-                
+        $logger->info("informando peticion");
+        
         ini_set("soap.wsdl_cache_enabled", $this->container->getParameter('sgsd_soap_cache'));
+        $logger->info("habilitando cache");
 
         $wsdl = $this->container->get('router')->generate('wsdl', array(), true);
 
         $soapServer = new \SoapServer($wsdl, array('soap_version' => SOAP_1_1));
+        $logger->info("Instanciando soap server");
 
         $api = $this->get('soap_api');
+        
+        $logger->info("invocando API");
         $soapServer->setObject($api);
+        $logger->info("Seteando Objeto");
 
         try {
             //Capturo el buffer de salida y lo modifico en caso de error para
             // adaptar la salida a las especificaciones del proyecto
             ob_start(array($this, 'cambiarRespuesta'));
-            $soapServer->handle();
+            try{
+                $logger->info("Petición sera manejada por el server", array('request'=> $request->getContent(), 'type' =>$request->getContentType()));
+                $soapServer->handle();
+                $logger->info("Soap Server correct handled the request");
+            }
+            catch(\SoapFault $fault){
+                $logger->error("Fault: ", array("code" => $fault->getCode(),"mensaje" => $fault->getMessage(), "trace" => $fault->getTraceAsString(), "line"=> $fault->getLine()));
+            }
+            catch(\Exception $e){
+                $logger->error("Exeption: ", array("code" => $e->getCode(),"mensaje" => $e->getMessage(), "trace" => $e->getTraceAsString(), "line"=> $e->getLine()));
+            }
+            
             ob_get_flush();
             $logger->notice('SGSD-WS: La petición al web service ha sido resuelta satisfactoriamente', array('from' => $request->getClientIp()));
         
