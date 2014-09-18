@@ -10,6 +10,7 @@ class SGSDAPI {
     private $em;
     private $hydrator;
     private $incidenciaManager;
+    private $arrayObjectsInserted = array();
 
     public function __construct(EntityManager $em, $hydrator, $incidenciaManager) {
         $this->em = $em;
@@ -31,16 +32,18 @@ class SGSDAPI {
         $savedIncidencia = $this->getSavedIncidencia($incidencia->getNumeroCaso());
 
         try {
-            
-            if ($savedIncidencia instanceof \Pi2\Fractalia\Entity\SGSD\Incidencia) {
+            $incidenciaClone = null;
+            if ($savedIncidencia instanceof Incidencia) {
                 $this->incidenciaManager->updateOldFromNew($savedIncidencia,$incidencia);
                 $this->em->persist($savedIncidencia);
+                $incidenciaClone = clone $savedIncidencia;
             }else{                
                 $this->em->persist($incidencia);
+                $incidenciaClone = clone $incidencia;
             }
                         
             $this->em->flush();
-
+            if(!is_null($incidenciaClone))$this->pushObjectArray($incidenciaClone);
             return array(
                 'returnCode' => "0",
                 'message' => null,
@@ -48,6 +51,27 @@ class SGSDAPI {
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+    
+    private function pushObjectArray(Incidencia $incidenciaClone){
+        $this->em->detach($incidenciaClone);
+        $this->arrayObjectsInserted[] = $incidenciaClone;
+    }
+    
+    public function existObjectsInArray(){
+        if (count($this->arrayObjectsInserted) > 0){
+            return true;
+        }else
+            return false;
+    }
+    
+    public function getObjectFromArray(){
+        if($this->existObjectsInArray()){
+            return array_shift($this->arrayObjectsInserted);
+        }else
+            return false;
+        
+         
     }
 
     protected function prepareSoapRequest($soapRequest) {

@@ -49,7 +49,6 @@ class DefaultController extends Controller {
         $wsdl = $this->container->get('router')->generate('wsdl', array(), true);
 
         $soapServer = new \SoapServer($wsdl, array('soap_version' => SOAP_1_1));
-
         $api = $this->get('soap_api');
         $soapServer->setObject($api);
 
@@ -60,7 +59,10 @@ class DefaultController extends Controller {
             $soapServer->handle();
             ob_get_flush();
             $logger->notice('SGSD-WS: La petición al web service ha sido resuelta satisfactoriamente', array('from' => $request->getClientIp()));
-        
+            if($api->existObjectsInArray()){
+                $entity = $api->getObjectFromArray();
+                $logger->notice('Capturada y rescatada la entidad', array('Numero de Caso' => $entity->getNumeroCaso()));
+            }
             exit;
         } catch (\Exception $e) {
             $messageException = $e->getMessage();
