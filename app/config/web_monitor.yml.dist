@@ -19,7 +19,6 @@ pi2_frac_sgsd_web_monitor:
                   filter_buzones:
                      - SOC SEGURIDAD
                      - SOPORTE SEGURIDAD
-                     - SEGEST SEGUIMIENTO
                   prioridad:
                      - CRITICA
                      - ALTA

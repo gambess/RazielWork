@@ -13,7 +13,9 @@
         <service id="soap_api" class="Pi2\Fractalia\SGSDSoapServerBundle\Soap\SGSDAPI">
             <argument type="service" id="doctrine.orm.default_entity_manager" /> 
             <argument type="service" id="hydrator"></argument> 
-            <argument type="service" id="incidencia_manager"></argument>    
+            <argument type="service" id="incidencia_manager"></argument>
+            <argument type="service" id="logger"/>
+            <tag name="monolog.logger" channel="listener"/>    
         </service>
         <service id="hydrator" class="DoctrineModule\Stdlib\Hydrator\DoctrineObject">
             <argument type="service" id="doctrine.orm.default_entity_manager"></argument>
