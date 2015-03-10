@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="fractalia_sms.configuracion_manager.class">Pi2\Fractalia\SmsBundle\Manager\ConfiguracionManager</parameter>
+        <parameter key="fractalia_sms.mensaje_manager.class">Pi2\Fractalia\SmsBundle\Manager\MensajeManager</parameter>
+        <parameter key="fractalia_sms.sms_manager.class">Pi2\Fractalia\SmsBundle\Manager\SmsManager</parameter>
+    </parameters>
+    <services>
+        <service id="fractalia_sms.configuracion_manager" class="%fractalia_sms.configuracion_manager.class%">
+            <call method="setDatosApi">
+                <argument>%fractalia_sms.envio_sms.api%</argument>
+            </call>
+            <call method="setServiciosSOC">
+                <argument>%fractalia_sms.envio_sms.servicios_soc%</argument>
+            </call>
+            <call method="setDestinos">
+                <argument>%fractalia_sms.envio_sms.grupo_destino%</argument>
+            </call>
+            <call method="setNumeros">
+                <argument>%fractalia_sms.envio_sms.numero_destino%</argument>
+            </call>
+            <call method="setEventos">
+                <argument>%fractalia_sms.eventos%</argument>
+            </call>
+            <call method="setNombresCortos">
+                <argument>%fractalia_sms.envio_sms.nombres_cortos%</argument>
+            </call>
+            <call method="setTraduccionesTipos">
+                <argument>%fractalia_sms.envio_sms.traduccion_tipo_caso%</argument>
+            </call>
+            <call method="setTsolGuardia">
+                <argument>%fractalia_sms.envio_sms.tsol_guardia%</argument>
+            </call>
+            <call method="setPlantillas">
+                <argument>%fractalia_sms.plantillas%</argument>
+            </call>
+            <call method="setResumenes">
+                <argument>%fractalia_sms.resumenes.resumen%</argument>
+            </call>
+            <call method="setTraduccionesMatriculas">
+                <argument>%fractalia_sms.envio_sms.traduccion_matricula_tecnico%</argument>
+            </call>
+        </service>
+        <service id="fractalia_sms.mensaje_manager" class="%fractalia_sms.mensaje_manager.class%">
+            <argument type="service" id="fractalia_sms.configuracion_manager" />
+        </service>
+        <service id="fractalia_sms.sms_manager" class="%fractalia_sms.sms_manager.class%">
+            <argument type="service" id="fractalia_sms.configuracion_manager"/>
+        </service>
+        <service id="monolog.logger.maintain" parent="monolog.logger_prototype">
+            <argument index="0">maintain</argument>
+        </service>
+    </services>
+    
+</container>

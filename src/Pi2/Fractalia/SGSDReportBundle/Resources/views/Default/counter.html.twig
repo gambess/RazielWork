@@ -1,0 +1,23 @@
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front" style="position: relative; margin-bottom: 2%;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+{#            <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">#}
+                <p class="ui-dialog-title" style="font-size: 0.9em; font-weight: lighter">
+                    {% if entities is defined %}
+                        <span class="ui-icon ui-icon-newwin" style="float: left; margin-right: .3em;"></span>
+                    {%endif%}
+                    {{title}}
+                </p>
+
+        
+    </div>
+    <div class="ui-dialog-content ui-widget-content">
+        {% if entities is defined %}
+            <a class="link_list" href="#" data-name="{{name}}" style="text-decoration: none;"><p style="white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis; color: #444444;  text-align: center; font-size: 1.3em; font-weight: bold;">{{entities|length}}</p></a>
+        {%endif%}
+        {%if resultado is defined %}
+            <p style="white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis; color: #444444;  text-align: center; font-size: 1.3em; font-weight: bold;">{{resultado}}</p>
+        {%endif%}
+    </div>
+</div>
+    
+    

@@ -1,0 +1,8 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver2: pdo_mysql
+    database_host2: 127.0.0.1
+    database_port2: 3306
+    database_name2: reports
+    database_user2: sgsd-user
+    database_password2: sgsd-pass

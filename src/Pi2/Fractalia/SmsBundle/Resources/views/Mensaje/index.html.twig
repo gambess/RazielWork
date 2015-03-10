@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Log Preparación Mensaje Texto</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre Plantilla</th>
+                <th>Fecha Creación</th>
+                <th>Tipo</th>
+                <th>Texto</th>
+                <th>Estado</th>
+                <th>Fecha Actualización</th>
+                <th>Fecha Adjuntado en Sms</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('mensaje_show', { 'id': entity.id }) }}">{{entity.id}}</a></td>
+                <td>{{ entity.nombrePlantilla }}</td>
+                <td>{% if entity.fechaCreacion %}{{ entity.fechaCreacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.tipoMensaje }}</td>
+                <td><textarea style="width: 250px; height: 100px;">{{ entity.texto }}</textarea></td>
+                <td>
+                    {%if entity.estado == 'CORRECT' %}
+                        CORRECTO
+                    {%elseif entity.estado == 'FAIL' %}
+                        FALLO_TEXTO
+                    {%endif%}
+                </td>
+                <td>{% if entity.fechaActualizacion %}{{ entity.fechaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaAdjuntadoSms %}{{ entity.fechaAdjuntadoSms|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('mensaje_show', { 'id': entity.id }) }}">ver</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mensajes') }}">
+                Volver al Log de Sms's
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

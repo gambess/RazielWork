@@ -1,0 +1,588 @@
+fractalia_sms:
+    envio_sms:
+#        DATOS DE LA API para envio SMS
+        api:
+            url: 'https://www.mensajerianegocios.movistar.es/SrvConexion'
+            apiuser: 'SMS_SDESK'
+            apipass: 'tc3kGc'
+            remitente: 'SDESKTSOL.'
+#            remitente: '224461'
+            ip: '10.66.54.50'
+            port: '9512'
+        
+        numero_destino:
+#            BEGO:
+#                - 666666666
+#            ESCALADO:
+#                - 666666666
+#            SOPORTE:
+#                - 666666666
+        
+        grupo_destino:
+            - { destinatario: BEGO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#                GRUPOS DE PRODUCCION ¡¡¡CUIDADO!!!
+#            - { destinatario: ESCALADO, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 00:00, hasta: 23:59 }
+#            - { destinatario: SOPORTE, dias: 'lunes, martes, miercoles, jueves, viernes, sabado, domingo', desde: 07:00, hasta: 23:00 }
+        
+#        FILTRO PRINCIPAL    
+        servicios_soc:
+            - SEGEST MON
+            - SEGEST SOC
+            - SEG MERCEDES
+            - SOPORTE SEGURIDAD
+            - SOC SEGURIDAD
+            - SEGEST MONOCLIENTE
+            - DS_TSOL_SOC_ENEL
+            - DS_TSOL_SOC_SALUD
+
+#       Traducciones
+#       Apartir de la VERSION 1.4 nombres cortos y tsol_guardia se dejan en el fichero de configuración para setear el campo por defecto. 
+#       En la version 1.4 la gestion de ambos items en a traves de la web
+#       Para agregar y remplazar en el campo nombre de clientes
+        nombres_cortos: 
+            - NOMBRECORTODEF
+
+#        Traduccion del tipo de caso
+        traduccion_tipo_caso: 
+            1: incidencia
+            2: peticion
+            3: queja
+            4: consulta 
+
+        #Para rellenar la información del TSOL de guardia
+        tsol_guardia:
+            nombre: TSOLDEF
+        #Para traducir la matricula del tecnico por el nombre
+        traduccion_matricula_tecnico: 
+            DNX3042: JULIAN LOPEZ
+            DNX3073: ANTONIO LOPEZ
+#            DNX3479: MANOLO SANCHEZ
+#            UT04795: PACO GONZALES
+#            DNX3321: JOSE GOMEZ
+            
+#     FILTROS PARA LOS  EVENTOS A MONITORIZAR
+    eventos:
+#       CADA EVENTO DEBE COINCIDIR CON LA PLANTILLA
+#       EJEMPLO EVENTO RESOLUCION ESTADO RESUELTO dentro del filtro 
+#       DEBE EXISTIR PLANTILLA RESOLUCION EN LAS PLANTILLAs
+
+        RESOLUCION_TICKET:
+            tipo_accion:
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            #ESTADO del EVENTO como KEY los valores son los sinonimos del estado
+            estado:
+                RESUELTO:
+                    - RESOLVED
+                    - RESUELTO
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+            grupo_destino_NOT:
+                - SOC SEGURIDAD
+            filtro_titulo:
+            filtro_titulo_NOT:
+                - AC
+                - AS
+            tecnico_inicial:
+            tecnico_final:
+
+
+        RESOLUCION_ALARMA:
+            tipo_accion:
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            estado:
+                RESUELTO:
+                    - RESOLVED
+                    - RESUELTO
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+            grupo_destino_NOT:
+                - SOC SEGURIDAD
+            filtro_titulo:
+                - AC
+                - AS
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+
+
+#        MODIFICACION:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                MODIFICADO:
+#                    - OPEN
+#                    - STOPPED
+#                    - CLOSED
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#              - SOC SEGURIDAD
+#            grupo_destino_IN:
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#            tecnico_inicial:
+#            tecnico_final:
+
+#        ASIGNACION:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                ASIGNADO:
+#                    - WORK IN PROGRESS
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#            grupo_destino_IN:
+#              - SOPORTE SEGURIDAD
+#              - SEGEST SOC
+#              - SEG MERCEDES
+#              - SEGEST MON
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#            tecnico_inicial:
+#            tecnico_final:
+
+#        MODIFICACION_CON_USUARIO:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                MODIFICADO:
+#                    - OPEN
+#                    - SUSPENDED
+#                    - CLOSED
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#              - SOC SEGURIDAD
+#            grupo_destino_IN:
+#              - SOPORTE SEGURIDAD
+#              - SEGEST MONOCLIENTE
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#                - AS
+#                - AC
+#            tecnico_inicial:
+#                - DNX3042
+#                - DNX3073
+#                - DNX3075
+#                - DNX3321
+#                - DNX3328
+#                - DNX3332
+#                - DNX3338
+#                - DNX3436
+#                - DNX3479
+#                - DSX2628
+#                - DSX4474
+#                - DSX4928
+#                - DSX4954
+#                - DSX5408
+#                - DSX5728
+#                - DSX5740
+#                - DSX5741
+#                - DSX5927
+#                - DSX6185
+#                - DSX6193
+#                - DSX6232
+#                - DSX6279
+#                - DSX6378
+#                - DSX6427
+#                - DSX6428
+#                - DSX6772
+#                - DSX6801
+#                - DSX6806
+#                - DSX6822
+#                - DSX6824
+#                - DSX6856
+#                - DSX6866
+#                - DSX7004
+#                - DSX7008
+#                - DSX7011
+#                - FICTICIO1
+#                - DNX0546
+#                - DSX2283
+#                - DSX3149
+#                - DSX5441
+#                - DSX5525
+#                - DSX5563
+#                - DSX5594
+#                - DSX5640
+#                - DSX6003
+#                - DSX6161
+#                - DSX6320
+#                - DSX6444
+#                - DSX6823
+#                - DSX6991
+#            tecnico_final:
+           
+#        MODIFICACION_SIN_USUARIO:
+#            tipo_accion:
+#            prioridad:
+#                - CRITICA
+#            estado:
+#                MODIFICADO:
+#                    - OPEN
+#                    - SUSPENDED
+#                    - CLOSED
+#            grupo_origen_IN:
+#            grupo_origen_NOT:
+#              - SOC SEGURIDAD
+#            grupo_destino_IN:
+#              - SEGEST MON
+#              - SEGEST SOC
+#              - SEG MERCEDES
+#            grupo_destino_NOT:
+#            filtro_titulo:
+#            filtro_titulo_NOT:
+#                - AS
+#                - AC
+#            tecnico_inicial:
+#            tecnico_final:
+
+# PARA ASIGNACIONES A SOPORTE SEGURIDAD Y SEGEST MONOCLIENTE
+        ASIGNACION_CON_USUARIO:
+            tipo_accion:
+                - { actual: ASIGNACION, previa: CAMBIOGRUPO }
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+              - { actual: ~, previos: SOC SEGURIDAD }
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST MONOCLIENTE
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+                - AS
+                - AC
+            tecnico_inicial:
+                - DNX0546
+                - DNX3042
+                - DNX3073
+                - DNX3075
+                - DNX3321
+                - DNX3328
+                - DNX3332
+                - DNX3338
+                - DNX3436
+                - DNX3479
+                - DSX2283
+                - DSX2628
+                - DSX4474
+                - DSX4928
+                - DSX4954
+                - DSX5408
+                - DSX5441
+                - DSX5525
+                - DSX5563
+                - DSX5594
+                - DSX5640
+                - DSX5728
+                - DSX5740
+                - DSX5741
+                - DSX5927
+                - DSX6003
+                - DSX6185
+                - DSX6193
+                - DSX6232
+                - DSX6279
+                - DSX6320
+                - DSX6378
+                - DSX6420
+                - DSX6427
+                - DSX6428
+                - DSX6444
+                - DSX6772
+                - DSX6801
+                - DSX6806
+                - DSX6822
+                - DSX6823
+                - DSX6824
+                - DSX6844
+                - DSX6856
+                - DSX6866
+                - DSX6991
+                - DSX7004
+                - DSX7008
+                - DSX7011
+                - DSX7111
+                - DSX7186
+                - DSX7191
+                - DSX7203
+                - FICTICIO1
+                - T111595
+                - T127366
+                - T148216
+                - T148317
+                - UT04795
+                - DS01974
+            tecnico_final:
+
+
+# PARA ASIGNACIONES A CUALQUIER BUZON MENOS SOPORTE SEGURIDAD Y SEGEST MONOCLIENTE QUE SON CON USUARIO
+        ASIGNACION_SIN_USUARIO:
+            tipo_accion:
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            estado:
+                ASIGNADO:
+                    - OPEN 
+            grupo_origen_IN:
+              - { actual: SOC SEGURIDAD, previos: ~ }
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SEGEST MON
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SDNIVEL1
+              - DS_TSOL_SOC_ENEL
+              - DS_TSOL_SOC_SALUD
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+                - AS
+                - AC
+            tecnico_inicial:
+            tecnico_final:
+
+
+
+# PARA ASIGNACIONES A SOPORTE SEGURIDAD Y SEGEST MONOCLIENTE
+        ALARMA_CON_USUARIO:
+            tipo_accion:
+                - { actual: ASIGNACION, previa: CAMBIOGRUPO }
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            estado:
+                ASIGNADO:
+                    - WORK IN PROGRESS
+            grupo_origen_IN:
+              - { actual: ~, previos: SOC SEGURIDAD }
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SOPORTE SEGURIDAD
+              - SEGEST MONOCLIENTE
+            grupo_destino_NOT:
+            filtro_titulo:
+                - AS
+                - AC
+            filtro_titulo_NOT:
+            tecnico_inicial:
+                - DNX0546
+                - DNX3042
+                - DNX3073
+                - DNX3075
+                - DNX3321
+                - DNX3328
+                - DNX3332
+                - DNX3338
+                - DNX3436
+                - DNX3479
+                - DSX2283
+                - DSX2628
+                - DSX4474
+                - DSX4928
+                - DSX4954
+                - DSX5408
+                - DSX5441
+                - DSX5525
+                - DSX5563
+                - DSX5594
+                - DSX5640
+                - DSX5728
+                - DSX5740
+                - DSX5741
+                - DSX5927
+                - DSX6003
+                - DSX6185
+                - DSX6193
+                - DSX6232
+                - DSX6279
+                - DSX6320
+                - DSX6378
+                - DSX6420
+                - DSX6427
+                - DSX6428
+                - DSX6444
+                - DSX6772
+                - DSX6801
+                - DSX6806
+                - DSX6822
+                - DSX6823
+                - DSX6824
+                - DSX6844
+                - DSX6856
+                - DSX6866
+                - DSX6991
+                - DSX7004
+                - DSX7008
+                - DSX7011
+                - DSX7111
+                - DSX7186
+                - DSX7191
+                - DSX7203
+                - FICTICIO1
+                - T111595
+                - T127366
+                - T148216
+                - T148317
+                - UT04795
+                - DS01974
+            tecnico_final:
+
+
+# PARA ASIGNACIONES A CUALQUIER BUZON MENOS SOPORTE SEGURIDAD Y SEGEST MONOCLIENTE QUE SON CON USUARIO
+        ALARMA_SIN_USUARIO:
+            tipo_accion:
+            prioridad:
+                - {actual: CRITICA, previas: ~ }
+            estado:
+                ASIGNADO:
+                    - OPEN
+            grupo_origen_IN:
+              - { actual: SOC SEGURIDAD, previos: ~ }
+            grupo_origen_NOT:
+            grupo_destino_IN:
+              - SEGEST SOC
+              - SEG MERCEDES
+              - SEGEST MON
+              - DS_TSOL_SOC_ENEL
+              - DS_TSOL_SOC_SALUD
+            grupo_destino_NOT:
+            filtro_titulo:
+                - AS
+                - AC
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+
+
+
+# PARA CASOS EN LOS QUE CAMBIA LA PRIORIDAD A CRITICA
+        TICKET_REPRIORIZADO:
+            tipo_accion:
+            prioridad:
+                - {actual: CRITICA, previas: 'BAJA, MEDIA, ALTA' }
+            estado:
+            grupo_origen_IN:
+            grupo_origen_NOT:
+            grupo_destino_IN:
+            grupo_destino_NOT:
+            filtro_titulo:
+            filtro_titulo_NOT:
+            tecnico_inicial:
+            tecnico_final:
+
+
+#    ETIQUETAS PARA LAS PLANTILLAS y estados ademas para los resumenes
+    plantillas:
+        RESOLUCION_TICKET:
+            id: 'RESUELTO ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESOLUCION: '
+
+        RESOLUCION_ALARMA:
+            id: 'RESUELTO ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESOLUCION: '
+
+
+#        MODIFICACION:
+#            id: 'REPRIORIZACION ID: '
+#            cliente: 'CLIENTE: '
+#            tipo: 'TIPO: '
+#            tecnico: 'TECNICO: '
+#            tsol: 'TSOL: '
+#            fecha: 'FECHA: '
+#            detalle: 'RESUMEN: '
+#        ASIGNACION:
+#            id: 'ID: '
+#            cliente: 'CLIENTE: '
+#            tipo: 'TIPO: '
+#            tecnico: 'TECNICO: '
+#            tsol: 'TSOL: '
+#            fecha: 'FECHA: '
+#            detalle: 'RESUMEN: '
+
+        MODIFICACION_CON_USUARIO:
+            id: 'REPRIORIZACION ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        MODIFICACION_SIN_USUARIO:
+            id: 'REPRIORIZACION ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        ASIGNACION_CON_USUARIO:
+            id: 'ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        ASIGNACION_SIN_USUARIO:
+            id: 'ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        ALARMA_CON_USUARIO:
+            id: 'ALARMA: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        ALARMA_SIN_USUARIO:
+            id: 'ALARMA: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+        TICKET_REPRIORIZADO:
+            id: 'REPRIORIZADO ID: '
+            cliente: 'CLIENTE: '
+            tipo: 'TIPO: '
+            tecnico: 'TECNICO: '
+            tsol: 'TSOL: '
+            fecha: 'FECHA: '
+            detalle: 'RESUMEN: '
+            
+    resumenes:
+        RESUMEN:
+            titulo: 'PENDIENTES '
+            estados: 
+                - 'Open'
+                - 'Work in Progress'
+                - 'Suspended'

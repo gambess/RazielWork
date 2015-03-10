@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <!-- Incidencias Filter for sms -->
+        <parameter key="incidencia.filter.class">Pi2\Fractalia\SmsBundle\Manager\IncidenciaFilterManager</parameter>
+        <!-- Incidencias Notifier for monitoring -->
+        <parameter key="incidencia.notify.class">Pi2\Fractalia\SmsBundle\Manager\NotifyVieverManager</parameter>
+    </parameters>
+    <services>
+        <service id="soap_api" class="Pi2\Fractalia\SGSDSoapServerBundle\Soap\SGSDAPI">
+            <argument type="service" id="doctrine.orm.default_entity_manager" /> 
+            <argument type="service" id="hydrator" /> 
+            <argument type="service" id="incidencia_manager" />
+            <argument type="service" id="logger" />
+            <argument type="service" id="doctrine.orm.report_entity_manager" /> 
+
+            <tag name="monolog.logger" channel="listener" />
+        </service>
+        <service id="hydrator" class="DoctrineModule\Stdlib\Hydrator\DoctrineObject">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        <service id="incidencia_manager" class="Pi2\Fractalia\SGSDSoapServerBundle\IncidenciaManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />                    
+        </service>
+        <!-- Definicion servicio incidencia filtrros -->
+        <service id="incidencia.filter" class="%incidencia.filter.class%">
+            <argument type="service" id="logger" />
+            <argument type="service" id="fractalia_sms.configuracion_manager" />
+            <argument type="service" id="fractalia_sms.sms_manager" />
+            <argument type="service" id="fractalia_sms.mensaje_manager" />
+            <tag name="monolog.logger" channel="listener" />
+        </service>
+        <service id="incidencia.mail.notifier" class="%incidencia.notify.class%">
+            <argument type="service" id="doctrine.orm.default_entity_manager" /> 
+            <argument type="service" id="swiftmailer.mailer" />
+            <argument type="service" id="logger" />
+        </service>
+    </services>
+</container>

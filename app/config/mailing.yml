@@ -1,0 +1,9 @@
+pi2_frac_sgsd_soap_server:
+    mails:
+        clean_mail: raziel.valle@fractaliasoftware.com
+        cc_clean_mail:
+        backup_mail: raziel.valle@fractaliasoftware.com
+        cc_backup_mail:
+        sms_mail: raziel.valle@fractaliasoftware.com
+        cc_sms_mail:
+        

@@ -1,0 +1,206 @@
+{% extends 'Pi2FracSGSDWebMonitorBundle::layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var int = self.setInterval("refresh()",{{recarga}} );
+                function refresh()
+                {
+                    window.location.href = window.location.href;
+                    }
+    </script>
+    {% javascripts
+    '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/jquery-1.11.1.min.js'
+    '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/jquery.confirm.min.js'
+    '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/bootstrap.min.js'
+    '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/run_prettify.js'
+    '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/jstz.min.js'
+    output='js/compiled/monitor_javascript.js'
+    %}
+    <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+    <script type="text/javascript">
+        $(document).on("click", ".hide_ticket", function (event) {
+        event.preventDefault();
+                var $killrow = $(this).parent('tr');
+                $killrow.addClass("danger");
+                var data = {numerocaso: $(this).data("numerocaso"), hide: true}
+                $.confirm({
+                        title: "Confirmación para ocultar ticket",
+                        text: "¿Estas seguro/a que deseas ocultar el ticket Numero de Caso: " + $(this).data("numerocaso") +  "?",
+                        confirm: function(button) {
+                            $killrow.fadeOut(1000, function () {
+                                $.ajax({
+                                url: "{{ path('pi2_frac_sgsd_web_monitor_hideticket') }}",
+                                        type: "POST",
+                                        data: JSON.stringify(data),
+                                        contentType: 'application/json; charset=utf-8',
+                                        dataType: 'json',
+                                        success: function (msg) {
+                                        $(this).remove();
+                                        }
+                                });
+                            });
+                        },
+                        cancel: function(button) {
+                            
+                        },
+                        confirmButton: "Si Ocultar",
+                        cancelButton: "No"
+                });
+        });    
+    </script>
+    <script type="text/javascript">
+                var $rows = $('table#table tr:not(:has(th))');
+                $('#form_string').keyup(function () {
+        $('#remover_filtro').show();
+                var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+                $rows.show().filter(function () {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+        }).hide();
+        });
+                $(document).on("click", "#remover_filtro", function (event) {
+        event.preventDefault();
+                $('#form_string').val('');
+                var e = jQuery.Event("keyup", { keyCode: 8 });
+                $('#form_string').trigger(e);
+                $('#form_string').attr('placeholder', "Ingrese un criterio... ");
+                $('#remover_filtro').hide();
+        });
+
+    </script>
+    <script type="text/javascript">
+          function setCookie(name, timezone) {
+              document.cookie = name + "=" + timezone +"; path=/";
+          }
+          $(function(){
+              var tz = jstz.determine();
+              response_text = '-99999';
+              if (typeof (tz) === 'undefined') {
+                  response_text = '-99999';
+              }
+              else {
+                  response_text = tz.name();
+                  setCookie('timezone', response_text); 
+              }
+          });
+    </script>   
+    {% endjavascripts %}
+{% endblock %}
+
+{% block contenido %}
+    {#<div class="tiempo_acceso">#}
+
+    {#<div class="clock"><img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/reloj.png')}}"/></div>#}
+     {% if app.request.cookies.has('timezone') %}
+         {% set timezone = app.request.cookies.get('timezone') %}
+     {%endif%}
+    <h2> Servicio {{servicio}} </h2>
+
+    {%if errorConexionDB%}
+        <div id="alerta_conexion">
+            <img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/alert_c.png')}}"/>
+            <p>{{mensajeErrorDB}}</p>
+        </div>
+    {%else%}
+
+        <div class="descr_servicio"> 
+            <p> Categorías: {{numCategorias}}</p>
+            <p> Alertas: {{numAlertas}}</p>
+            <p> Tickets: {{numTickets}}</p>
+        </div>
+
+        <div class="tiempo_acceso">
+            <p><img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/reloj.jpg')}}"/>Sin recibir notificación: {{tiempoUltimoTicket.minutos}}' {{tiempoUltimoTicket.segundos}}" </p>
+        </div>
+
+        <section class="webdesigntuts-workshop"> 
+            <input id="form_string" type="text" placeholder="Ingrese un criterio... ">
+            <span id="remover_filtro" title="Remover filtro"></span>
+        </section>
+
+        {%if table %}
+            <div id="asignedspace">
+                <table id="scroll">
+                    <col style="width:40%">
+                    <col style="width:20%">
+                    <col style="width:40%">
+
+                    <thead>
+                        <tr>
+                            <th>Técnico</th>
+                            <th>Asignadas</th>
+                            <th>Tickets</th>
+                        </tr>
+                    </thead>
+                    {% set inciString = "" %}
+                    {% set incilength = "" %}
+                    <tbody>
+                        {% for key, inci in table %}
+                            {% set inciString = inci|join('<br />') %}
+                            {% set incilength = inci|length %}
+                            <tr>    
+                                <td>{{key}}</td>
+                                <td>{{incilength}}</td>
+                                <td>{% autoescape 'html' %}{{inciString|raw}}{% endautoescape %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {%endif%}
+
+
+        {% for categoria,incidencias in incidenciasCat  %}
+            <div>
+                <h3> {{ (categoria) }}</h3>
+                <h4 class="ticket"> Tickets {{incidencias.datos|length}}</h4>
+                <h4> <img class="alert" src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/alert_ico.png')}}"/> Alertas {{incidencias.alertasCat}}</h4>
+            </div>
+
+            <table id="table">
+                <tr>
+                    {% for campo in incidencias.menu %}
+                        <th> {{campo}} </th>   
+                        {% endfor %}
+                    <th>Ocultar</th>
+                </tr>
+
+                {% for incidencia in incidencias.datos %}
+
+                    {% if (incidencia.alarma is defined and incidencia.alarma == 'SI' and incidencia.prioridad|upper in incidencias.prioridad) %}
+                        <tr class="alarm_priority">
+                        {% elseif (incidencia.alarma is defined and incidencia.alarma == 'SI' and incidencia.prioridad|upper not in incidencias.prioridad) %}
+                        <tr class="alarm">
+                        {% elseif (incidencia.clienteCritico is defined and incidencia.clienteCritico == 'SI' and incidencia.prioridad|upper in incidencias.prioridad) %}
+                        <tr class="critical_priority">   
+                        {% elseif (incidencia.clienteCritico is defined and incidencia.clienteCritico == 'SI' and incidencia.prioridad|upper not in incidencias.prioridad) %}
+                        <tr class="critical">
+                        {% elseif incidencias.prioridad and incidencia.prioridad|upper in incidencias.prioridad %}
+                        <tr class="priority">
+                        {% else %}
+                        <tr>
+                        {% endif %}
+
+                        {% set numeroCaso = "" %}
+                        {% for name,ticket in incidencia %}    
+                            {% if ticket.timestamp is defined %}
+                                <td>{%if timezone is defined and timezone != "-99999" %}{{ ticket|date('d-m-Y H:i:s', timezone) }}{% else %}{{ ticket|date('d-m-Y H:i:s', "UTC") }}{% endif %} </td>
+                            {% elseif name == 'titulo' %}
+                                <td>{{ ticket|slice(0,100)|raw }}</td>
+                            {% elseif name != 'alarma' and name != 'clienteCritico' %}
+                                {% if name == "numeroCaso" %}
+                                    {% set numeroCaso = ticket %}
+                                {%endif%}
+                                <td>{{ ticket }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td class="hide_ticket" data-numerocaso="{{numeroCaso}}" title="Click para ocultar"></td>
+                    </tr>
+                {% endfor %}  
+
+            </table>       
+            <br>
+        {% endfor %}
+    {%endif%}
+{% endblock %}
+

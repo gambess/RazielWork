@@ -1,0 +1,13 @@
+{%if entities is defined %}
+    {% include 'ReportBundle:Default:counter.html.twig' with { 'entities' : entities, 'title':index, 'name':identify_widget } %}
+{#    <div id="{{identify_widget}}" class="grid_5 list" style="display: none;">#}
+    <div id="{{identify_widget}}" class="dialod grid_5 list" title="{{index}}">
+        {% include 'ReportBundle:Default:renderList.html.twig' with { 'entities' : entities} %}
+    </div>
+{%endif%}        
+{%if resultado is defined %}
+    {% include 'ReportBundle:Default:counter.html.twig' with { 'resultado' : resultado, 'title':index } %}
+{%endif%}
+
+
+

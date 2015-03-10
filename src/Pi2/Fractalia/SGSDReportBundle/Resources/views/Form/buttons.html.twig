@@ -1,0 +1,7 @@
+{% block submit_widget -%}
+        {% set type = type|default('submit') -%}
+        <button type="{{ type }}" {{ block('button_attributes') }}>
+            <span class="ui-button-text">{% if label is defined %}{{ label }}{% endif %}</span>
+        </button>
+{#    {{ block('button_widget') }}#}
+{%- endblock submit_widget %}

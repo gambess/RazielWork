@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+ <link href="{{ asset('bundles/pi2fracsgsdwebmonitor/css/estilo.css') }}" type="text/css" rel="stylesheet" />
+ <link href="{{ asset('bundles/pi2fracsgsdwebmonitor/css/estilo_busqueda.css') }}" type="text/css" rel="stylesheet" />
+ <link href="{{ asset('bundles/pi2fracsgsdwebmonitor/css/modal.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+<div class="top-frame">
+    <div id="cabecera">
+        <img class="logo" src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/logotipo_iriscene.png')}}"/>
+        <h1>SGSD - Monitor de Incidencias</h1>
+    </div>
+        
+        
+   {% if (app.request.attributes.get('_route') != 'pi2_frac_sgsd_web_monitor_homepage') %}
+    <div id="right">
+        <a href="{{ path('pi2_frac_sgsd_web_monitor_homepage')}}">
+            <img src="{{ asset('bundles/pi2fracsgsdwebmonitor/images/volver_inicio.png')}}" />
+        </a>
+    </div>
+   {% endif %}
+</div>
+<div id="contenido">
+{% block contenido %}
+
+{% endblock %}
+</div>
+
+<div id="pie">
+
+<div align="center"></div>
+</div>
+
+{% endblock %}

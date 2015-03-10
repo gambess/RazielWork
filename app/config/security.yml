@@ -1,0 +1,37 @@
+security:
+    firewalls:
+        secured_area:
+            pattern:    ^/
+            anonymous: ~
+            http_basic:
+                realm: "Area Restringida"
+
+    access_control:
+        - { path: ^/monitor, roles: [ROLE_ADMIN, ROLE_MOVISTAR]}
+        - { path: ^/monitor$, roles: [ROLE_ADMIN, ROLE_MOVISTAR]}
+#        - { path: ^/wsdl, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https, ips: [ 178.33.1.88, 195.55.75.93, 195.55.75.94, 195.57.114.98, 2.139.144.177 ]  }
+        - { path: ^/log_sms, roles: ROLE_ADMIN}
+        - { path: ^/log_sms$, roles: ROLE_ADMIN}
+        - { path: ^/construccion_sms$, roles: ROLE_ADMIN}
+        - { path: ^/construccion_sms$, roles: ROLE_ADMIN}
+        - { path: ^/preparacion_mensaje, roles: ROLE_ADMIN}
+        - { path: ^/preparacion_mensaje$, roles: ROLE_ADMIN}
+        - { path: ^/evento, roles: ROLE_ADMIN}
+        - { path: ^/evento$, roles: ROLE_ADMIN}
+        - { path: ^/resumen, roles: ROLE_ADMIN}
+        - { path: ^/resumen$, roles: ROLE_ADMIN}
+        - { path: ^/nombrecorto, roles: ROLE_ADMIN}
+        - { path: ^/nombrecorto$, roles: ROLE_ADMIN}
+        - { path: ^/tsol, roles: ROLE_ADMIN}
+        - { path: ^/tsol$, roles: ROLE_ADMIN}
+#        - { path: ^/wsdl, roles: ROLE_NO_ACCESS  }
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    sgsduser: { password: sgsdpass, roles: [ 'ROLE_ADMIN' ] }
+                    movistaruser: { password: T3st1nG, roles: [ 'ROLE_MOVISTAR' ] }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

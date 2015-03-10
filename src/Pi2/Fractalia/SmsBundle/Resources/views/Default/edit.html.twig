@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Formulario Edición Sms</h1>
+    {{ form_widget(edit_form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('mensajes') }}">
+            Volver al Listado de Sms
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

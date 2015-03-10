@@ -1,0 +1,9 @@
+pi2_frac_sgsd_soap_server:
+    mails:
+        clean_mail: ctti.coordinacion@fractalia.es
+        cc_clean_mail: sistemas@fractalia.es
+        backup_mail: ctti.coordinacion@fractalia.es
+        cc_backup_mail: sistemas@fractalia.es
+        sms_mail: dstsol.socseguridad@telefonica.com
+        cc_sms_mail:
+        

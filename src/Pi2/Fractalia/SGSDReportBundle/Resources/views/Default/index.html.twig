@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="es">
+    {% block content_header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Generación de Reportes</title>
+        <meta name="author" content="Raziel Valle Miranda">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        {% stylesheets 'bundles/report/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset( asset_url) }}"/>
+
+        {% endstylesheets %}
+
+        {% javascripts
+            '@ReportBundle/Resources/public/js/jquery.js'
+            '@ReportBundle/Resources/public/js/jquery-ui.min.js'
+            '@Pi2FracSGSDWebMonitorBundle/Resources/public/js/jstz.min.js'
+            output='js/compiled/report_javascripts.js'
+        %}
+        <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+        <script type="text/javascript">
+          function setCookie(name, timezone) {
+              document.cookie = name + "=" + timezone +"; path=/";
+          }
+          $(function(){
+              var tz = jstz.determine();
+              response_text = '-99999';
+              if (typeof (tz) === 'undefined') {
+                  response_text = '-99999';
+              }
+              else {
+                  response_text = tz.name();
+                  setCookie('timezone', response_text); 
+              }
+          });
+    </script> 
+        {% endjavascripts %}
+        {#        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+                <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+        <style>
+            .ui-widget-overlay { background: #000; opacity: .70; filter:Alpha(Opacity=70); }
+        </style>
+    {%endblock%}
+
+    {% block body -%}
+        <div class="container container_5">
+            <h2 class="grid_5 ui-dialog-title">
+                Generador de Reportes Servicio <span id="nombre_servicio"></span>
+            </h2>
+            <br /> 
+            {% set cero = 0 %}
+            {% if counter is defined and counter == 0 and error is defined and error is same as(cero)%}
+                <div class="grid_5 ui-state-highlight ui-corner-all">
+                    {% include 'ReportBundle:Default:dates.html.twig' %}
+                </div>
+            {% elseif counter is defined and counter == 0 and error is defined and error|length > 1  %}
+                <div class="grid_5 ui-state-highlight ui-corner-all">
+                    {% include 'ReportBundle:Default:dates.html.twig' %}
+                </div>
+                <div class='clear'>&nbsp;</div>
+                <br />
+                <br />
+                <div class="grid_5">
+                    {% set index = 'Servicios Habilitados:' %}
+                    {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : error, 'index': index } %}
+                </div>
+            {% endif %}
+
+            {% if counter is defined and counter == 1 %}
+                <div class="grid_5 ui-state-highlight ui-corner-all">
+                    {% include 'ReportBundle:Default:dates.html.twig' %}
+                    {% include 'ReportBundle:Default:buttons.html.twig' %}
+                </div>
+                <div class='clear'>&nbsp;</div>
+                <h2 class="grid_5">
+                    Totales:
+                </h2>
+                {% if tratadasN1 is defined %}
+                    <div class='grid_2'>
+                        {% set name = 'tratadas' %}
+                        {% set index = 'Incidencias Totales Tratadas en N1:' %}
+                        {% if tratadasN1|length == 0%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : tratadasN1|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : tratadasN1, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%}
+                {% if cerradasN1 is defined %}
+                    <div class='grid_1'>
+                        {% set name = 'cerradas' %}
+                        {% set index = 'Cerradas en N1:' %}
+                        {% if cerradasN1|length == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : cerradasN1|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : cerradasN1, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%} 
+                {% if transferidas is defined %}
+                    <div class='grid_2 '>
+                        {#{% set index = 'Transferidas a N2:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : transferidas, 'index': index } %}#}
+                        {% set name = 'transferidas' %}
+                        {% set index = 'Transferidas a N2:' %}
+                        {% if cerradasN1|length == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : transferidas|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : transferidas, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div> 
+                {%endif%}
+                <div class='clear'>&nbsp;</div>
+                <h2 class="grid_5">
+                    Tipos de Notificaciones:
+                </h2>
+                {% if incidencias is defined %}
+                    <div class='grid_2'>
+                        {% set name = 'incidencias' %}
+                        {% set index = 'Incidencias:' %}
+                        {% if incidencias|length == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : incidencias|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : incidencias, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%}
+                {% if peticiones is defined  %}
+                    <div class='grid_1'>
+                        {% set name = 'peticiones' %}
+                        {% set index = 'Petición:' %}
+                        {% if peticiones|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : peticiones|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : peticiones, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%}
+                {% if proviciones is defined and proviciones != "OIT" %}
+                    <div class='grid_1'>
+                        {% set name = 'proviciones' %}
+                        {% set index = 'Provisión:' %}
+                        {% if proviciones|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : proviciones|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : proviciones, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%}
+                {% if quejas is defined %}
+                    {% if proviciones is defined and proviciones == "OIT" %}
+                        <div class='grid_2'>
+                    {% else %}
+                        <div class='grid_1'>
+                    {% endif %}
+                    
+                        {% set name = 'quejas' %}
+                        {% set index = 'Consulta:' %}
+                        {% if quejas|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : quejas|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : quejas, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    </div>
+                {%endif%}
+                <div class='clear'>&nbsp;</div>
+                <h2 class="grid_5">
+                    Buzones:
+                </h2>
+                <div class='grid_1'>
+                    {% if segestsoc is defined  %}
+                        {% set name = 'segestsoc' %}
+                        {% set index = 'Segest SOC:' %}
+                        {% if segestsoc|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : segestsoc|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : segestsoc, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if segestmon is defined  %}
+                        {% set name = 'segestmon' %}
+                        {% set index = 'Segest MON:' %}
+                        {% if segestmon|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : segestmon|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : segestmon, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if soporteseg is defined  %}
+                        {% set name = 'soporteseg' %}
+                        {% set index = 'Soporte SEGURIDAD:' %}
+                        {% if soporteseg|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : soporteseg|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : soporteseg, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if segestseg is defined  %}
+                        {% set name = 'segestseg' %}
+                        {% set index = 'Segest SEGUIMIENTO:' %}
+                        {% if segestseg|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : segestseg|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : segestseg, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if otros is defined  %}
+                        {% set name = 'otros' %}
+                        {% set index = 'Otros:' %}
+                        {% if otros|length  == 0  %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : otros|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : otros, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                {# Buzones OIT                #}
+                <div class='grid_1'>
+                    {% if alarma is defined  %}
+                        {% set name = 'alarma' %}
+                        {% set index = 'Alarma:' %}
+                        {% if alarma|length  == 0  %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : alarma|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : alarma, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>      
+                <div class='grid_1'>
+                    {% if iberia is defined  %}
+                        {% set name = 'iberia' %}
+                        {% set index = 'Iberia:' %}
+                        {% if iberia|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : iberia|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : iberia, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if mtiberia is defined %}
+                        {% set index = 'Tiempo Iberia:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : mtiberia, 'index': index } %}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if icm is defined  %}
+                        {% set name = 'icm' %}
+                        {% set index = 'Icm:' %}
+                        {% if icm|length  == 0 %}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : icm|length, 'index': index } %}
+                        {%else%}
+                            {% include 'ReportBundle:Default:counters.html.twig' with { 'entities' : icm, 'name': name , 'index': index, } %}
+                        {%endif%}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if mticm is defined %}
+                        {% set index = 'Tiempo ICM:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : mticm, 'index': index } %}
+                    {%endif%}
+                </div>
+                <div class='clear'>&nbsp;</div>
+                <h2 class="grid_5">
+                    Tiempos:
+                </h2>
+                <div class='grid_2'>
+                    {% if mt1 is defined %}
+                        {% set index = 'Tiempo N1:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : mt1, 'index': index } %}
+                    {%endif%}
+                </div>
+                <div class='grid_2'>
+                    {% if asistencia is defined %}
+                        {% set index = 'Tiempo asistencia:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : asistencia, 'index': index } %}
+                    {%endif%}
+                </div>
+                <div class='grid_1'>
+                    {% if tratada is defined %}
+                        {% set index = 'Veces tratada:' %}
+                        {% include 'ReportBundle:Default:counters.html.twig' with { 'resultado' : tratada, 'index': index } %}
+                    {%endif%}
+                </div>
+                <div class="clear">&nbsp;</div>
+
+            {%endif%}
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#nombre_servicio").text($("#form_servicio").val());
+            });
+        </script>
+        <script>
+            // Traducción al español del datepicker
+            $(function ($) {
+                $.datepicker.regional['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: '<Ant',
+                    nextText: 'Sig>',
+                    currentText: 'Hoy',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+                    weekHeader: 'Sm',
+                    dateFormat: 'dd/mm/yy',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: ''
+                };
+                $.datepicker.setDefaults($.datepicker.regional['es']);
+            });
+            $("#form_startdate").datepicker({
+                beforeShow: function () {
+                    setTimeout(function () {
+                        $("#ui-datepicker-div").css('z-index', 100);
+                    }, 0);
+                },
+                // This function changes the 'endDate' calendar picker to show future days
+                onSelect: function (dateStr) {
+                    $('#form_enddate').datepicker('option', 'defaultDate', dateStr);
+                    $('#form_enddate').datepicker('option', 'minDate', dateStr);
+                }
+            });
+            $("#form_enddate").datepicker({
+                beforeShow: function () {
+                    setTimeout(function () {
+                        $("#ui-datepicker-div").css('z-index', 100);
+                    }, 0);
+                }
+            });
+            $(function () {
+                var span = $("#nombre_servicio");
+                $("#form_servicio").selectmenu({
+                    width: 150,
+                    change: function (event, data) {
+                        span.text($(this).val());
+                    }
+                });
+            });
+        </script> 
+        <script>
+            $(document).on("click", "#reset_report", function (event) {
+                event.preventDefault();
+                window.location.href = "{{ path('reports_main') }}";
+
+            });
+        </script>
+        <script>
+            //inicializando dialogs
+            //TO DO: MAKE WIDGET DIALOG TWIG
+            $(function () {
+                $("#tratadas").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#cerradas").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#transferidas").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#incidencias").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#peticiones").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#proviciones").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#quejas").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#segestsoc").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#segestmon").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#soporteseg").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#segestseg").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#otros").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#alarma").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#iberia").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $("#icm").dialog({
+                    autoOpen: false,
+                    minWidth: 960,
+                    maxHeight: 700,
+                    modal: true,
+                    buttons: [{
+                            text: "OK",
+                            click: function () {
+                                $(this).dialog("close");
+                            }
+                        }]
+                });
+                $(document).on("click", "a.link_list", function (event) {
+                    var name = $(this).data("name");
+                    event.preventDefault();
+                    $("#" + name).dialog("open");
+                });
+            });
+        </script>
+        <script>
+            $(function () {
+                $("#form_resolucion").button();
+            });
+        </script>
+    {% endblock %}

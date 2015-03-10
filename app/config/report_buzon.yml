@@ -1,0 +1,26 @@
+report:
+    servicios:
+        SOC:
+            buzones:
+                - SOC SEGURIDAD
+                - SEGEST SOC
+                - SEGEST MON
+                - SOPORTE SEGURIDAD 
+                - SEGEST SEGUIMIENTO 
+            usuarios:
+#                - DNX3042
+#                - DNX3073
+#                - DXN3075
+#                - DXN3331
+#                - DNX3328
+#                - DNX3338
+#                - DNX3436
+#                - DNX3479
+
+        OIT:
+            buzones:
+                - SDNIVEL1 
+                - SDNIVEL1 SISTEVOZ 
+            usuarios:
+#                - user1
+        

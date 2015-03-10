@@ -1,0 +1,15 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: 3306
+    database_name: sgsd
+    database_user: root
+    database_password: sa23.-
+    mailer_transport: gmail
+    mailer_host: ~ 
+    mailer_user: notificaciones.sgsd@fractaliasoftware.com
+    mailer_password: Notificaciones.
+    locale: es
+    secret: 41ade752e6836369bf774ed9812478961f7063d8
+    sgsd_soap_cache: 0

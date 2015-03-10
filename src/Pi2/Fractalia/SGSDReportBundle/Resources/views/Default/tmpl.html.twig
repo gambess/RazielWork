@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+    {% block content_header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Generación de Reportes</title>
+        <meta name="author" content="Raziel Valle Miranda">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        {% stylesheets 'bundles/report/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset( asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% javascripts
+            '@ReportBundle/Resources/public/js/jquery.js'
+            '@ReportBundle/Resources/public/js/jquery-ui.min.js'
+            output='js/compiled/rep2_javascripts.js'
+        %}
+        <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+        {% endjavascripts %}
+        {#        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+                <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+    {%endblock%}
+
+    {% block body -%}
+        {% if counter == 0 %}
+            {% include 'ReportBundle:Default:dates.html.twig' %}
+        {% elseif counter == 1 %}
+            {% include 'ReportBundle:Default:dates.html.twig' %} 
+            {% include 'ReportBundle:Default:counters.html.twig'  
+            with { 
+                'tratadasN1' : tratadasN1, 
+                'cerradasN1': cerradasN1, 
+                'incidencias': incidencias, 
+                'peticiones' : peticiones, 
+                'proviciones' : proviciones, 
+                'quejas' : quejas, 
+                'segestsoc' : segestsoc, 
+                'segestmon' : segestmon, 
+                'soporteseg' : soporteseg, 
+                'segestseg' : segestseg, 
+                'otros' : otros, 
+                'mt1' : mt1,
+                'asistencia' : asistencia,
+                'tratada' : tratada,
+                } 
+            %}
+        {%endif%}
+        <script>
+            // Traducción al español
+            $(function ($) {
+                $.datepicker.regional['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: '<Ant',
+                    nextText: 'Sig>',
+                    currentText: 'Hoy',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+                    weekHeader: 'Sm',
+                    dateFormat: 'dd/mm/yy',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: ''
+                };
+                $.datepicker.setDefaults($.datepicker.regional['es']);
+            });
+
+            $(function () {
+                $("#startdate").datepicker();
+            });
+            $(function () {
+                $("#enddate").datepicker();
+            });
+        </script>
+    {% endblock %}

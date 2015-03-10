@@ -1,0 +1,15 @@
+{%if entities is defined %}
+    {% include 'ReportBundle:Default:widget.html.twig' with { 
+                'entities': entities,
+                'identify_widget': name,
+                'index': index,
+                } 
+            %}
+{% endif %}
+{% if resultado is defined %}
+    {% include 'ReportBundle:Default:widget.html.twig' with { 
+                'resultado': resultado,
+                'index': index,
+                } 
+            %}
+{% endif %}

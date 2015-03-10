@@ -1,0 +1,396 @@
+Pi2\Fractalia\SGSDReportBundle\Entity\Notificacion:
+    type: entity
+    table: Notificacion
+    repositoryClass: Pi2\Fractalia\SGSDReportBundle\Entity\NotificacionRepository
+    indexes:
+        NumeroCaso:
+            columns:
+                - NumeroCaso
+        TipoAccion:
+            columns:
+                - TipoAccion
+        TipoCaso:
+            columns:
+                - TipoCaso
+        Tipificacion1:
+            columns:
+                - Tipificacion1
+        GrupoOrigen:
+            columns:
+                - GrupoOrigen
+        GrupoDestino:
+            columns:
+                - GrupoDestino
+        TecnicoAsignadoInicial:
+            columns:
+                - TecnicoAsignadoInicial
+        FechaResolucion:
+            columns:
+                - FechaResolucion
+        Estado:
+            columns:
+                - Estado
+        FechaApertura:
+            columns:
+                - FechaApertura
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        numerocaso:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: NumeroCaso
+        incidenciaajena:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: IncidenciaAjena
+        fechaactualizacion:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: FechaActualizacion
+        tipoaccion:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: TipoAccion
+        visibleusuario:
+            type: boolean
+            nullable: true
+            comment: ''
+            column: VisibleUsuario
+        motivo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Motivo
+        tipocaso:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: TipoCaso
+        fechaapertura:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: FechaApertura
+        titulo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Titulo
+        tipificacion1:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Tipificacion1
+        tipificacion2:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Tipificacion2
+        tipificacion3:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Tipificacion3
+        tipificacion4:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Tipificacion4
+        grupoorigen:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: GrupoOrigen
+        grupodestino:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: GrupoDestino
+        tecnicoasignadoinicial:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: TecnicoAsignadoInicial
+        tecnicoasignadofinal:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: TecnicoAsignadoFinal
+        impacto:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Impacto
+        urgencia:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Urgencia
+        prioridad:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Prioridad
+        ci:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CI
+        cietiqueta:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CIEtiqueta
+        citipo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CITipo
+        cinumeroserie:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CINumeroSerie
+        cifabricante:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CIFabricante
+        cimodelo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CIModelo
+        ubicacion:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Ubicacion
+        nombreubicacion:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: NombreUbicacion
+        pais:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Pais
+        provincia:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Provincia
+        localidad:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Localidad
+        direccion:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Direccion
+        codigopostal:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CodigoPostal
+        usuarioafectado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: UsuarioAfectado
+        telefonousuarioafectado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: TelefonoUsuarioAfectado
+        emailusuarioafectado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: EmailUsuarioAfectado
+        informadopor:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: InformadoPor
+        contrato:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Contrato
+        subactividad:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Subactividad
+        servicioafectado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: ServicioAfectado
+        cliente:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Cliente
+        organizacioninterna:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: OrganizacionInterna
+        codigoresolucion:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CodigoResolucion
+        fecharesolucion:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: FechaResolucion
+        casorelacionado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: CasoRelacionado
+        numadjuntos:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: NumAdjuntos
+        estado:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: Estado
+        sistemaorigen:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: SistemaOrigen
+        idcasosistemaorigen:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+            column: IDCasoSistemaOrigen
+        fechainsercion:
+            type: datetime
+            nullable: true
+            comment: ''
+            column: FechaInsercion
+        notificaVista:
+            type: boolean
+            nullable: true
+            comment: ''
+            column: notifica_vista
+        hideinmonitor:
+            type: boolean
+            nullable: true
+            comment: ''
+            column: hideInMonitor
+    lifecycleCallbacks: {  }

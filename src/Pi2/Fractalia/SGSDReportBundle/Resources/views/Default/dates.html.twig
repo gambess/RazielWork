@@ -1,0 +1,37 @@
+{% form_theme form 'ReportBundle:Form:buttons.html.twig' %}
+{{form_start(form, {'action': path('reports_generate'), 'attr':{'class':'form'} })}}
+        <div class='grid_1'  style="margin-top: 10px; padding: 0 .5em;">
+            {{ form_label (form.startdate) }}
+            {{ form_errors (form.startdate) }}
+{#            {{ form_widget (form.startdate, {'id': 'startdate' }) }}#}
+            {{ form_widget (form.startdate) }}
+        </div>
+        <div class='grid_1'  style="margin-top: 10px; padding: 0 .5em;">
+            {{ form_label (form.enddate) }}
+            {{ form_errors (form.enddate) }}
+{#            {{ form_widget (form.enddate, {'id': 'enddate' }) }}#}
+            {{ form_widget (form.enddate) }}
+        </div>
+         <div class='grid_1' style="margin-top: 10px; padding: 0 .5em;">
+{#            {{ form_widget (form.resolucion, {'id': 'form_resolucion' }) }}#}
+            {{ form_widget (form.resolucion) }}
+            {{ form_errors (form.resolucion) }}
+            {{ form_label (form.resolucion, null, { 'label_attr': { 'style': 'color: #ffffff;' } } )  }}
+        </div>
+        <div class='grid_1' style="margin-top: 10px; padding: 0 .5em;">
+            {{ form_row (form.servicio) }}
+        </div>
+        <div class='clear'>&nbsp;</div>
+        <br />
+
+            <div class='grid_1' style="margin-bottom: 10px; padding: 0 .5em;">    
+                {{ form_row(form.buscar)}}
+            </div>
+                {{form_rest(form)}}
+    {{form_end(form)}}
+            <div class='grid_1 prefix_1' style="margin-bottom: 10px; padding: 0 .5em;">
+                {#  Boton limpiar formulario #}
+                <button id="reset_report" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" ><span class="ui-button-text">Limpiar Reporte</span></button>
+            </div>
+
+

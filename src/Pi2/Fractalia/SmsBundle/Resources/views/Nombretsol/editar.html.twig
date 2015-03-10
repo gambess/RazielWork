@@ -1,0 +1,9 @@
+{% block content -%}
+    {{form_start(edit_form, { 'attr': {'id': 'form_edit_tsol'} })}}
+            {{ form_errors (edit_form.nombre) }}
+            {{ form_widget (edit_form.nombre, {'id' : 'input_tsol_nombre','attr': {'class': 'input_form'} }) }}
+            {{ form_row (edit_form.act, { 'id' : 'button_editar_tsol', 'attr': {'class': 'button_guardar'} })}}
+            <span id="cancelar_tsol" title="Cancelar"></span>
+            {{form_rest(edit_form)}}
+    {{form_end(edit_form)}}
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Notificacion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numerocaso</th>
+                <th>Incidenciaajena</th>
+                <th>Fechaactualizacion</th>
+                <th>Tipoaccion</th>
+                <th>Visibleusuario</th>
+                <th>Motivo</th>
+                <th>Tipocaso</th>
+                <th>Fechaapertura</th>
+                <th>Titulo</th>
+                <th>Tipificacion1</th>
+                <th>Tipificacion2</th>
+                <th>Tipificacion3</th>
+                <th>Tipificacion4</th>
+                <th>Grupoorigen</th>
+                <th>Grupodestino</th>
+                <th>Tecnicoasignadoinicial</th>
+                <th>Tecnicoasignadofinal</th>
+                <th>Impacto</th>
+                <th>Urgencia</th>
+                <th>Prioridad</th>
+                <th>Ci</th>
+                <th>Cietiqueta</th>
+                <th>Citipo</th>
+                <th>Cinumeroserie</th>
+                <th>Cifabricante</th>
+                <th>Cimodelo</th>
+                <th>Ubicacion</th>
+                <th>Nombreubicacion</th>
+                <th>Pais</th>
+                <th>Provincia</th>
+                <th>Localidad</th>
+                <th>Direccion</th>
+                <th>Codigopostal</th>
+                <th>Usuarioafectado</th>
+                <th>Telefonousuarioafectado</th>
+                <th>Emailusuarioafectado</th>
+                <th>Informadopor</th>
+                <th>Contrato</th>
+                <th>Subactividad</th>
+                <th>Servicioafectado</th>
+                <th>Cliente</th>
+                <th>Organizacioninterna</th>
+                <th>Codigoresolucion</th>
+                <th>Fecharesolucion</th>
+                <th>Casorelacionado</th>
+                <th>Numadjuntos</th>
+                <th>Estado</th>
+                <th>Sistemaorigen</th>
+                <th>Idcasosistemaorigen</th>
+                <th>Fechainsercion</th>
+                <th>Notificavista</th>
+                <th>Hideinmonitor</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('notificacion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.numerocaso }}</td>
+                <td>{{ entity.incidenciaajena }}</td>
+                <td>{% if entity.fechaactualizacion %}{{ entity.fechaactualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.tipoaccion }}</td>
+                <td>{{ entity.visibleusuario }}</td>
+                <td>{{ entity.motivo }}</td>
+                <td>{{ entity.tipocaso }}</td>
+                <td>{% if entity.fechaapertura %}{{ entity.fechaapertura|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.titulo }}</td>
+                <td>{{ entity.tipificacion1 }}</td>
+                <td>{{ entity.tipificacion2 }}</td>
+                <td>{{ entity.tipificacion3 }}</td>
+                <td>{{ entity.tipificacion4 }}</td>
+                <td>{{ entity.grupoorigen }}</td>
+                <td>{{ entity.grupodestino }}</td>
+                <td>{{ entity.tecnicoasignadoinicial }}</td>
+                <td>{{ entity.tecnicoasignadofinal }}</td>
+                <td>{{ entity.impacto }}</td>
+                <td>{{ entity.urgencia }}</td>
+                <td>{{ entity.prioridad }}</td>
+                <td>{{ entity.ci }}</td>
+                <td>{{ entity.cietiqueta }}</td>
+                <td>{{ entity.citipo }}</td>
+                <td>{{ entity.cinumeroserie }}</td>
+                <td>{{ entity.cifabricante }}</td>
+                <td>{{ entity.cimodelo }}</td>
+                <td>{{ entity.ubicacion }}</td>
+                <td>{{ entity.nombreubicacion }}</td>
+                <td>{{ entity.pais }}</td>
+                <td>{{ entity.provincia }}</td>
+                <td>{{ entity.localidad }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.codigopostal }}</td>
+                <td>{{ entity.usuarioafectado }}</td>
+                <td>{{ entity.telefonousuarioafectado }}</td>
+                <td>{{ entity.emailusuarioafectado }}</td>
+                <td>{{ entity.informadopor }}</td>
+                <td>{{ entity.contrato }}</td>
+                <td>{{ entity.subactividad }}</td>
+                <td>{{ entity.servicioafectado }}</td>
+                <td>{{ entity.cliente }}</td>
+                <td>{{ entity.organizacioninterna }}</td>
+                <td>{{ entity.codigoresolucion }}</td>
+                <td>{% if entity.fecharesolucion %}{{ entity.fecharesolucion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.casorelacionado }}</td>
+                <td>{{ entity.numadjuntos }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>{{ entity.sistemaorigen }}</td>
+                <td>{{ entity.idcasosistemaorigen }}</td>
+                <td>{% if entity.fechainsercion %}{{ entity.fechainsercion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.notificaVista }}</td>
+                <td>{{ entity.hideinmonitor }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('notificacion_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% endblock %}

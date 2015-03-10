@@ -1,0 +1,230 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Rechazada</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Numerocaso</th>
+                <td>{{ entity.numerocaso }}</td>
+            </tr>
+            <tr>
+                <th>Incidenciaajena</th>
+                <td>{{ entity.incidenciaajena }}</td>
+            </tr>
+            <tr>
+                <th>Fechaactualizacion</th>
+                <td>{{ entity.fechaactualizacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Tipoaccion</th>
+                <td>{{ entity.tipoaccion }}</td>
+            </tr>
+            <tr>
+                <th>Visibleusuario</th>
+                <td>{{ entity.visibleusuario }}</td>
+            </tr>
+            <tr>
+                <th>Motivo</th>
+                <td>{{ entity.motivo }}</td>
+            </tr>
+            <tr>
+                <th>Tipocaso</th>
+                <td>{{ entity.tipocaso }}</td>
+            </tr>
+            <tr>
+                <th>Fechaapertura</th>
+                <td>{{ entity.fechaapertura|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ entity.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Tipificacion1</th>
+                <td>{{ entity.tipificacion1 }}</td>
+            </tr>
+            <tr>
+                <th>Tipificacion2</th>
+                <td>{{ entity.tipificacion2 }}</td>
+            </tr>
+            <tr>
+                <th>Tipificacion3</th>
+                <td>{{ entity.tipificacion3 }}</td>
+            </tr>
+            <tr>
+                <th>Tipificacion4</th>
+                <td>{{ entity.tipificacion4 }}</td>
+            </tr>
+            <tr>
+                <th>Grupoorigen</th>
+                <td>{{ entity.grupoorigen }}</td>
+            </tr>
+            <tr>
+                <th>Grupodestino</th>
+                <td>{{ entity.grupodestino }}</td>
+            </tr>
+            <tr>
+                <th>Tecnicoasignadoinicial</th>
+                <td>{{ entity.tecnicoasignadoinicial }}</td>
+            </tr>
+            <tr>
+                <th>Tecnicoasignadofinal</th>
+                <td>{{ entity.tecnicoasignadofinal }}</td>
+            </tr>
+            <tr>
+                <th>Impacto</th>
+                <td>{{ entity.impacto }}</td>
+            </tr>
+            <tr>
+                <th>Urgencia</th>
+                <td>{{ entity.urgencia }}</td>
+            </tr>
+            <tr>
+                <th>Prioridad</th>
+                <td>{{ entity.prioridad }}</td>
+            </tr>
+            <tr>
+                <th>Ci</th>
+                <td>{{ entity.ci }}</td>
+            </tr>
+            <tr>
+                <th>Cietiqueta</th>
+                <td>{{ entity.cietiqueta }}</td>
+            </tr>
+            <tr>
+                <th>Citipo</th>
+                <td>{{ entity.citipo }}</td>
+            </tr>
+            <tr>
+                <th>Cinumeroserie</th>
+                <td>{{ entity.cinumeroserie }}</td>
+            </tr>
+            <tr>
+                <th>Cifabricante</th>
+                <td>{{ entity.cifabricante }}</td>
+            </tr>
+            <tr>
+                <th>Cimodelo</th>
+                <td>{{ entity.cimodelo }}</td>
+            </tr>
+            <tr>
+                <th>Ubicacion</th>
+                <td>{{ entity.ubicacion }}</td>
+            </tr>
+            <tr>
+                <th>Nombreubicacion</th>
+                <td>{{ entity.nombreubicacion }}</td>
+            </tr>
+            <tr>
+                <th>Pais</th>
+                <td>{{ entity.pais }}</td>
+            </tr>
+            <tr>
+                <th>Provincia</th>
+                <td>{{ entity.provincia }}</td>
+            </tr>
+            <tr>
+                <th>Localidad</th>
+                <td>{{ entity.localidad }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Codigopostal</th>
+                <td>{{ entity.codigopostal }}</td>
+            </tr>
+            <tr>
+                <th>Usuarioafectado</th>
+                <td>{{ entity.usuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th>Telefonousuarioafectado</th>
+                <td>{{ entity.telefonousuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th>Emailusuarioafectado</th>
+                <td>{{ entity.emailusuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th>Informadopor</th>
+                <td>{{ entity.informadopor }}</td>
+            </tr>
+            <tr>
+                <th>Contrato</th>
+                <td>{{ entity.contrato }}</td>
+            </tr>
+            <tr>
+                <th>Subactividad</th>
+                <td>{{ entity.subactividad }}</td>
+            </tr>
+            <tr>
+                <th>Servicioafectado</th>
+                <td>{{ entity.servicioafectado }}</td>
+            </tr>
+            <tr>
+                <th>Cliente</th>
+                <td>{{ entity.cliente }}</td>
+            </tr>
+            <tr>
+                <th>Organizacioninterna</th>
+                <td>{{ entity.organizacioninterna }}</td>
+            </tr>
+            <tr>
+                <th>Codigoresolucion</th>
+                <td>{{ entity.codigoresolucion }}</td>
+            </tr>
+            <tr>
+                <th>Fecharesolucion</th>
+                <td>{{ entity.fecharesolucion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Casorelacionado</th>
+                <td>{{ entity.casorelacionado }}</td>
+            </tr>
+            <tr>
+                <th>Numadjuntos</th>
+                <td>{{ entity.numadjuntos }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Sistemaorigen</th>
+                <td>{{ entity.sistemaorigen }}</td>
+            </tr>
+            <tr>
+                <th>Idcasosistemaorigen</th>
+                <td>{{ entity.idcasosistemaorigen }}</td>
+            </tr>
+            <tr>
+                <th>Fechainsercion</th>
+                <td>{{ entity.fechainsercion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Notificavista</th>
+                <td>{{ entity.notificaVista }}</td>
+            </tr>
+            <tr>
+                <th>Hideinmonitor</th>
+                <td>{{ entity.hideinmonitor }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('rechazada') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

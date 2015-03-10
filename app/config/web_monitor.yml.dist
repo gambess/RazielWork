@@ -1,0 +1,199 @@
+pi2_frac_sgsd_web_monitor:
+    servicios:
+        SOC:
+            buzones:
+                - SOC SEGURIDAD:
+                    - DNX3042
+                    - DNX3073
+                    - DXN3075
+                    - DXN3331
+                    - DNX3328
+                    - DNX3338
+                    - DNX3436
+                    - DNX3479
+                - SOPORTE SEGURIDAD:
+                - SEGEST MON:
+                - SEGEST SOC:
+                - SEGEST SEGUIMIENTO:
+                - SEGEST MONOCLIENTE:
+                - SSG CLIENTES:
+            categorias:
+               'TICKETS OPEN':
+                  alarma:
+                     max_time: 15
+                     exclude_buzones:
+                        - SEGEST SOC
+                        - SEGEST MON
+                  filter_buzones:
+                     - SOC SEGURIDAD
+                     - SOPORTE SEGURIDAD
+                  prioridad:
+                     - CRITICA
+                     - ALTA
+                  campos:
+                     - NumeroCaso
+                     - Prioridad
+                     - TipoCaso
+                     - GrupoDestino
+                     - FechaActualizacion
+                     - Titulo
+                  condiciones:
+                     - { campo: estado, valor: 'OPEN', operacion: = }
+               'TICKETS FICTICIO':
+                  alarma:
+                     max_time: 15
+                  prioridad:
+                     - CRITICA
+                     - ALTA
+                  campos:
+                     - NumeroCaso
+                     - Prioridad
+                     - TipoCaso
+                     - GrupoDestino
+                     - FechaActualizacion
+                     - Titulo
+                  filter_buzones:
+                     - SOC SEGURIDAD
+                     - SOPORTE SEGURIDAD
+                  condiciones:
+                     - { campo: TecnicoAsignadoInicial, valor: %%FICTICIO1%%, operacion: like }
+                     - { campo: Estado, valor: Suspended, operacion: =[OR] }
+                     - { campo: TecnicoAsignadoInicial, valor: %%FICTICIO1%%, operacion: like }
+                     - { campo: Estado, valor: Work in progress, operacion: = }
+#                  intervalo_horario:
+#                     - { dia: lunes, desde: 08:00, hasta: 24:00 }
+#                     - { dia: martes, desde: 08:00, hasta: 24:00 }
+#                     - { dia: miercoles, desde: 08:00, hasta: 24:00 }
+#                     - { dia: jueves, desde: 08:00, hasta: 24:00 }
+#                     - { dia: viernes, desde: 08:00, hasta: 22:00 }
+            mails:
+                destinatario: dstsol.socseguridad@telefonica.com
+                cc: 
+#            intervalo_meses_mostrar:
+#              mes_inicio:
+#              mes_final:
+
+        OIT:
+            buzones:
+                - SDNIVEL1:
+                - SDNIVEL1 SISTEVOZ:
+            categorias:
+               'TICKETS OPEN':
+                  alarma:
+                     max_time: 15
+                  prioridad:
+                     - CRITICA
+                     - ALTA
+                  campos:
+                     - NumeroCaso
+                     - Prioridad
+                     - TipoCaso
+#                     - GrupoDestino
+                     - FechaActualizacion
+                     - Titulo
+#                     - TecnicoAsignadoFinal
+#                     - Estado
+                  condiciones:
+                     - { campo: estado, valor: OPEN, operacion: =[OR] }
+                     - { campo: estado, valor: Work In progress, operacion: = }
+                     - { campo: Titulo, valor: %%iberia%%, operacion: not like }
+                  clientes_criticos:
+                     - VOCENTO
+                     - FERROVIAL    
+                     - DGOG
+                     - SAICA
+                     - HOTELBEDS
+                     - NH
+                     - PRISA
+                     - DGPE
+                     - CEPSA
+                     - ICEX
+                     - GOBEX
+                     - NUTREXPA
+                     - SERVIHOTEL
+                     - DIGITEX
+            mails:
+                destinatario: dstsol.servicedeskn1@telefonica.com
+                cc:
+   
+        REHABITIC:
+            buzones:
+                - RHBTIC_OPER_LGTICO:
+            categorias:
+                'TICKETS OPEN':
+                      alarma:
+                          max_time: 60
+                      prioridad:
+                         - CRITICA
+                         - ALTA
+                         - MEDIA 
+                         - BAJA 
+                      campos:
+                         - numeroCaso
+                         - prioridad
+                         - tipoCaso
+                         - grupoDestino
+                         - fechaActualizacion
+                         - titulo
+                         - tecnicoAsignadoFinal
+                      condiciones:
+                         - { campo: estado, valor: OPEN, operacion: = }
+                'TICKETS WORKING':
+                      alarma:
+                         max_time: 1440
+                      prioridad:
+                         - CRITICA
+                         - ALTA
+                         - MEDIA
+                         - BAJA
+                      campos:
+                         - numeroCaso
+                         - prioridad
+                         - tipoCaso
+                         - grupoDestino
+                         - fechaActualizacion
+                         - titulo
+                         - tecnicoAsignadoFinal
+                      condiciones:
+                         - { campo: estado, valor: Work In Progress, operacion: =[OR] }
+                         - { campo: estado, valor: Suspended, operacion: = }
+            mails:
+                destinatario:
+                cc:
+
+
+
+                         
+        FERROVIAL:
+           buzones:
+               - N1 PT 3GH: 
+           categorias:
+               'TICKETS FERROVIAL':
+                     campos:
+                        - numeroCaso
+                        - grupoDestino
+                        - fechaApertura
+                        - titulo
+                        - estado
+                     condiciones:
+                        - { campo: contrato, valor: 4040940, operacion: = }
+                        - { campo: titulo, valor: %%FACTURABLE%%, operacion: like }
+           mails:
+                destinatario:
+                cc: 
+                       
+           intervalo_meses_mostrar:
+              mes_inicio: actual
+              mes_final: actual-1
+#Formatos Soportados
+#              mes_inicio: actual
+#              mes_final: actual
+#              mes_inicio: actual-1
+#              mes_final: actual-2
+#              mes_inicio: actual
+#              mes_final: actual-2
+#              mes_inicio: ~
+#              mes_final: ~
+                
+                       
+    actualiza_web_segundos: 60               

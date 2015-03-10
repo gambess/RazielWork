@@ -1,0 +1,140 @@
+/* 
+    Created on : 24-jul-2014, 13:51:47
+    Author     : Raziel Valle Miranda
+*/
+
+#cancelar_tsol{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:11px;
+    /*z-index: 999;*/ 
+}
+
+.borrar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -176px -96px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:2px;
+    top:11px;
+    /*z-index: 999;*/ 
+}
+.input_form{
+    /*display: block;*/
+    margin: 5px 2px 5px 20px;
+    width: 60%;
+    font-family: sans-serif;
+    font-size: 0.81em;
+    padding: 2px;
+    border: solid 4px #c9c9c9;
+    transition: border 0.3s;
+
+}
+.input_form:focus{
+    border: solid 4px #C9361A;
+    /*outline: none;*/
+
+}
+
+#pi2_fractalia_smsbundle_nombrecorto_{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -112px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:40px;
+    top:11px;
+    border: none;
+    background-color: transparent;
+}
+#cancelar_agregar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:11px;
+    /*z-index: 999;*/ 
+}
+
+.cancelar_nombre{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:20px;
+    top:11px;
+    /*z-index: 999;*/ 
+}
+
+#finish_search{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -128px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:-15px;
+    top:15px;
+    /*z-index: 999;*/ 
+}
+
+.button_guardar, #pi2_fractalia_smsbundle_nombretsol_{
+    cursor: pointer;
+    list-style: none outside none;
+    background-image: url("../images/ui-icons_cc0000_256x240.png");
+    background-repeat: no-repeat;
+    background-position: -96px -112px;
+    display: block;
+    overflow: hidden;
+    text-indent: -99999px;
+    height: 16px;
+    width: 16px;
+    position:absolute;
+    right:40px;
+    top:11px;
+    border: none;
+    background-color: transparent;
+}

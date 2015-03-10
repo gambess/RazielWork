@@ -1,0 +1,7 @@
+{#  Boton generar csv #}
+    {{form_start(hiddenForm, {'action': path('csv_generate')})}}
+    <div class="grid_1 prefix_1 suffix_0" style="margin-bottom: 10px; padding: 0 .7em;">
+    {{ form_widget (hiddenForm.recuperar, {'id': 'export', 'attr': {'class': 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-button-text'} })}}
+    </div>
+    {{form_rest(hiddenForm)}}
+    {{form_end(hiddenForm)}}

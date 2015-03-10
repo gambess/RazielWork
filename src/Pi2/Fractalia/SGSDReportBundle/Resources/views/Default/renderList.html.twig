@@ -1,0 +1,70 @@
+{% block content -%}
+    {% if app.request.cookies.has('timezone') %}
+        {% set timezone = app.request.cookies.get('timezone') %}
+    {%endif%}
+    <div class="ui-widget" style="width: 900px; margin: 20px 0;">
+    <table class="ui-widget ui-widget-content" style="margin: 1em 0; border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr class="ui-widget-header">
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Id</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Numerocaso</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipoaccion</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipocaso</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Titulo</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechaapertura</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechaactualizacion</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fecharesolucion</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechainsercion</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion1</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion2</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Grupoorigen</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Grupodestino</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tecnicoasignadoinicial</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tecnicoasignadofinal</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Impacto</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Urgencia</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Prioridad</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Estado</th>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;"><a href="{{ path('notificacion_mostrar', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.numerocaso }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipoaccion }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipocaso }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.titulo }}</td>
+                    
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{%if entity.fechaapertura and timezone is defined and timezone != "-99999" %}{{ entity.fechaapertura|date('d/m/Y H:i:s', timezone) }}{% else %}{{ entity.fechaapertura|date('d/m/Y H:i:s', "UTC") }}{% endif %} </td>
+                    
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{%if entity.fechaactualizacion and timezone is defined and timezone != "-99999" %}{{ entity.fechaactualizacion|date('d/m/Y H:i:s', timezone) }}{% else %}{{ entity.fechaactualizacion|date('d/m/Y H:i:s', "UTC") }}{% endif %}</td>
+                                                                                            
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{%if entity.fecharesolucion and timezone is defined and timezone != "-99999" %}{{ entity.fecharesolucion|date('d/m/Y H:i:s', timezone) }}{% else %}{{ entity.fecharesolucion|date('d/m/Y H:i:s', "UTC") }}{% endif %}</td>
+                    
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{% if entity.fechainsercion %}{{ entity.fechainsercion|date('d/m/Y H:i:s') }}{% endif %}</td>
+                    
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion1 }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion2 }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.grupoorigen }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.grupodestino }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tecnicoasignadoinicial }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tecnicoasignadofinal }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.impacto }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.urgencia }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.prioridad }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.estado }}</td>
+                <th style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">
+                <ul>
+                    <li>
+                        <a href="{{ path('notificacion_mostrar', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    {% endblock %}

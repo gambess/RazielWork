@@ -1,0 +1,257 @@
+{% block content_header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Vista de la Notificación</title>
+        <meta name="author" content="Raziel Valle Miranda">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        {% stylesheets 'bundles/report/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset( asset_url) }}"/>
+        {% endstylesheets %}
+
+        {% javascripts
+            '@ReportBundle/Resources/public/js/jquery.js'
+            '@ReportBundle/Resources/public/js/jquery-ui.min.js'
+            output='js/compiled/rep3_javascripts.js'
+        %}
+        <script type="text/javascript" src="{{ asset( asset_url) }}"></script>
+        {% endjavascripts %}
+        {#        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+                <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+    {%endblock%}
+{% block body -%}
+    <div class="ui-widget" style="width: 900px; margin: 20px 0;">
+        
+    <h1>Notificacion</h1>
+
+    <table class="ui-widget ui-widget-content" style="margin: 1em 0; border-collapse: collapse; width: 100%;">
+        <tbody>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Id</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Numerocaso</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.numerocaso }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Incidenciaajena</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.incidenciaajena }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechaactualizacion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.fechaactualizacion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipoaccion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipoaccion }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Visibleusuario</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.visibleusuario }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Motivo</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.motivo }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipocaso</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipocaso }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechaapertura</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.fechaapertura|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Titulo</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.titulo }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion1</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion1 }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion2</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion2 }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion3</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion3 }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tipificacion4</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tipificacion4 }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Grupoorigen</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.grupoorigen }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Grupodestino</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.grupodestino }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tecnicoasignadoinicial</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tecnicoasignadoinicial }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Tecnicoasignadofinal</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.tecnicoasignadofinal }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Impacto</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.impacto }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Urgencia</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.urgencia }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Prioridad</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.prioridad }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Ci</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.ci }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Cietiqueta</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.cietiqueta }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Citipo</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.citipo }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Cinumeroserie</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.cinumeroserie }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Cifabricante</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.cifabricante }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Cimodelo</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.cimodelo }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Ubicacion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.ubicacion }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Nombreubicacion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.nombreubicacion }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Pais</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.pais }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Provincia</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.provincia }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Localidad</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.localidad }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Direccion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Codigopostal</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.codigopostal }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Usuarioafectado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.usuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Telefonousuarioafectado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.telefonousuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Emailusuarioafectado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.emailusuarioafectado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Informadopor</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.informadopor }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Contrato</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.contrato }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Subactividad</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.subactividad }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Servicioafectado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.servicioafectado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Cliente</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.cliente }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Organizacioninterna</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.organizacioninterna }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Codigoresolucion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.codigoresolucion }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fecharesolucion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.fecharesolucion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Casorelacionado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.casorelacionado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Numadjuntos</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.numadjuntos }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Estado</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Sistemaorigen</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.sistemaorigen }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Idcasosistemaorigen</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.idcasosistemaorigen }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Fechainsercion</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.fechainsercion|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Notificavista</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.notificaVista }}</td>
+            </tr>
+            <tr>
+                <th class="ui-widget-header" style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">Hideinmonitor</th>
+                <td style="border: 1px solid #eee; padding: .6em 10px; text-align: left;">{{ entity.hideinmonitor }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="#" onclick="goBack()">
+            Volver Atras
+        </a>
+    </li>
+</ul>
+</div>
+<script>
+function goBack() {
+    window.history.back()
+}
+</script>
+{% endblock %}
